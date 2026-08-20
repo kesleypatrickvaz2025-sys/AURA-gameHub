@@ -2,26 +2,29 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#08090d">
+<meta name="viewport"
+      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07080d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>GameHub V2</title>
+<title>AURA GAMEHUB V2</title>
 
 <style>
 :root{
-  --bg:#07080c;
-  --panel:#101219;
-  --panel2:#151823;
-  --card:#11141c;
-  --text:#f5f7ff;
-  --muted:#8c93a6;
-  --accent:#7c5cff;
-  --accent2:#00d4ff;
-  --danger:#ff4567;
-  --success:#28e07b;
-  --border:rgba(255,255,255,.08);
-  --shadow:0 20px 60px rgba(0,0,0,.45);
+  --bg:#06070b;
+  --bg2:#0b0e15;
+  --panel:#10141d;
+  --panel2:#151a25;
+  --card:#111722;
+  --text:#f7f8fb;
+  --muted:#8e98aa;
+  --accent:#ff7417;
+  --accent2:#ff9d52;
+  --line:rgba(255,255,255,.08);
+  --danger:#ff4057;
+  --success:#32d583;
+  --radius:20px;
+  --sidebar:255px;
 }
 
 *{
@@ -31,6 +34,7 @@
 
 html,body{
   margin:0;
+  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
@@ -39,91 +43,128 @@ html,body{
   font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-button,input{
+button,
+input,
+select{
   font:inherit;
 }
 
 button{
   border:0;
+  color:inherit;
   cursor:pointer;
 }
 
 .app{
-  width:100%;
-  height:100%;
   display:flex;
+  width:100%;
+  height:100vh;
   background:
-    radial-gradient(circle at 85% 5%,rgba(124,92,255,.18),transparent 28%),
-    radial-gradient(circle at 10% 80%,rgba(0,212,255,.08),transparent 25%),
+    radial-gradient(circle at 80% 0%,rgba(255,116,23,.09),transparent 30%),
+    radial-gradient(circle at 20% 100%,rgba(95,80,255,.06),transparent 35%),
     var(--bg);
 }
 
-/* SIDEBAR */
+/* =========================
+   SIDEBAR
+========================= */
 
 .sidebar{
-  width:250px;
-  flex-shrink:0;
+  width:var(--sidebar);
+  min-width:var(--sidebar);
   height:100%;
   padding:22px 16px;
-  border-right:1px solid var(--border);
-  background:rgba(8,9,13,.94);
-  backdrop-filter:blur(20px);
+  background:rgba(8,10,15,.92);
+  border-right:1px solid var(--line);
   display:flex;
   flex-direction:column;
-  z-index:20;
+  z-index:100;
+  backdrop-filter:blur(25px);
 }
 
-.logo{
+.brand{
   display:flex;
   align-items:center;
   gap:12px;
-  padding:5px 10px 25px;
+  padding:4px 8px 25px;
 }
 
-.logoIcon{
+.logo{
   width:43px;
   height:43px;
   border-radius:14px;
   display:grid;
   place-items:center;
-  font-size:22px;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 8px 30px rgba(124,92,255,.3);
+  background:linear-gradient(135deg,var(--accent),#ff3b00);
+  box-shadow:0 0 30px rgba(255,116,23,.3);
+  font-weight:900;
 }
 
-.logo strong{
+.brandText strong{
   display:block;
-  font-size:18px;
+  font-size:16px;
+  letter-spacing:.8px;
 }
 
-.logo span{
-  color:var(--muted);
-  font-size:11px;
+.brandText span{
+  color:var(--accent2);
+  font-size:10px;
+  letter-spacing:2px;
+  font-weight:800;
+}
+
+.menuTitle{
+  color:#667083;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  padding:8px 12px;
 }
 
 .nav{
   display:flex;
   flex-direction:column;
-  gap:7px;
+  gap:5px;
 }
 
-.nav button{
-  width:100%;
-  color:var(--muted);
-  background:transparent;
-  padding:13px 14px;
-  border-radius:13px;
-  text-align:left;
+.navBtn{
+  position:relative;
   display:flex;
   align-items:center;
-  gap:12px;
+  gap:13px;
+  width:100%;
+  padding:13px 14px;
+  border-radius:14px;
+  background:transparent;
+  color:#aeb6c6;
+  text-align:left;
   transition:.2s;
 }
 
-.nav button:hover,
-.nav button.active{
-  color:#fff;
-  background:linear-gradient(90deg,rgba(124,92,255,.2),rgba(124,92,255,.05));
+.navBtn:hover{
+  background:rgba(255,255,255,.045);
+  color:white;
+}
+
+.navBtn.active{
+  color:white;
+  background:linear-gradient(
+    90deg,
+    rgba(255,116,23,.20),
+    rgba(255,116,23,.04)
+  );
+}
+
+.navBtn.active::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:9px;
+  bottom:9px;
+  width:3px;
+  border-radius:4px;
+  background:var(--accent);
+  box-shadow:0 0 12px var(--accent);
 }
 
 .navIcon{
@@ -132,578 +173,761 @@ button{
   font-size:18px;
 }
 
-.sidebarBottom{
-  margin-top:auto;
-  color:var(--muted);
-  font-size:11px;
-  padding:12px;
+.navBadge{
+  margin-left:auto;
+  min-width:22px;
+  padding:2px 6px;
+  border-radius:20px;
+  background:rgba(255,255,255,.07);
+  font-size:10px;
+  text-align:center;
 }
 
-/* MAIN */
+.sidebarBottom{
+  margin-top:auto;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.025);
+  border-radius:15px;
+}
+
+.avatar{
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#2d3342,#11141d);
+}
+
+.profileInfo{
+  min-width:0;
+}
+
+.profileInfo strong{
+  display:block;
+  font-size:12px;
+}
+
+.profileInfo span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* =========================
+   MAIN
+========================= */
 
 .main{
-  min-width:0;
   flex:1;
+  min-width:0;
   height:100%;
   overflow:hidden;
   position:relative;
 }
 
 .topbar{
-  height:76px;
+  height:74px;
   display:flex;
   align-items:center;
   gap:15px;
   padding:0 25px;
-  border-bottom:1px solid var(--border);
-  background:rgba(7,8,12,.7);
+  border-bottom:1px solid var(--line);
+  background:rgba(6,7,11,.65);
   backdrop-filter:blur(18px);
 }
 
-.menuBtn{
+.mobileMenu{
   display:none;
   width:42px;
   height:42px;
-  border-radius:12px;
-  color:white;
+  border-radius:13px;
   background:var(--panel);
 }
 
 .search{
   flex:1;
-  max-width:620px;
+  max-width:550px;
   position:relative;
 }
 
 .search input{
   width:100%;
-  height:44px;
-  border:1px solid var(--border);
-  outline:none;
-  border-radius:13px;
-  background:#10121a;
+  height:43px;
+  border:1px solid var(--line);
+  border-radius:14px;
+  outline:0;
+  padding:0 45px 0 15px;
   color:white;
-  padding:0 45px 0 43px;
+  background:rgba(255,255,255,.035);
+}
+
+.search input:focus{
+  border-color:rgba(255,116,23,.5);
+  box-shadow:0 0 0 3px rgba(255,116,23,.08);
 }
 
 .searchIcon{
   position:absolute;
-  left:15px;
+  right:15px;
   top:12px;
-  color:var(--muted);
-}
-
-.clearSearch{
-  position:absolute;
-  right:10px;
-  top:7px;
-  width:30px;
-  height:30px;
-  border-radius:8px;
-  background:transparent;
-  color:var(--muted);
+  color:#778093;
 }
 
 .topActions{
   margin-left:auto;
   display:flex;
-  gap:9px;
+  gap:8px;
 }
 
 .iconBtn{
   width:42px;
   height:42px;
-  border-radius:12px;
+  border-radius:13px;
   background:var(--panel);
-  color:#cbd0df;
-  border:1px solid var(--border);
+  border:1px solid var(--line);
 }
 
-.profile{
-  width:42px;
-  height:42px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,#7c5cff,#00d4ff);
-  font-weight:800;
+.iconBtn:hover{
+  border-color:rgba(255,116,23,.4);
 }
-
-/* CONTENT */
 
 .content{
-  height:calc(100% - 76px);
-  overflow-y:auto;
-  padding:28px;
-  padding-bottom:110px;
+  height:calc(100% - 74px);
+  overflow:auto;
+  padding:25px;
+  padding-bottom:130px;
 }
 
 .content::-webkit-scrollbar{
-  width:5px;
+  width:7px;
 }
 
 .content::-webkit-scrollbar-thumb{
-  background:#292d3a;
+  background:#252b38;
   border-radius:20px;
 }
 
-.view{
+/* =========================
+   PAGE
+========================= */
+
+.page{
   display:none;
   animation:fade .25s ease;
 }
 
-.view.active{
+.page.active{
   display:block;
 }
 
 @keyframes fade{
-  from{opacity:0;transform:translateY(6px)}
+  from{opacity:0;transform:translateY(5px)}
   to{opacity:1;transform:none}
 }
 
 .hero{
-  min-height:270px;
-  border:1px solid var(--border);
-  border-radius:24px;
-  padding:30px;
   position:relative;
+  min-height:265px;
   overflow:hidden;
+  padding:32px;
+  border-radius:25px;
+  border:1px solid var(--line);
   background:
-    linear-gradient(110deg,rgba(124,92,255,.2),rgba(0,212,255,.05)),
-    #10121a;
-  box-shadow:var(--shadow);
+    radial-gradient(circle at 85% 20%,rgba(255,116,23,.24),transparent 28%),
+    linear-gradient(135deg,#121722,#0b0e15);
 }
 
-.hero:after{
+.hero::after{
   content:"";
   position:absolute;
-  width:380px;
-  height:380px;
   right:-100px;
-  top:-180px;
+  bottom:-130px;
+  width:350px;
+  height:350px;
   border-radius:50%;
-  background:rgba(124,92,255,.18);
-  filter:blur(50px);
+  border:50px solid rgba(255,116,23,.035);
 }
 
-.heroContent{
-  position:relative;
-  z-index:2;
-  max-width:620px;
-}
-
-.eyebrow{
-  color:#a998ff;
-  font-weight:700;
-  font-size:12px;
-  letter-spacing:2px;
-  text-transform:uppercase;
+.heroTag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:20px;
+  background:rgba(255,116,23,.11);
+  color:var(--accent2);
+  font-size:10px;
+  font-weight:900;
+  letter-spacing:1px;
 }
 
 .hero h1{
-  margin:10px 0;
-  font-size:clamp(30px,5vw,48px);
+  max-width:650px;
+  font-size:clamp(29px,4vw,48px);
   line-height:1;
+  margin:20px 0 12px;
 }
 
 .hero p{
+  max-width:590px;
   color:var(--muted);
-  max-width:560px;
   line-height:1.6;
-}
-
-.primaryBtn{
-  color:white;
-  background:linear-gradient(135deg,var(--accent),#5c43d8);
-  padding:12px 18px;
-  border-radius:12px;
-  font-weight:700;
-  box-shadow:0 10px 30px rgba(124,92,255,.25);
-}
-
-.secondaryBtn{
-  color:white;
-  background:#1a1d27;
-  border:1px solid var(--border);
-  padding:12px 18px;
-  border-radius:12px;
+  font-size:14px;
 }
 
 .heroButtons{
   display:flex;
   gap:10px;
-  margin-top:20px;
-  flex-wrap:wrap;
+  margin-top:24px;
 }
 
-.sectionHead{
+.primary{
+  background:linear-gradient(135deg,var(--accent),#ff4d00);
+  color:white;
+  padding:12px 17px;
+  border-radius:13px;
+  font-weight:800;
+  box-shadow:0 10px 30px rgba(255,116,23,.18);
+}
+
+.secondary{
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--line);
+  padding:12px 17px;
+  border-radius:13px;
+}
+
+.sectionHeader{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  margin:30px 0 15px;
+  margin:27px 0 14px;
 }
 
-.sectionHead h2{
-  font-size:20px;
+.sectionHeader h2{
   margin:0;
+  font-size:18px;
 }
 
-.sectionHead span{
+.sectionHeader span{
   color:var(--muted);
-  font-size:13px;
+  font-size:12px;
 }
 
-/* CARDS */
-
-.gamesGrid{
+.grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:16px;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:15px;
 }
 
 .gameCard{
-  min-width:0;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:17px;
-  overflow:hidden;
-  transition:.22s;
   position:relative;
+  overflow:hidden;
+  min-height:235px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:var(--card);
+  transition:.22s;
 }
 
 .gameCard:hover{
-  transform:translateY(-4px);
-  border-color:rgba(124,92,255,.45);
-  box-shadow:0 15px 40px rgba(0,0,0,.3);
+  transform:translateY(-3px);
+  border-color:rgba(255,116,23,.35);
 }
 
 .cover{
-  aspect-ratio:16/10;
-  background:
-    radial-gradient(circle at 20% 20%,rgba(0,212,255,.35),transparent 30%),
-    linear-gradient(135deg,#171a25,#08090d);
+  height:140px;
   display:grid;
   place-items:center;
-  font-size:42px;
   position:relative;
+  background:
+    linear-gradient(135deg,#1d2532,#0b0d12);
   overflow:hidden;
 }
 
-.cover img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.coverLabel{
+.cover::before{
+  content:"";
   position:absolute;
-  left:10px;
-  bottom:10px;
-  padding:5px 8px;
-  border-radius:7px;
-  background:rgba(0,0,0,.65);
-  font-size:10px;
-  backdrop-filter:blur(8px);
-}
-
-.favorite{
-  position:absolute;
-  right:9px;
-  top:9px;
-  width:33px;
-  height:33px;
+  width:130px;
+  height:130px;
   border-radius:50%;
-  background:rgba(0,0,0,.55);
-  color:#fff;
-  z-index:3;
+  background:radial-gradient(circle,rgba(255,116,23,.3),transparent 65%);
 }
 
-.favorite.active{
-  color:#ff4d78;
+.coverIcon{
+  position:relative;
+  z-index:1;
+  font-size:45px;
 }
 
-.cardInfo{
+.cardBody{
   padding:13px;
 }
 
-.cardInfo h3{
-  margin:0;
-  font-size:15px;
+.gameName{
+  font-weight:800;
+  font-size:13px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
-.cardInfo p{
-  margin:5px 0 12px;
+.gameMeta{
+  display:flex;
+  gap:7px;
+  margin-top:7px;
   color:var(--muted);
-  font-size:12px;
+  font-size:10px;
 }
 
 .cardActions{
   display:flex;
-  gap:7px;
+  gap:6px;
+  margin-top:12px;
 }
 
-.playSmall{
+.cardBtn{
   flex:1;
-  padding:9px;
+  padding:8px;
   border-radius:9px;
-  background:#1c1f2a;
-  color:white;
-  font-size:12px;
-}
-
-.deleteSmall{
-  width:36px;
-  border-radius:9px;
-  background:#1b1117;
-  color:#ff6685;
-}
-
-/* EMPTY */
-
-.empty{
-  text-align:center;
-  padding:70px 20px;
-  color:var(--muted);
-  border:1px dashed var(--border);
-  border-radius:20px;
-}
-
-.emptyIcon{
-  font-size:46px;
-  margin-bottom:10px;
-}
-
-/* LIBRARY TOOLBAR */
-
-.toolbar{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-
-.toolbar button,
-.select{
-  background:#151822;
-  color:#dce0ec;
-  border:1px solid var(--border);
-  border-radius:11px;
-  padding:10px 14px;
-}
-
-.fileInput{
-  display:none;
-}
-
-/* GAME PLAYER */
-
-.playerOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:100;
-  background:#030408;
-}
-
-.playerOverlay.open{
-  display:flex;
-  flex-direction:column;
-}
-
-.gameTop{
-  height:60px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px 12px;
-  background:#0b0d12;
-  border-bottom:1px solid var(--border);
-}
-
-.gameTitle{
-  flex:1;
-  font-weight:700;
-}
-
-.gameStatus{
-  color:var(--muted);
+  background:rgba(255,255,255,.055);
   font-size:11px;
 }
 
-.gameFrame{
-  flex:1;
-  width:100%;
-  border:0;
-  background:#000;
+.cardBtn.play{
+  background:rgba(255,116,23,.14);
+  color:var(--accent2);
 }
 
-.gameBottom{
-  height:55px;
+/* =========================
+   EMPTY
+========================= */
+
+.empty{
+  min-height:250px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.12);
+  border-radius:20px;
+  color:var(--muted);
+}
+
+.emptyIcon{
+  font-size:48px;
+  margin-bottom:12px;
+  opacity:.55;
+}
+
+.empty strong{
+  color:white;
+}
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settingsGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:15px;
+}
+
+.settingCard{
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:18px;
+  background:var(--panel);
+}
+
+.settingCard h3{
+  margin:0 0 5px;
+  font-size:15px;
+}
+
+.settingCard p{
+  color:var(--muted);
+  font-size:11px;
+  line-height:1.5;
+}
+
+.settingRow{
   display:flex;
   align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  background:#0b0d12;
-  border-top:1px solid var(--border);
+  justify-content:space-between;
+  gap:15px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
 }
 
-.gameBottom button{
-  background:#171a22;
-  color:#fff;
-  border:1px solid var(--border);
-  border-radius:9px;
-  padding:8px 12px;
+.settingRow:last-child{
+  border-bottom:0;
 }
 
-/* GAMEPAD */
-
-.gamepad{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:110;
-  display:none;
-}
-
-.gamepad.active{
+.settingText strong{
   display:block;
+  font-size:12px;
 }
 
-.pad{
-  position:absolute;
-  left:25px;
-  bottom:85px;
-  width:180px;
-  height:180px;
-  pointer-events:auto;
+.settingText span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
 }
+
+select{
+  min-width:110px;
+  padding:9px;
+  border-radius:10px;
+  color:white;
+  background:#171c26;
+  border:1px solid var(--line);
+  outline:none;
+}
+
+.switch{
+  width:46px;
+  height:25px;
+  border-radius:20px;
+  padding:3px;
+  background:#292f3b;
+  transition:.2s;
+}
+
+.switch span{
+  display:block;
+  width:19px;
+  height:19px;
+  border-radius:50%;
+  background:#9da5b4;
+  transition:.2s;
+}
+
+.switch.on{
+  background:rgba(255,116,23,.35);
+}
+
+.switch.on span{
+  transform:translateX(21px);
+  background:var(--accent);
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controller{
+  max-width:650px;
+  margin:auto;
+  padding:25px;
+  border-radius:25px;
+  border:1px solid var(--line);
+  background:var(--panel);
+}
+
+.controllerTitle{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.controlArea{
+  min-height:380px;
+  position:relative;
+}
+
+.stick{
+  position:absolute;
+  left:15px;
+  bottom:15px;
+  width:145px;
+  height:145px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.12);
+  background:radial-gradient(circle,#242b38,#10141c);
+  display:grid;
+  place-items:center;
+  touch-action:none;
+}
+
+.stickInner{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#363f50,#171b25);
+  box-shadow:0 8px 25px rgba(0,0,0,.4);
+}
+
+.buttons{
+  position:absolute;
+  right:15px;
+  bottom:20px;
+  width:170px;
+  height:160px;
+}
+
+.padBtn{
+  position:absolute;
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#202735;
+  border:1px solid rgba(255,255,255,.1);
+  font-weight:900;
+  touch-action:none;
+}
+
+.padBtn.a{right:0;top:55px}
+.padBtn.b{right:53px;top:10px}
+.padBtn.x{left:10px;top:55px}
+.padBtn.y{right:53px;bottom:0}
 
 .dpad{
   position:absolute;
-  left:45px;
-  top:45px;
-  width:90px;
-  height:90px;
+  left:195px;
+  bottom:30px;
+  width:110px;
+  height:110px;
 }
 
 .dpad button{
   position:absolute;
   width:36px;
   height:36px;
-  border-radius:9px;
-  background:rgba(20,23,32,.85);
-  color:white;
-  border:1px solid rgba(255,255,255,.12);
-  backdrop-filter:blur(8px);
+  background:#202735;
+  border:1px solid rgba(255,255,255,.1);
 }
 
-.up{left:27px;top:0}
-.down{left:27px;bottom:0}
-.left{left:0;top:27px}
-.right{right:0;top:27px}
-
-.actions{
-  position:absolute;
-  right:25px;
-  bottom:75px;
-  width:180px;
-  height:160px;
-  pointer-events:auto;
+.dpad .up{left:37px;top:0;border-radius:8px 8px 3px 3px}
+.dpad .down{left:37px;bottom:0;border-radius:3px 3px 8px 8px}
+.dpad .left{left:0;top:37px;border-radius:8px 3px 3px 8px}
+.dpad .right{right:0;top:37px;border-radius:3px 8px 8px 3px}
+.dpad .center{
+  left:37px;
+  top:37px;
+  background:#151a24;
 }
 
-.actionBtn{
-  position:absolute;
-  width:54px;
-  height:54px;
-  border-radius:50%;
-  background:rgba(20,23,32,.88);
-  color:white;
-  border:1px solid rgba(255,255,255,.14);
-  font-weight:800;
-  backdrop-filter:blur(8px);
+/* =========================
+   IMPORT
+========================= */
+
+.importBox{
+  padding:35px;
+  text-align:center;
+  border:1px dashed rgba(255,116,23,.35);
+  border-radius:22px;
+  background:rgba(255,116,23,.035);
 }
 
-.btnA{right:5px;top:60px}
-.btnB{left:45px;top:95px}
-.btnX{left:45px;top:25px}
-.btnY{right:5px;top:0}
-
-/* SETTINGS */
-
-.settings{
-  max-width:800px;
+.importIcon{
+  font-size:50px;
 }
 
-.setting{
-  padding:18px;
-  background:#11141c;
-  border:1px solid var(--border);
-  border-radius:15px;
-  margin-bottom:10px;
-  display:flex;
-  align-items:center;
-  gap:15px;
+.importBox h2{
+  margin:13px 0 6px;
 }
 
-.settingText{
-  flex:1;
-}
-
-.settingText strong{
-  display:block;
-}
-
-.settingText span{
+.importBox p{
   color:var(--muted);
   font-size:12px;
 }
 
-.switch{
-  width:48px;
-  height:27px;
-  border-radius:20px;
-  background:#292d38;
-  padding:3px;
+#fileInput{
+  display:none;
 }
 
-.switch i{
+/* =========================
+   BOTTOM PLAYER
+========================= */
+
+.player{
+  position:absolute;
+  left:18px;
+  right:18px;
+  bottom:15px;
+  height:75px;
+  border:1px solid var(--line);
+  border-radius:19px;
+  background:rgba(14,18,26,.92);
+  backdrop-filter:blur(25px);
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:10px 15px;
+  z-index:80;
+  box-shadow:0 12px 40px rgba(0,0,0,.3);
+}
+
+.playerCover{
+  width:52px;
+  height:52px;
+  flex:none;
+  display:grid;
+  place-items:center;
+  border-radius:13px;
+  background:linear-gradient(135deg,#242c3b,#11141c);
+  font-size:22px;
+}
+
+.playerInfo{
+  min-width:130px;
+  max-width:210px;
+}
+
+.playerInfo strong{
   display:block;
-  width:21px;
-  height:21px;
-  border-radius:50%;
-  background:#aaa;
-  transition:.2s;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:12px;
 }
 
-.switch.on{
+.playerInfo span{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+
+.playerControls{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.playMain{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 20px rgba(255,116,23,.25);
+}
+
+.playerProgress{
+  flex:1;
+  min-width:100px;
+}
+
+.progressTrack{
+  width:100%;
+  height:5px;
+  border-radius:10px;
+  background:#252b36;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.progressFill{
+  width:0%;
+  height:100%;
   background:var(--accent);
 }
 
-.switch.on i{
-  transform:translateX(21px);
-  background:#fff;
+.time{
+  display:flex;
+  justify-content:space-between;
+  color:#697386;
+  font-size:9px;
+  margin-top:5px;
 }
 
-/* TOAST */
+.volume{
+  width:120px;
+}
+
+.volume input{
+  width:100%;
+  accent-color:var(--accent);
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(10px);
+  z-index:300;
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modalBox{
+  width:min(500px,100%);
+  max-height:90vh;
+  overflow:auto;
+  padding:23px;
+  border-radius:23px;
+  background:#10141d;
+  border:1px solid var(--line);
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+}
+
+.modalHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.modalHeader h2{
+  margin:0;
+  font-size:18px;
+}
+
+.close{
+  width:35px;
+  height:35px;
+  border-radius:10px;
+  background:rgba(255,255,255,.06);
+}
+
+.detailCover{
+  height:200px;
+  margin:20px 0;
+  display:grid;
+  place-items:center;
+  border-radius:18px;
+  background:linear-gradient(135deg,#252e3e,#10131a);
+  font-size:65px;
+}
+
+/* =========================
+   TOAST
+========================= */
 
 .toast{
   position:fixed;
   left:50%;
-  bottom:25px;
+  bottom:105px;
   transform:translate(-50%,20px);
-  background:#181b25;
-  border:1px solid var(--border);
-  padding:12px 17px;
-  border-radius:12px;
   opacity:0;
   pointer-events:none;
-  transition:.25s;
   z-index:500;
-  box-shadow:var(--shadow);
-  font-size:13px;
+  padding:11px 16px;
+  border-radius:12px;
+  background:#171c26;
+  border:1px solid var(--line);
+  box-shadow:0 15px 45px rgba(0,0,0,.35);
+  font-size:12px;
+  transition:.25s;
 }
 
 .toast.show{
@@ -711,96 +935,131 @@ button{
   transform:translate(-50%,0);
 }
 
-/* MOBILE */
+/* =========================
+   RESPONSIVE
+========================= */
 
-@media(max-width:800px){
+@media(max-width:850px){
 
   .sidebar{
     position:fixed;
-    left:-270px;
+    left:-280px;
     top:0;
     bottom:0;
     transition:.25s;
-    box-shadow:20px 0 60px rgba(0,0,0,.5);
+    box-shadow:20px 0 60px rgba(0,0,0,.45);
   }
 
   .sidebar.open{
     left:0;
   }
 
-  .menuBtn{
+  .mobileMenu{
     display:block;
   }
 
   .topbar{
-    padding:0 12px;
-    gap:8px;
-  }
-
-  .topActions .iconBtn{
-    display:none;
-  }
-
-  .profile{
-    display:none;
+    padding:0 13px;
   }
 
   .content{
-    padding:16px;
-    padding-bottom:100px;
+    padding:15px;
+    padding-bottom:115px;
   }
 
   .hero{
     padding:23px;
-    min-height:250px;
+    min-height:300px;
   }
 
-  .hero h1{
-    font-size:34px;
-  }
-
-  .gamesGrid{
+  .grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
     gap:10px;
   }
 
-  .cardInfo{
-    padding:10px;
+  .gameCard{
+    min-height:215px;
   }
 
-  .cardInfo h3{
-    font-size:13px;
+  .cover{
+    height:115px;
   }
 
-  .cardInfo p{
-    font-size:11px;
+  .player{
+    left:8px;
+    right:8px;
+    bottom:8px;
+    height:70px;
+    padding:8px;
+    gap:8px;
   }
 
-  .playSmall{
-    padding:8px 5px;
+  .playerInfo{
+    min-width:0;
+    max-width:105px;
+  }
+
+  .volume{
+    display:none;
+  }
+
+  .playerProgress{
+    display:none;
+  }
+
+  .playerControls .skip{
+    display:none;
+  }
+
+  .controlArea{
+    min-height:450px;
+  }
+
+  .stick{
+    width:120px;
+    height:120px;
+  }
+
+  .dpad{
+    left:15px;
+    bottom:175px;
+  }
+
+  .buttons{
+    right:5px;
+    bottom:15px;
   }
 }
 
 @media(max-width:430px){
 
-  .search input{
-    height:40px;
+  .topActions .iconBtn:nth-child(2){
+    display:none;
   }
 
-  .topbar{
-    height:65px;
+  .hero h1{
+    font-size:30px;
   }
 
-  .content{
-    height:calc(100% - 65px);
+  .heroButtons{
+    flex-direction:column;
   }
 
-  .heroButtons button{
-    flex:1;
+  .primary,
+  .secondary{
+    width:100%;
   }
 
-  .gamesGrid{
-    grid-template-columns:repeat(2,1fr);
+  .grid{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .gameMeta{
+    display:none;
+  }
+
+  .cardBtn{
+    font-size:10px;
   }
 }
 </style>
@@ -810,433 +1069,584 @@ button{
 
 <div class="app">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
 
-  <div class="logo">
-    <div class="logoIcon">🎮</div>
-    <div>
-      <strong>GameHub</strong>
-      <span>V2 • GAMING CENTER</span>
+    <div class="brand">
+      <div class="logo">A</div>
+      <div class="brandText">
+        <strong>AURA GAMEHUB</strong>
+        <span>V2 • PREMIUM</span>
+      </div>
     </div>
-  </div>
 
-  <nav class="nav">
+    <div class="menuTitle">MENU PRINCIPAL</div>
 
-    <button class="active" data-view="home">
-      <span class="navIcon">🏠</span> Início
-    </button>
+    <nav class="nav">
 
-    <button data-view="library">
-      <span class="navIcon">🎮</span> Biblioteca
-    </button>
+      <button class="navBtn active" data-page="home">
+        <span class="navIcon">⌂</span>
+        <span>Início</span>
+      </button>
 
-    <button data-view="favorites">
-      <span class="navIcon">❤️</span> Favoritos
-    </button>
+      <button class="navBtn" data-page="library">
+        <span class="navIcon">🎮</span>
+        <span>Biblioteca</span>
+        <span class="navBadge" id="libraryCount">0</span>
+      </button>
 
-    <button data-view="recent">
-      <span class="navIcon">🕘</span> Recentes
-    </button>
+      <button class="navBtn" data-page="favorites">
+        <span class="navIcon">★</span>
+        <span>Favoritos</span>
+      </button>
 
-    <button data-view="gamepad">
-      <span class="navIcon">🕹️</span> Gamepad
-    </button>
+      <button class="navBtn" data-page="recent">
+        <span class="navIcon">◷</span>
+        <span>Recentes</span>
+      </button>
 
-    <button data-view="settings">
-      <span class="navIcon">⚙️</span> Configurações
-    </button>
+      <button class="navBtn" data-page="import">
+        <span class="navIcon">＋</span>
+        <span>Adicionar jogo</span>
+      </button>
 
-  </nav>
+      <div class="menuTitle">SISTEMA</div>
 
-  <div class="sidebarBottom">
-    GameHub V2<br>
-    Seu centro de jogos
-  </div>
+      <button class="navBtn" data-page="controller">
+        <span class="navIcon">🎛</span>
+        <span>Controles</span>
+      </button>
 
-</aside>
+      <button class="navBtn" data-page="settings">
+        <span class="navIcon">⚙</span>
+        <span>Configurações</span>
+      </button>
 
-<!-- MAIN -->
-<main class="main">
+    </nav>
 
-<header class="topbar">
+    <div class="sidebarBottom">
+      <div class="profile">
+        <div class="avatar">A</div>
+        <div class="profileInfo">
+          <strong>AURA PLAYER</strong>
+          <span>Modo Premium</span>
+        </div>
+      </div>
+    </div>
 
-  <button class="menuBtn" id="menuBtn">☰</button>
+  </aside>
 
-  <div class="search">
-    <span class="searchIcon">🔎</span>
-    <input id="searchInput" placeholder="Pesquisar jogos...">
-    <button class="clearSearch" id="clearSearch">×</button>
-  </div>
+  <!-- MAIN -->
+  <main class="main">
 
-  <div class="topActions">
-    <button class="iconBtn" id="importTop">＋</button>
-    <button class="iconBtn" id="fullscreenTop">⛶</button>
-    <div class="profile">G</div>
-  </div>
+    <header class="topbar">
 
-</header>
+      <button class="mobileMenu" id="mobileMenu">☰</button>
 
-<section class="content">
+      <div class="search">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Pesquisar jogos..."
+          autocomplete="off">
+        <span class="searchIcon">⌕</span>
+      </div>
 
-<!-- HOME -->
+      <div class="topActions">
+        <button class="iconBtn" id="fullscreenBtn" title="Tela cheia">⛶</button>
+        <button class="iconBtn" id="themeBtn" title="Tema">◐</button>
+      </div>
 
-<div class="view active" id="home">
+    </header>
 
-  <section class="hero">
+    <section class="content">
 
-    <div class="heroContent">
+      <!-- HOME -->
+      <div class="page active" id="page-home">
 
-      <div class="eyebrow">GAMEHUB V2</div>
+        <section class="hero">
 
-      <h1>Seu universo gamer.</h1>
+          <span class="heroTag">● AURA GAME ENGINE</span>
 
-      <p>
-        Organize seus jogos, execute seus títulos HTML diretamente no navegador,
-        use controles virtuais e transforme seu celular em uma central gamer.
-      </p>
+          <h1>Seu universo gamer em um só lugar.</h1>
 
-      <div class="heroButtons">
-        <button class="primaryBtn" id="startGaming">
-          ▶ Começar a jogar
+          <p>
+            Organize seus jogos, crie sua biblioteca, configure seus controles
+            e tenha uma experiência GameHub premium no Android.
+          </p>
+
+          <div class="heroButtons">
+            <button class="primary" onclick="navigate('library')">
+              🎮 Abrir biblioteca
+            </button>
+
+            <button class="secondary" onclick="navigate('import')">
+              ＋ Adicionar jogo
+            </button>
+          </div>
+
+        </section>
+
+        <div class="sectionHeader">
+          <h2>Jogos recentes</h2>
+          <button class="secondary" onclick="navigate('recent')">
+            Ver todos
+          </button>
+        </div>
+
+        <div id="homeRecent" class="grid"></div>
+
+        <div class="sectionHeader">
+          <h2>Biblioteca</h2>
+          <span id="homeCount">0 jogos</span>
+        </div>
+
+        <div id="homeLibrary" class="grid"></div>
+
+      </div>
+
+      <!-- LIBRARY -->
+      <div class="page" id="page-library">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Minha Biblioteca</h2>
+            <span>Todos os seus jogos</span>
+          </div>
+
+          <button class="primary" onclick="navigate('import')">
+            ＋ Adicionar
+          </button>
+        </div>
+
+        <div id="libraryGrid" class="grid"></div>
+
+      </div>
+
+      <!-- FAVORITES -->
+      <div class="page" id="page-favorites">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Favoritos</h2>
+            <span>Seus jogos preferidos</span>
+          </div>
+        </div>
+
+        <div id="favoritesGrid" class="grid"></div>
+
+      </div>
+
+      <!-- RECENT -->
+      <div class="page" id="page-recent">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Jogos recentes</h2>
+            <span>Últimos jogos utilizados</span>
+          </div>
+        </div>
+
+        <div id="recentGrid" class="grid"></div>
+
+      </div>
+
+      <!-- IMPORT -->
+      <div class="page" id="page-import">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Adicionar jogo</h2>
+            <span>Importe jogos para sua biblioteca</span>
+          </div>
+        </div>
+
+        <div class="importBox">
+
+          <div class="importIcon">📦</div>
+
+          <h2>Importar jogo</h2>
+
+          <p>
+            Selecione um arquivo de jogo no armazenamento do dispositivo.
+            A biblioteca poderá guardar o registro e os metadados.
+          </p>
+
+          <button
+            class="primary"
+            id="chooseFile">
+            Selecionar arquivo
+          </button>
+
+          <input
+            id="fileInput"
+            type="file"
+            accept=".exe,.zip,.7z,.iso,.apk,.bin,.img,*">
+
+        </div>
+
+        <div class="sectionHeader">
+          <h2>Formatos</h2>
+        </div>
+
+        <div class="settingsGrid">
+
+          <div class="settingCard">
+            <h3>Windows</h3>
+            <p>
+              Arquivos EXE podem ser cadastrados na biblioteca.
+              A execução no Android requer uma camada nativa de compatibilidade.
+            </p>
+          </div>
+
+          <div class="settingCard">
+            <h3>Imagens de disco</h3>
+            <p>
+              ISO, IMG e BIN podem ser registrados para futura integração
+              com motores compatíveis.
+            </p>
+          </div>
+
+          <div class="settingCard">
+            <h3>Android</h3>
+            <p>
+              APKs podem ser identificados como conteúdo Android,
+              dependendo das permissões do sistema.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- CONTROLLER -->
+      <div class="page" id="page-controller">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Controles virtuais</h2>
+            <span>Layout touch para jogos</span>
+          </div>
+        </div>
+
+        <div class="controller">
+
+          <div class="controllerTitle">
+            <strong>CONTROLE AURA</strong>
+          </div>
+
+          <div class="controlArea">
+
+            <div
+              class="stick"
+              id="stick">
+              <div class="stickInner" id="stickInner"></div>
+            </div>
+
+            <div class="dpad">
+              <button class="up" data-control="UP">▲</button>
+              <button class="left" data-control="LEFT">◀</button>
+              <button class="center">•</button>
+              <button class="right" data-control="RIGHT">▶</button>
+              <button class="down" data-control="DOWN">▼</button>
+            </div>
+
+            <div class="buttons">
+              <button class="padBtn a" data-control="A">A</button>
+              <button class="padBtn b" data-control="B">B</button>
+              <button class="padBtn x" data-control="X">X</button>
+              <button class="padBtn y" data-control="Y">Y</button>
+            </div>
+
+          </div>
+
+          <button
+            class="secondary"
+            style="width:100%"
+            onclick="toast('Layout dos controles salvo')">
+            💾 Salvar layout
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="page" id="page-settings">
+
+        <div class="sectionHeader">
+          <div>
+            <h2>Configurações</h2>
+            <span>Personalize o AURA GameHub</span>
+          </div>
+        </div>
+
+        <div class="settingsGrid">
+
+          <div class="settingCard">
+
+            <h3>Interface</h3>
+            <p>Aparência e comportamento.</p>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Modo compacto</strong>
+                <span>Reduz o tamanho dos cards</span>
+              </div>
+              <button class="switch" data-setting="compact">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Animações</strong>
+                <span>Transições da interface</span>
+              </div>
+              <button class="switch on" data-setting="animations">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Tema</strong>
+                <span>Cor principal</span>
+              </div>
+
+              <select id="themeSelect">
+                <option value="orange">AURA Orange</option>
+                <option value="blue">Cyber Blue</option>
+                <option value="purple">Neon Purple</option>
+                <option value="green">Matrix Green</option>
+              </select>
+            </div>
+
+          </div>
+
+          <div class="settingCard">
+
+            <h3>Jogos</h3>
+            <p>Comportamento da biblioteca.</p>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Registrar recentes</strong>
+                <span>Salva os últimos jogos abertos</span>
+              </div>
+              <button class="switch on" data-setting="recent">
+                <span></span>
+              </button>
+            </div>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Confirmação ao remover</strong>
+                <span>Evita exclusões acidentais</span>
+              </div>
+              <button class="switch on" data-setting="confirmDelete">
+                <span></span>
+              </button>
+            </div>
+
+          </div>
+
+          <div class="settingCard">
+
+            <h3>Sistema</h3>
+            <p>Opções de armazenamento.</p>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Armazenamento</strong>
+                <span>Dados da biblioteca</span>
+              </div>
+
+              <button
+                class="secondary"
+                onclick="clearLibrary()">
+                Limpar
+              </button>
+            </div>
+
+            <div class="settingRow">
+              <div class="settingText">
+                <strong>Versão</strong>
+                <span>AURA GameHub</span>
+              </div>
+              <strong>V2.0</strong>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- PLAYER -->
+    <div class="player">
+
+      <div class="playerCover" id="playerCover">🎮</div>
+
+      <div class="playerInfo">
+        <strong id="playerName">Nenhum jogo selecionado</strong>
+        <span id="playerStatus">AURA GameHub</span>
+      </div>
+
+      <div class="playerControls">
+
+        <button class="iconBtn skip" onclick="previousGame()">‹</button>
+
+        <button
+          class="playMain"
+          id="mainPlay">
+          ▶
         </button>
 
-        <button class="secondaryBtn" id="importHero">
-          ＋ Adicionar jogo
-        </button>
+        <button class="iconBtn skip" onclick="nextGame()">›</button>
+
+      </div>
+
+      <div class="playerProgress">
+
+        <div
+          class="progressTrack"
+          id="progressTrack">
+          <div
+            class="progressFill"
+            id="progressFill">
+          </div>
+        </div>
+
+        <div class="time">
+          <span id="elapsed">00:00</span>
+          <span id="duration">--:--</span>
+        </div>
+
+      </div>
+
+      <div class="volume">
+        <input
+          id="volume"
+          type="range"
+          min="0"
+          max="100"
+          value="80">
       </div>
 
     </div>
 
-  </section>
-
-  <div class="sectionHead">
-    <h2>🎮 Jogos recentes</h2>
-    <span id="recentCount">0 jogos</span>
-  </div>
-
-  <div class="gamesGrid" id="homeGames"></div>
+  </main>
 
 </div>
 
+<!-- MODAL -->
+<div class="modal" id="gameModal">
 
-<!-- LIBRARY -->
+  <div class="modalBox">
 
-<div class="view" id="library">
-
-  <div class="sectionHead">
-    <div>
-      <h2>Minha Biblioteca</h2>
-      <span id="libraryCount">0 jogos</span>
+    <div class="modalHeader">
+      <h2 id="modalTitle">Jogo</h2>
+      <button class="close" onclick="closeModal()">×</button>
     </div>
-  </div>
 
-  <div class="toolbar">
+    <div class="detailCover" id="modalCover">🎮</div>
 
-    <button id="importLibrary">
-      ＋ Adicionar jogo
+    <p id="modalInfo" style="color:var(--muted);font-size:12px;line-height:1.6"></p>
+
+    <div style="display:flex;gap:8px;margin-top:20px">
+
+      <button
+        class="primary"
+        style="flex:1"
+        id="modalPlay">
+        ▶ Iniciar
+      </button>
+
+      <button
+        class="secondary"
+        style="flex:1"
+        id="modalFavorite">
+        ★ Favoritar
+      </button>
+
+    </div>
+
+    <button
+      class="secondary"
+      style="width:100%;margin-top:8px"
+      id="modalDelete">
+      🗑 Remover da biblioteca
     </button>
 
-    <button id="sortName">
-      A–Z
-    </button>
-
-    <button id="sortRecent">
-      Mais recentes
-    </button>
-
-  </div>
-
-  <div class="gamesGrid" id="libraryGames"></div>
-
-</div>
-
-
-<!-- FAVORITES -->
-
-<div class="view" id="favorites">
-
-  <div class="sectionHead">
-    <div>
-      <h2>❤️ Favoritos</h2>
-      <span>Seus jogos favoritos</span>
-    </div>
-  </div>
-
-  <div class="gamesGrid" id="favoriteGames"></div>
-
-</div>
-
-
-<!-- RECENT -->
-
-<div class="view" id="recent">
-
-  <div class="sectionHead">
-    <div>
-      <h2>🕘 Jogados recentemente</h2>
-      <span>Continue de onde parou</span>
-    </div>
-  </div>
-
-  <div class="gamesGrid" id="recentGames"></div>
-
-</div>
-
-
-<!-- GAMEPAD -->
-
-<div class="view" id="gamepad">
-
-  <div class="sectionHead">
-    <div>
-      <h2>🕹️ Gamepad</h2>
-      <span>Controle virtual para jogos compatíveis</span>
-    </div>
-  </div>
-
-  <div class="hero">
-
-    <div class="heroContent">
-
-      <div class="eyebrow">CONTROLE MOBILE</div>
-
-      <h1>Gamepad Virtual</h1>
-
-      <p>
-        Ative o controle durante uma partida para usar botões
-        virtuais na tela do celular.
-      </p>
-
-      <button class="primaryBtn" id="activateGamepad">
-        🕹️ Ativar Gamepad
-      </button>
-
-    </div>
-
   </div>
 
 </div>
-
-
-<!-- SETTINGS -->
-
-<div class="view" id="settings">
-
-  <div class="settings">
-
-    <div class="sectionHead">
-      <div>
-        <h2>⚙️ Configurações</h2>
-        <span>Personalize seu GameHub</span>
-      </div>
-    </div>
-
-    <div class="setting">
-
-      <div class="settingText">
-        <strong>Gamepad automático</strong>
-        <span>Mostrar controles ao iniciar jogos</span>
-      </div>
-
-      <button class="switch" data-setting="autoGamepad">
-        <i></i>
-      </button>
-
-    </div>
-
-    <div class="setting">
-
-      <div class="settingText">
-        <strong>Tela cheia</strong>
-        <span>Entrar em tela cheia ao abrir um jogo</span>
-      </div>
-
-      <button class="switch" data-setting="autoFullscreen">
-        <i></i>
-      </button>
-
-    </div>
-
-    <div class="setting">
-
-      <div class="settingText">
-        <strong>Animações</strong>
-        <span>Ativar efeitos visuais da interface</span>
-      </div>
-
-      <button class="switch on" data-setting="animations">
-        <i></i>
-      </button>
-
-    </div>
-
-    <div class="setting">
-
-      <div class="settingText">
-        <strong>Limpar biblioteca</strong>
-        <span>Remove todos os jogos armazenados neste navegador</span>
-      </div>
-
-      <button class="secondaryBtn" id="clearLibrary">
-        Limpar
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-</section>
-</main>
-</div>
-
-
-<!-- FILE INPUT -->
-
-<input
-  type="file"
-  id="gameInput"
-  class="fileInput"
-  accept=".html,.htm,.zip"
-  multiple
->
-
-
-<!-- PLAYER -->
-
-<div class="playerOverlay" id="playerOverlay">
-
-  <div class="gameTop">
-
-    <button class="iconBtn" id="closeGame">←</button>
-
-    <div class="gameTitle" id="playingTitle">
-      GameHub
-    </div>
-
-    <div class="gameStatus" id="gameStatus">
-      ONLINE
-    </div>
-
-    <button class="iconBtn" id="gameFullscreen">⛶</button>
-
-    <button class="iconBtn" id="togglePad">🕹️</button>
-
-  </div>
-
-  <iframe
-    class="gameFrame"
-    id="gameFrame"
-    sandbox="allow-scripts allow-forms allow-pointer-lock allow-same-origin"
-  ></iframe>
-
-  <div class="gameBottom">
-
-    <button id="reloadGame">↻ Recarregar</button>
-
-    <button id="gameMute">🔊</button>
-
-    <button id="gameHome">⌂</button>
-
-  </div>
-
-</div>
-
-
-<!-- VIRTUAL GAMEPAD -->
-
-<div class="gamepad" id="virtualGamepad">
-
-  <div class="pad">
-
-    <div class="dpad">
-
-      <button class="up" data-key="ArrowUp">▲</button>
-      <button class="down" data-key="ArrowDown">▼</button>
-      <button class="left" data-key="ArrowLeft">◀</button>
-      <button class="right" data-key="ArrowRight">▶</button>
-
-    </div>
-
-  </div>
-
-  <div class="actions">
-
-    <button class="actionBtn btnA" data-key="z">A</button>
-    <button class="actionBtn btnB" data-key="x">B</button>
-    <button class="actionBtn btnX" data-key="a">X</button>
-    <button class="actionBtn btnY" data-key="s">Y</button>
-
-  </div>
-
-</div>
-
 
 <div class="toast" id="toast"></div>
 
-
 <script>
+"use strict";
 
-/* =========================================================
-   GAMEHUB V2 ENGINE
-========================================================= */
+/* ==========================================================
+   AURA GAMEHUB V2
+   CORE
+========================================================== */
 
-const $ = selector => document.querySelector(selector);
-
-const $$ = selector => document.querySelectorAll(selector);
-
-const STORAGE_KEY = "GAMEHUB_V2_LIBRARY";
-const SETTINGS_KEY = "GAMEHUB_V2_SETTINGS";
+const STORAGE_KEY = "AURA_GAMEHUB_V2_LIBRARY";
+const SETTINGS_KEY = "AURA_GAMEHUB_V2_SETTINGS";
 
 let games = [];
 let settings = {
-  autoGamepad:false,
-  autoFullscreen:false,
-  animations:true
+  compact:false,
+  animations:true,
+  recent:true,
+  confirmDelete:true,
+  theme:"orange"
 };
 
 let currentGame = null;
+let currentIndex = -1;
+let searchTerm = "";
+let selectedModalId = null;
 
-
-/* =========================================================
+/* ==========================================================
    STORAGE
-========================================================= */
+========================================================== */
 
 function saveGames(){
   try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(games));
+    const clean = games.map(g => ({
+      id:g.id,
+      name:g.name,
+      type:g.type,
+      size:g.size,
+      date:g.date,
+      favorite:!!g.favorite,
+      recentAt:g.recentAt || 0
+    }));
+
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(clean));
   }catch(e){
-    toast("Não foi possível salvar a biblioteca.");
+    console.warn(e);
   }
 }
 
 function loadGames(){
 
   try{
+    const saved = JSON.parse(
+      localStorage.getItem(STORAGE_KEY) || "[]"
+    );
 
-    const data = localStorage.getItem(STORAGE_KEY);
-
-    if(data){
-      games = JSON.parse(data);
+    if(Array.isArray(saved)){
+      games = saved;
     }
-
-    const savedSettings = localStorage.getItem(SETTINGS_KEY);
-
-    if(savedSettings){
-      settings = {
-        ...settings,
-        ...JSON.parse(savedSettings)
-      };
-    }
-
   }catch(e){
-
-    games = [];
-
+    games=[];
   }
-
 }
 
 function saveSettings(){
@@ -1246,287 +1656,188 @@ function saveSettings(){
   );
 }
 
+function loadSettings(){
 
-/* =========================================================
-   TOAST
-========================================================= */
+  try{
+    const saved = JSON.parse(
+      localStorage.getItem(SETTINGS_KEY) || "null"
+    );
 
-let toastTimer;
+    if(saved){
+      settings = {...settings,...saved};
+    }
+  }catch(e){}
+}
+
+/* ==========================================================
+   UTIL
+========================================================== */
+
+function escapeHTML(str){
+
+  return String(str)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+}
+
+function formatBytes(bytes){
+
+  if(!bytes || bytes <= 0) return "Tamanho desconhecido";
+
+  const units=["B","KB","MB","GB","TB"];
+  const i=Math.floor(
+    Math.log(bytes)/Math.log(1024)
+  );
+
+  return (
+    bytes/Math.pow(1024,i)
+  ).toFixed(i ? 1 : 0)+" "+units[i];
+}
+
+function formatTime(seconds){
+
+  seconds=Math.max(0,Math.floor(seconds||0));
+
+  const m=Math.floor(seconds/60);
+  const s=seconds%60;
+
+  return (
+    String(m).padStart(2,"0")+
+    ":"+
+    String(s).padStart(2,"0")
+  );
+}
 
 function toast(message){
 
-  const el = $("#toast");
+  const el=document.getElementById("toast");
 
-  el.textContent = message;
-
+  el.textContent=message;
   el.classList.add("show");
 
-  clearTimeout(toastTimer);
+  clearTimeout(window.__toastTimer);
 
-  toastTimer = setTimeout(()=>{
+  window.__toastTimer=setTimeout(()=>{
     el.classList.remove("show");
-  },2300);
-
+  },2200);
 }
 
-
-/* =========================================================
+/* ==========================================================
    NAVIGATION
-========================================================= */
+========================================================== */
 
-$$(".nav button").forEach(button=>{
+function navigate(page){
 
-  button.addEventListener("click",()=>{
+  document.querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
 
-    const view = button.dataset.view;
+  const target=document.getElementById("page-"+page);
 
-    $$(".nav button").forEach(b=>{
-      b.classList.remove("active");
-    });
-
-    button.classList.add("active");
-
-    $$(".view").forEach(v=>{
-      v.classList.remove("active");
-    });
-
-    $("#" + view).classList.add("active");
-
-    $("#sidebar").classList.remove("open");
-
-    render();
-
-  });
-
-});
-
-
-$("#menuBtn").onclick = ()=>{
-
-  $("#sidebar").classList.toggle("open");
-
-};
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
-
-$("#searchInput").addEventListener("input",render);
-
-$("#clearSearch").onclick = ()=>{
-
-  $("#searchInput").value = "";
-
-  render();
-
-};
-
-
-/* =========================================================
-   IMPORT
-========================================================= */
-
-function openImporter(){
-  $("#gameInput").click();
-}
-
-$("#importTop").onclick = openImporter;
-$("#importHero").onclick = openImporter;
-$("#importLibrary").onclick = openImporter;
-
-
-$("#gameInput").addEventListener("change",async event=>{
-
-  const files = [...event.target.files];
-
-  if(!files.length) return;
-
-  for(const file of files){
-
-    const name = file.name
-      .replace(/\.(html|htm|zip)$/i,"");
-
-    const game = {
-
-      id:Date.now()+"_"+Math.random().toString(36).slice(2),
-
-      name:name || "Novo jogo",
-
-      type:file.name.toLowerCase().endsWith(".zip")
-        ? "ZIP"
-        : "HTML",
-
-      size:file.size,
-
-      addedAt:Date.now(),
-
-      lastPlayed:0,
-
-      favorite:false,
-
-      html:null
-
-    };
-
-    /*
-      HTML pode ser armazenado diretamente.
-      ZIP é mantido como referência nesta versão.
-    */
-
-    if(game.type==="HTML"){
-
-      try{
-        game.html = await file.text();
-      }catch(e){}
-
-    }
-
-    games.unshift(game);
-
+  if(target){
+    target.classList.add("active");
   }
 
-  saveGames();
+  document.querySelectorAll(".navBtn")
+    .forEach(btn=>{
+      btn.classList.toggle(
+        "active",
+        btn.dataset.page===page
+      );
+    });
 
-  event.target.value="";
+  document.getElementById("sidebar")
+    .classList.remove("open");
 
-  render();
+  renderAll();
+}
 
-  toast(
-    files.length === 1
-      ? "Jogo adicionado à biblioteca!"
-      : `${files.length} jogos adicionados!`
-  );
-
+document.querySelectorAll(".navBtn")
+.forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    navigate(btn.dataset.page);
+  });
 });
 
+document.getElementById("mobileMenu")
+.addEventListener("click",()=>{
+  document.getElementById("sidebar")
+    .classList.toggle("open");
+});
 
-/* =========================================================
-   RENDER
-========================================================= */
+/* ==========================================================
+   SEARCH
+========================================================== */
 
-function filteredGames(){
+document.getElementById("searchInput")
+.addEventListener("input",e=>{
 
-  const term = $("#searchInput").value
+  searchTerm=e.target.value
     .trim()
     .toLowerCase();
 
-  if(!term) return games;
+  renderAll();
+});
 
-  return games.filter(game=>
-    game.name.toLowerCase().includes(term)
+/* ==========================================================
+   GAME CARD
+========================================================== */
+
+function getFilteredGames(list){
+
+  if(!searchTerm) return list;
+
+  return list.filter(g =>
+    g.name.toLowerCase().includes(searchTerm) ||
+    g.type.toLowerCase().includes(searchTerm)
   );
-
 }
-
-
-function render(){
-
-  const list = filteredGames();
-
-  renderGrid($("#homeGames"),games.slice(0,6));
-
-  renderGrid($("#libraryGames"),list);
-
-  renderGrid(
-    $("#favoriteGames"),
-    games.filter(g=>g.favorite)
-  );
-
-  renderGrid(
-    $("#recentGames"),
-    [...games]
-      .filter(g=>g.lastPlayed)
-      .sort((a,b)=>b.lastPlayed-a.lastPlayed)
-  );
-
-  $("#libraryCount").textContent =
-    `${games.length} ${games.length===1?"jogo":"jogos"}`;
-
-  const recent = games.filter(g=>g.lastPlayed);
-
-  $("#recentCount").textContent =
-    `${recent.length} ${recent.length===1?"jogo":"jogos"}`;
-
-  updateSettingsUI();
-
-}
-
-
-function renderGrid(container,list){
-
-  if(!container) return;
-
-  if(!list.length){
-
-    container.innerHTML = `
-      <div class="empty" style="grid-column:1/-1">
-        <div class="emptyIcon">🎮</div>
-        <strong>Nenhum jogo encontrado</strong>
-        <p>Adicione um jogo HTML para começar.</p>
-      </div>
-    `;
-
-    return;
-  }
-
-  container.innerHTML = list.map(game=>gameCard(game)).join("");
-
-}
-
 
 function gameCard(game){
 
-  const initial = escapeHTML(
-    game.name.substring(0,1).toUpperCase()
-  );
+  const favorite=game.favorite ? "★" : "☆";
 
   return `
-
     <article class="gameCard">
 
       <div class="cover">
-
-        <div>${initial}</div>
-
-        <span class="coverLabel">
-          ${game.type}
-        </span>
-
-        <button
-          class="favorite ${game.favorite?"active":""}"
-          onclick="toggleFavorite('${game.id}')"
-          title="Favorito"
-        >
-          ${game.favorite?"♥":"♡"}
-        </button>
-
+        <div class="coverIcon">🎮</div>
       </div>
 
-      <div class="cardInfo">
+      <div class="cardBody">
 
-        <h3 title="${escapeHTML(game.name)}">
+        <div
+          class="gameName"
+          title="${escapeHTML(game.name)}">
           ${escapeHTML(game.name)}
-        </h3>
+        </div>
 
-        <p>
-          ${game.type} • ${formatSize(game.size)}
-        </p>
+        <div class="gameMeta">
+          <span>${escapeHTML(game.type)}</span>
+          <span>•</span>
+          <span>${escapeHTML(game.size)}</span>
+        </div>
 
         <div class="cardActions">
 
           <button
-            class="playSmall"
-            onclick="playGame('${game.id}')"
-          >
-            ▶ Jogar
+            class="cardBtn play"
+            onclick="playGame('${game.id}')">
+            ▶ Abrir
           </button>
 
           <button
-            class="deleteSmall"
-            onclick="deleteGame('${game.id}')"
-          >
-            🗑
+            class="cardBtn"
+            onclick="toggleFavorite('${game.id}')">
+            ${favorite}
+          </button>
+
+          <button
+            class="cardBtn"
+            onclick="showDetails('${game.id}')">
+            ⋯
           </button>
 
         </div>
@@ -1537,476 +1848,686 @@ function gameCard(game){
   `;
 }
 
+/* ==========================================================
+   RENDER
+========================================================== */
 
-function escapeHTML(text){
+function renderGrid(id,list){
 
-  return String(text)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
+  const el=document.getElementById(id);
 
-}
+  if(!el) return;
 
+  const filtered=getFilteredGames(list);
 
-function formatSize(bytes){
+  if(filtered.length===0){
 
-  if(!bytes) return "0 KB";
+    el.innerHTML=`
+      <div class="empty" style="grid-column:1/-1">
+        <div class="emptyIcon">🎮</div>
+        <strong>Nenhum jogo encontrado</strong>
+        <span style="margin-top:6px">
+          Adicione um jogo ou altere sua pesquisa.
+        </span>
+      </div>
+    `;
 
-  if(bytes < 1024*1024){
-    return Math.max(1,Math.round(bytes/1024))+" KB";
+    return;
   }
 
-  return (bytes/(1024*1024)).toFixed(1)+" MB";
-
+  el.innerHTML=filtered
+    .map(gameCard)
+    .join("");
 }
 
+function renderAll(){
 
-/* =========================================================
-   FAVORITE
-========================================================= */
+  document.getElementById("libraryCount")
+    .textContent=games.length;
+
+  document.getElementById("homeCount")
+    .textContent=
+      games.length+
+      (games.length===1 ? " jogo" : " jogos");
+
+  const recent=[...games]
+    .filter(g=>g.recentAt)
+    .sort((a,b)=>b.recentAt-a.recentAt)
+    .slice(0,6);
+
+  const favorites=games.filter(g=>g.favorite);
+
+  renderGrid("homeRecent",recent);
+  renderGrid("homeLibrary",games.slice(0,8));
+  renderGrid("libraryGrid",games);
+  renderGrid("favoritesGrid",favorites);
+  renderGrid("recentGrid",recent);
+}
+
+/* ==========================================================
+   IMPORT FILE
+========================================================== */
+
+document.getElementById("chooseFile")
+.addEventListener("click",()=>{
+  document.getElementById("fileInput").click();
+});
+
+document.getElementById("fileInput")
+.addEventListener("change",async e=>{
+
+  const file=e.target.files[0];
+
+  if(!file) return;
+
+  const extension=
+    file.name.includes(".")
+    ? file.name.split(".").pop().toUpperCase()
+    : "FILE";
+
+  const game={
+    id:
+      Date.now().toString(36)+
+      Math.random().toString(36).slice(2),
+
+    name:file.name.replace(/\.[^/.]+$/,""),
+
+    type:extension,
+
+    size:formatBytes(file.size),
+
+    date:new Date().toLocaleDateString("pt-BR"),
+
+    favorite:false,
+
+    recentAt:0
+  };
+
+  games.unshift(game);
+
+  saveGames();
+  renderAll();
+
+  toast(
+    `"${game.name}" adicionado à biblioteca`
+  );
+
+  e.target.value="";
+});
+
+/* ==========================================================
+   FAVORITES
+========================================================== */
 
 function toggleFavorite(id){
 
-  const game = games.find(g=>g.id===id);
+  const game=games.find(g=>g.id===id);
 
   if(!game) return;
 
-  game.favorite = !game.favorite;
+  game.favorite=!game.favorite;
 
   saveGames();
-  render();
+  renderAll();
 
   toast(
     game.favorite
-      ? "Adicionado aos favoritos ❤️"
+      ? "Adicionado aos favoritos ★"
       : "Removido dos favoritos"
   );
-
 }
 
-
-/* =========================================================
-   DELETE
-========================================================= */
-
-function deleteGame(id){
-
-  const game = games.find(g=>g.id===id);
-
-  if(!game) return;
-
-  if(!confirm(
-    `Excluir "${game.name}" da biblioteca?`
-  )) return;
-
-  games = games.filter(g=>g.id!==id);
-
-  saveGames();
-
-  render();
-
-  toast("Jogo removido.");
-
-}
-
-
-/* =========================================================
-   PLAY GAME
-========================================================= */
+/* ==========================================================
+   PLAY
+========================================================== */
 
 function playGame(id){
 
-  const game = games.find(g=>g.id===id);
+  const game=games.find(g=>g.id===id);
 
   if(!game) return;
 
-  if(game.type==="ZIP"){
+  currentGame=game;
+  currentIndex=games.findIndex(
+    g=>g.id===id
+  );
 
-    toast(
-      "ZIP detectado. Nesta V2, importe o index.html do jogo."
-    );
+  game.recentAt=Date.now();
 
-    return;
-
+  if(settings.recent){
+    saveGames();
   }
 
-  if(!game.html){
+  document.getElementById("playerName")
+    .textContent=game.name;
 
-    toast("Não foi possível carregar este jogo.");
+  document.getElementById("playerStatus")
+    .textContent=
+      game.type+
+      " • "+
+      game.size;
 
-    return;
+  document.getElementById("playerCover")
+    .textContent="🎮";
 
-  }
+  document.getElementById("mainPlay")
+    .textContent="■";
 
-  currentGame = game;
-
-  game.lastPlayed = Date.now();
-
-  saveGames();
-
-  $("#playingTitle").textContent = game.name;
-
-  $("#gameStatus").textContent = "JOGANDO";
-
-  $("#playerOverlay").classList.add("open");
-
-  /*
-    srcdoc permite executar jogos HTML
-    diretamente dentro do GameHub.
-  */
-
-  $("#gameFrame").srcdoc = game.html;
-
-  if(settings.autoGamepad){
-    $("#virtualGamepad").classList.add("active");
-  }
-
-  if(settings.autoFullscreen){
-    setTimeout(()=>{
-      enterFullscreen($("#playerOverlay"));
-    },400);
-  }
-
-  render();
-
-}
-
-
-/* =========================================================
-   CLOSE GAME
-========================================================= */
-
-$("#closeGame").onclick = closeGame;
-
-function closeGame(){
-
-  $("#playerOverlay").classList.remove("open");
-
-  $("#virtualGamepad").classList.remove("active");
-
-  $("#gameFrame").srcdoc = "";
-
-  currentGame = null;
-
-}
-
-
-/* =========================================================
-   RELOAD
-========================================================= */
-
-$("#reloadGame").onclick = ()=>{
-
-  const frame = $("#gameFrame");
-
-  frame.srcdoc = frame.srcdoc;
-
-  toast("Jogo recarregado.");
-
-};
-
-
-/* =========================================================
-   GAME HOME
-========================================================= */
-
-$("#gameHome").onclick = ()=>{
-
-  closeGame();
-
-};
-
-
-/* =========================================================
-   GAMEPAD
-========================================================= */
-
-$("#activateGamepad").onclick = ()=>{
-
-  const pad = $("#virtualGamepad");
-
-  pad.classList.toggle("active");
+  document.getElementById("progressFill")
+    .style.width="100%";
 
   toast(
-    pad.classList.contains("active")
-      ? "Gamepad ativado 🕹️"
-      : "Gamepad desativado"
+    "Jogo selecionado: "+game.name
   );
 
-};
+  renderAll();
 
-$("#togglePad").onclick = ()=>{
-
-  $("#virtualGamepad").classList.toggle("active");
-
-};
-
-
-$$(".gamepad button").forEach(button=>{
-
-  const key = button.dataset.key;
-
-  function send(type){
-
-    if(!currentGame) return;
-
-    const frame = $("#gameFrame");
-
-    try{
-
-      frame.contentWindow.dispatchEvent(
-        new KeyboardEvent(type,{
-          key:key,
-          code:key,
-          bubbles:true
-        })
-      );
-
-      frame.contentWindow.document.dispatchEvent(
-        new KeyboardEvent(type,{
-          key:key,
-          code:key,
-          bubbles:true
-        })
-      );
-
-    }catch(e){}
-
-  }
-
-  button.addEventListener(
-    "pointerdown",
-    e=>{
-      e.preventDefault();
-      send("keydown");
-    }
-  );
-
-  button.addEventListener(
-    "pointerup",
-    e=>{
-      e.preventDefault();
-      send("keyup");
-    }
-  );
-
-  button.addEventListener(
-    "pointercancel",
-    ()=>{
-      send("keyup");
-    }
-  );
-
-});
-
-
-/* =========================================================
-   FULLSCREEN
-========================================================= */
-
-async function enterFullscreen(element){
-
-  try{
-
-    if(element.requestFullscreen){
-      await element.requestFullscreen();
-    }
-
-  }catch(e){}
-
+  /*
+    Importante:
+    O HTML registra/seleciona o jogo.
+    A execução real de EXE requer integração
+    com uma camada nativa/emulador Android.
+  */
 }
 
-$("#fullscreenTop").onclick = ()=>{
+document.getElementById("mainPlay")
+.addEventListener("click",()=>{
 
-  enterFullscreen(document.documentElement);
+  if(!currentGame){
 
-};
+    toast("Selecione um jogo primeiro");
+    return;
+  }
 
-$("#gameFullscreen").onclick = ()=>{
-
-  enterFullscreen($("#playerOverlay"));
-
-};
-
-
-/* =========================================================
-   SORT
-========================================================= */
-
-$("#sortName").onclick = ()=>{
-
-  games.sort((a,b)=>
-    a.name.localeCompare(b.name,"pt-BR")
+  toast(
+    "Jogo pronto para execução pelo motor nativo"
   );
-
-  saveGames();
-  render();
-
-};
-
-
-$("#sortRecent").onclick = ()=>{
-
-  games.sort((a,b)=>
-    b.addedAt-a.addedAt
-  );
-
-  saveGames();
-  render();
-
-};
-
-
-/* =========================================================
-   START GAMING
-========================================================= */
-
-$("#startGaming").onclick = ()=>{
-
-  $$(".nav button").forEach(b=>b.classList.remove("active"));
-
-  document
-    .querySelector('[data-view="library"]')
-    .classList.add("active");
-
-  $$(".view").forEach(v=>v.classList.remove("active"));
-
-  $("#library").classList.add("active");
-
-  render();
-
-};
-
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-$$(".switch").forEach(sw=>{
-
-  sw.onclick = ()=>{
-
-    const key = sw.dataset.setting;
-
-    settings[key] = !settings[key];
-
-    saveSettings();
-
-    updateSettingsUI();
-
-    toast(
-      settings[key]
-        ? "Configuração ativada"
-        : "Configuração desativada"
-    );
-
-  };
-
 });
 
+/* ==========================================================
+   NEXT / PREVIOUS
+========================================================== */
 
-function updateSettingsUI(){
+function nextGame(){
 
-  $$(".switch").forEach(sw=>{
+  if(!games.length){
+    toast("Biblioteca vazia");
+    return;
+  }
 
-    const key = sw.dataset.setting;
+  currentIndex=
+    (currentIndex+1)%games.length;
+
+  playGame(games[currentIndex].id);
+}
+
+function previousGame(){
+
+  if(!games.length){
+    toast("Biblioteca vazia");
+    return;
+  }
+
+  currentIndex=
+    (currentIndex-1+games.length)%games.length;
+
+  playGame(games[currentIndex].id);
+}
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+function showDetails(id){
+
+  const game=games.find(g=>g.id===id);
+
+  if(!game) return;
+
+  selectedModalId=id;
+
+  document.getElementById("modalTitle")
+    .textContent=game.name;
+
+  document.getElementById("modalCover")
+    .textContent="🎮";
+
+  document.getElementById("modalInfo")
+    .innerHTML=`
+      <strong>Tipo:</strong> ${escapeHTML(game.type)}<br>
+      <strong>Tamanho:</strong> ${escapeHTML(game.size)}<br>
+      <strong>Adicionado:</strong> ${escapeHTML(game.date)}<br>
+      <strong>Favorito:</strong> ${game.favorite ? "Sim" : "Não"}
+    `;
+
+  document.getElementById("modalFavorite")
+    .textContent=
+      game.favorite
+      ? "★ Remover favorito"
+      : "★ Favoritar";
+
+  document.getElementById("gameModal")
+    .classList.add("show");
+}
+
+function closeModal(){
+
+  document.getElementById("gameModal")
+    .classList.remove("show");
+
+  selectedModalId=null;
+}
+
+document.getElementById("modalPlay")
+.addEventListener("click",()=>{
+
+  if(selectedModalId){
+    playGame(selectedModalId);
+    closeModal();
+  }
+});
+
+document.getElementById("modalFavorite")
+.addEventListener("click",()=>{
+
+  if(selectedModalId){
+    toggleFavorite(selectedModalId);
+    showDetails(selectedModalId);
+  }
+});
+
+document.getElementById("modalDelete")
+.addEventListener("click",()=>{
+
+  if(!selectedModalId) return;
+
+  const game=games.find(
+    g=>g.id===selectedModalId
+  );
+
+  if(!game) return;
+
+  if(
+    settings.confirmDelete &&
+    !confirm(
+      `Remover "${game.name}" da biblioteca?`
+    )
+  ){
+    return;
+  }
+
+  games=games.filter(
+    g=>g.id!==selectedModalId
+  );
+
+  saveGames();
+  closeModal();
+  renderAll();
+
+  toast("Jogo removido");
+});
+
+document.getElementById("gameModal")
+.addEventListener("click",e=>{
+
+  if(e.target.id==="gameModal"){
+    closeModal();
+  }
+});
+
+/* ==========================================================
+   CLEAR LIBRARY
+========================================================== */
+
+function clearLibrary(){
+
+  if(!games.length){
+    toast("A biblioteca já está vazia");
+    return;
+  }
+
+  if(
+    !confirm(
+      "Deseja realmente limpar toda a biblioteca?"
+    )
+  ){
+    return;
+  }
+
+  games=[];
+
+  saveGames();
+  renderAll();
+
+  toast("Biblioteca limpa");
+}
+
+/* ==========================================================
+   SETTINGS
+========================================================== */
+
+document.querySelectorAll(".switch")
+.forEach(sw=>{
+
+  sw.addEventListener("click",()=>{
+
+    const key=sw.dataset.setting;
+
+    settings[key]=!settings[key];
 
     sw.classList.toggle(
       "on",
-      !!settings[key]
+      settings[key]
     );
 
+    saveSettings();
+
+    toast(
+      settings[key]
+      ? "Configuração ativada"
+      : "Configuração desativada"
+    );
   });
 
+});
+
+document.getElementById("themeSelect")
+.addEventListener("change",e=>{
+
+  settings.theme=e.target.value;
+
+  saveSettings();
+  applyTheme();
+
+  toast("Tema atualizado");
+});
+
+function applyTheme(){
+
+  const root=document.documentElement;
+
+  const themes={
+    orange:["#ff7417","#ff9d52"],
+    blue:["#2587ff","#63b1ff"],
+    purple:["#9a5cff","#c094ff"],
+    green:["#28d17c","#70efa9"]
+  };
+
+  const selected=
+    themes[settings.theme] ||
+    themes.orange;
+
+  root.style.setProperty(
+    "--accent",
+    selected[0]
+  );
+
+  root.style.setProperty(
+    "--accent2",
+    selected[1]
+  );
+
+  document.getElementById("themeSelect")
+    .value=settings.theme;
 }
 
+function applySwitches(){
 
-/* =========================================================
-   CLEAR LIBRARY
-========================================================= */
+  document.querySelectorAll(".switch")
+    .forEach(sw=>{
 
-$("#clearLibrary").onclick = ()=>{
+      const key=sw.dataset.setting;
 
-  if(!games.length){
+      sw.classList.toggle(
+        "on",
+        !!settings[key]
+      );
 
-    toast("A biblioteca já está vazia.");
+    });
+}
 
-    return;
+/* ==========================================================
+   FULLSCREEN
+========================================================== */
 
-  }
+document.getElementById("fullscreenBtn")
+.addEventListener("click",async()=>{
 
-  if(!confirm(
-    "Tem certeza que deseja apagar todos os jogos?"
-  )) return;
+  try{
 
-  games = [];
+    if(!document.fullscreenElement){
 
-  saveGames();
+      await document.documentElement
+        .requestFullscreen();
 
-  render();
+      toast("Tela cheia ativada");
 
-  toast("Biblioteca limpa.");
+    }else{
 
-};
+      await document.exitFullscreen();
 
-
-/* =========================================================
-   KEYBOARD SHORTCUTS
-========================================================= */
-
-document.addEventListener("keydown",event=>{
-
-  if(event.key==="Escape"){
-
-    if($("#playerOverlay").classList.contains("open")){
-      closeGame();
+      toast("Tela cheia desativada");
     }
 
+  }catch(e){
+
+    toast(
+      "Tela cheia não disponível neste navegador"
+    );
+  }
+});
+
+/* ==========================================================
+   THEME QUICK BUTTON
+========================================================== */
+
+document.getElementById("themeBtn")
+.addEventListener("click",()=>{
+
+  const order=[
+    "orange",
+    "blue",
+    "purple",
+    "green"
+  ];
+
+  const index=
+    order.indexOf(settings.theme);
+
+  settings.theme=
+    order[(index+1)%order.length];
+
+  saveSettings();
+  applyTheme();
+
+  toast(
+    "Tema: "+settings.theme
+  );
+});
+
+/* ==========================================================
+   VOLUME
+========================================================== */
+
+document.getElementById("volume")
+.addEventListener("input",e=>{
+
+  const value=Number(e.target.value);
+
+  toast("Volume: "+value+"%");
+});
+
+/* ==========================================================
+   PROGRESS
+========================================================== */
+
+document.getElementById("progressTrack")
+.addEventListener("click",e=>{
+
+  const rect=
+    e.currentTarget.getBoundingClientRect();
+
+  const percent=
+    ((e.clientX-rect.left)/rect.width)*100;
+
+  document.getElementById("progressFill")
+    .style.width=
+      Math.max(0,Math.min(100,percent))+"%";
+
+  document.getElementById("elapsed")
+    .textContent=
+      formatTime(percent*3);
+});
+
+/* ==========================================================
+   CONTROLLER TOUCH
+========================================================== */
+
+document.querySelectorAll("[data-control]")
+.forEach(btn=>{
+
+  const press=()=>{
+    btn.style.transform="scale(.9)";
+    btn.style.boxShadow=
+      "0 0 25px rgba(255,116,23,.45)";
+
+    toast(
+      "Controle: "+btn.dataset.control
+    );
+  };
+
+  const release=()=>{
+    btn.style.transform="";
+    btn.style.boxShadow="";
+  };
+
+  btn.addEventListener("pointerdown",press);
+  btn.addEventListener("pointerup",release);
+  btn.addEventListener("pointercancel",release);
+  btn.addEventListener("pointerleave",release);
+});
+
+/* ==========================================================
+   ANALOG STICK
+========================================================== */
+
+const stick=document.getElementById("stick");
+const stickInner=document.getElementById("stickInner");
+
+let dragging=false;
+
+function moveStick(e){
+
+  if(!dragging) return;
+
+  const rect=stick.getBoundingClientRect();
+
+  const cx=
+    rect.left+
+    rect.width/2;
+
+  const cy=
+    rect.top+
+    rect.height/2;
+
+  let x=e.clientX-cx;
+  let y=e.clientY-cy;
+
+  const max=
+    rect.width*.27;
+
+  const distance=
+    Math.sqrt(x*x+y*y);
+
+  if(distance>max){
+
+    x=(x/distance)*max;
+    y=(y/distance)*max;
+  }
+
+  stickInner.style.transform=
+    `translate(${x}px,${y}px)`;
+}
+
+stick.addEventListener("pointerdown",e=>{
+
+  dragging=true;
+  stick.setPointerCapture(e.pointerId);
+  moveStick(e);
+
+});
+
+stick.addEventListener("pointermove",moveStick);
+
+stick.addEventListener("pointerup",()=>{
+
+  dragging=false;
+  stickInner.style.transform=
+    "translate(0,0)";
+});
+
+stick.addEventListener("pointercancel",()=>{
+
+  dragging=false;
+  stickInner.style.transform=
+    "translate(0,0)";
+});
+
+/* ==========================================================
+   KEYBOARD CONTROLS
+========================================================== */
+
+document.addEventListener("keydown",e=>{
+
+  if(
+    e.target.tagName==="INPUT" ||
+    e.target.tagName==="SELECT"
+  ) return;
+
+  const key=e.key.toLowerCase();
+
+  const map={
+    w:"UP",
+    a:"LEFT",
+    s:"DOWN",
+    d:"RIGHT",
+    j:"A",
+    k:"B",
+    u:"X",
+    i:"Y"
+  };
+
+  if(map[key]){
+    toast("Controle: "+map[key]);
+  }
+
+  if(e.key==="Escape"){
+    closeModal();
   }
 
 });
 
+/* ==========================================================
+   INIT
+========================================================== */
 
-/* =========================================================
-   MUTE
-========================================================= */
+function init(){
 
-$("#gameMute").onclick = ()=>{
+  loadSettings();
+  loadGames();
 
-  const frame = $("#gameFrame");
+  applyTheme();
+  applySwitches();
+  renderAll();
 
-  try{
+  document.getElementById("elapsed")
+    .textContent="00:00";
 
-    const doc = frame.contentDocument;
+  document.getElementById("duration")
+    .textContent="--:--";
+}
 
-    const media = doc.querySelectorAll(
-      "audio,video"
-    );
-
-    media.forEach(el=>{
-      el.muted = !el.muted;
-    });
-
-    toast("Áudio alternado.");
-
-  }catch(e){
-
-    toast("Não foi possível controlar o áudio.");
-
-  }
-
-};
-
-
-/* =========================================================
-   INITIALIZE
-========================================================= */
-
-loadGames();
-
-render();
+init();
 
 </script>
 
