@@ -4,10 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
 <meta name="theme-color" content="#07080d">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<title>AURA GAMEHUB V2</title>
+
+<title>AURA GameHub V2.5</title>
 
 <style>
 :root{
@@ -34,13 +35,18 @@
 
 html,body{
   margin:0;
-  padding:0;
   width:100%;
   height:100%;
   overflow:hidden;
   background:var(--bg);
   color:var(--text);
-  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 button,
@@ -60,8 +66,16 @@ button{
   width:100%;
   height:100vh;
   background:
-    radial-gradient(circle at 80% 0%,rgba(255,116,23,.09),transparent 30%),
-    radial-gradient(circle at 20% 100%,rgba(95,80,255,.06),transparent 35%),
+    radial-gradient(
+      circle at 80% 0%,
+      rgba(255,116,23,.09),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 20% 100%,
+      rgba(95,80,255,.06),
+      transparent 35%
+    ),
     var(--bg);
 }
 
@@ -74,7 +88,7 @@ button{
   min-width:var(--sidebar);
   height:100%;
   padding:22px 16px;
-  background:rgba(8,10,15,.92);
+  background:rgba(8,10,15,.94);
   border-right:1px solid var(--line);
   display:flex;
   flex-direction:column;
@@ -95,8 +109,15 @@ button{
   border-radius:14px;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,var(--accent),#ff3b00);
-  box-shadow:0 0 30px rgba(255,116,23,.3);
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      #ff3b00
+    );
+  box-shadow:
+    0 0 30px
+    rgba(255,116,23,.3);
   font-weight:900;
 }
 
@@ -148,11 +169,12 @@ button{
 
 .navBtn.active{
   color:white;
-  background:linear-gradient(
-    90deg,
-    rgba(255,116,23,.20),
-    rgba(255,116,23,.04)
-  );
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,116,23,.20),
+      rgba(255,116,23,.04)
+    );
 }
 
 .navBtn.active::before{
@@ -164,7 +186,8 @@ button{
   width:3px;
   border-radius:4px;
   background:var(--accent);
-  box-shadow:0 0 12px var(--accent);
+  box-shadow:
+    0 0 12px var(--accent);
 }
 
 .navIcon{
@@ -203,7 +226,12 @@ button{
   border-radius:50%;
   display:grid;
   place-items:center;
-  background:linear-gradient(135deg,#2d3342,#11141d);
+  background:
+    linear-gradient(
+      135deg,
+      #2d3342,
+      #11141d
+    );
 }
 
 .profileInfo{
@@ -269,8 +297,11 @@ button{
 }
 
 .search input:focus{
-  border-color:rgba(255,116,23,.5);
-  box-shadow:0 0 0 3px rgba(255,116,23,.08);
+  border-color:
+    rgba(255,116,23,.5);
+  box-shadow:
+    0 0 0 3px
+    rgba(255,116,23,.08);
 }
 
 .searchIcon{
@@ -295,7 +326,8 @@ button{
 }
 
 .iconBtn:hover{
-  border-color:rgba(255,116,23,.4);
+  border-color:
+    rgba(255,116,23,.4);
 }
 
 .content{
@@ -315,12 +347,13 @@ button{
 }
 
 /* =========================
-   PAGE
+   PAGES
 ========================= */
 
 .page{
   display:none;
-  animation:fade .25s ease;
+  animation:
+    fade .25s ease;
 }
 
 .page.active{
@@ -328,20 +361,38 @@ button{
 }
 
 @keyframes fade{
-  from{opacity:0;transform:translateY(5px)}
-  to{opacity:1;transform:none}
+  from{
+    opacity:0;
+    transform:translateY(5px);
+  }
+  to{
+    opacity:1;
+    transform:none;
+  }
 }
+
+/* =========================
+   HERO
+========================= */
 
 .hero{
   position:relative;
-  min-height:265px;
+  min-height:270px;
   overflow:hidden;
   padding:32px;
   border-radius:25px;
   border:1px solid var(--line);
   background:
-    radial-gradient(circle at 85% 20%,rgba(255,116,23,.24),transparent 28%),
-    linear-gradient(135deg,#121722,#0b0e15);
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(255,116,23,.24),
+      transparent 28%
+    ),
+    linear-gradient(
+      135deg,
+      #121722,
+      #0b0e15
+    );
 }
 
 .hero::after{
@@ -361,7 +412,8 @@ button{
   gap:8px;
   padding:6px 10px;
   border-radius:20px;
-  background:rgba(255,116,23,.11);
+  background:
+    rgba(255,116,23,.11);
   color:var(--accent2);
   font-size:10px;
   font-weight:900;
@@ -370,7 +422,8 @@ button{
 
 .hero h1{
   max-width:650px;
-  font-size:clamp(29px,4vw,48px);
+  font-size:
+    clamp(29px,4vw,48px);
   line-height:1;
   margin:20px 0 12px;
 }
@@ -389,16 +442,24 @@ button{
 }
 
 .primary{
-  background:linear-gradient(135deg,var(--accent),#ff4d00);
+  background:
+    linear-gradient(
+      135deg,
+      var(--accent),
+      #ff4d00
+    );
   color:white;
   padding:12px 17px;
   border-radius:13px;
   font-weight:800;
-  box-shadow:0 10px 30px rgba(255,116,23,.18);
+  box-shadow:
+    0 10px 30px
+    rgba(255,116,23,.18);
 }
 
 .secondary{
-  background:rgba(255,255,255,.055);
+  background:
+    rgba(255,255,255,.055);
   border:1px solid var(--line);
   padding:12px 17px;
   border-radius:13px;
@@ -408,6 +469,7 @@ button{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:15px;
   margin:27px 0 14px;
 }
 
@@ -421,9 +483,17 @@ button{
   font-size:12px;
 }
 
+/* =========================
+   GRID
+========================= */
+
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(190px,1fr)
+    );
   gap:15px;
 }
 
@@ -439,7 +509,8 @@ button{
 
 .gameCard:hover{
   transform:translateY(-3px);
-  border-color:rgba(255,116,23,.35);
+  border-color:
+    rgba(255,116,23,.35);
 }
 
 .cover{
@@ -448,7 +519,11 @@ button{
   place-items:center;
   position:relative;
   background:
-    linear-gradient(135deg,#1d2532,#0b0d12);
+    linear-gradient(
+      135deg,
+      #1d2532,
+      #0b0d12
+    );
   overflow:hidden;
 }
 
@@ -458,7 +533,12 @@ button{
   width:130px;
   height:130px;
   border-radius:50%;
-  background:radial-gradient(circle,rgba(255,116,23,.3),transparent 65%);
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,116,23,.3),
+      transparent 65%
+    );
 }
 
 .coverIcon{
@@ -497,12 +577,14 @@ button{
   flex:1;
   padding:8px;
   border-radius:9px;
-  background:rgba(255,255,255,.055);
+  background:
+    rgba(255,255,255,.055);
   font-size:11px;
 }
 
 .cardBtn.play{
-  background:rgba(255,116,23,.14);
+  background:
+    rgba(255,116,23,.14);
   color:var(--accent2);
 }
 
@@ -517,7 +599,8 @@ button{
   justify-content:center;
   align-items:center;
   text-align:center;
-  border:1px dashed rgba(255,255,255,.12);
+  border:1px dashed
+    rgba(255,255,255,.12);
   border-radius:20px;
   color:var(--muted);
 }
@@ -538,7 +621,11 @@ button{
 
 .settingsGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(270px,1fr)
+    );
   gap:15px;
 }
 
@@ -586,7 +673,7 @@ button{
 }
 
 select{
-  min-width:110px;
+  min-width:115px;
   padding:9px;
   border-radius:10px;
   color:white;
@@ -614,7 +701,8 @@ select{
 }
 
 .switch.on{
-  background:rgba(255,116,23,.35);
+  background:
+    rgba(255,116,23,.35);
 }
 
 .switch.on span{
@@ -623,7 +711,126 @@ select{
 }
 
 /* =========================
-   CONTROLS
+   COMPATIBILITY
+========================= */
+
+.compatHero{
+  padding:25px;
+  border:1px solid var(--line);
+  border-radius:22px;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(255,116,23,.14),
+      transparent 35%
+    ),
+    var(--panel);
+}
+
+.engineStatus{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:15px;
+}
+
+.statusDot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:var(--success);
+  box-shadow:
+    0 0 12px var(--success);
+}
+
+.engineStatus strong{
+  font-size:13px;
+}
+
+.engineStatus span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.compatCards{
+  display:grid;
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(210px,1fr)
+    );
+  gap:12px;
+  margin-top:18px;
+}
+
+.compatOption{
+  padding:16px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:
+    rgba(255,255,255,.025);
+}
+
+.compatOption strong{
+  display:block;
+  font-size:12px;
+}
+
+.compatOption span{
+  display:block;
+  margin-top:5px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.5;
+}
+
+.engineBadge{
+  display:inline-block;
+  margin-top:10px;
+  padding:5px 8px;
+  border-radius:8px;
+  background:
+    rgba(255,116,23,.1);
+  color:var(--accent2);
+  font-size:9px;
+  font-weight:800;
+}
+
+/* =========================
+   IMPORT
+========================= */
+
+.importBox{
+  padding:35px;
+  text-align:center;
+  border:1px dashed
+    rgba(255,116,23,.35);
+  border-radius:22px;
+  background:
+    rgba(255,116,23,.035);
+}
+
+.importIcon{
+  font-size:50px;
+}
+
+.importBox h2{
+  margin:13px 0 6px;
+}
+
+.importBox p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+#fileInput,
+#folderInput{
+  display:none;
+}
+
+/* =========================
+   CONTROLLER
 ========================= */
 
 .controller{
@@ -652,8 +859,14 @@ select{
   width:145px;
   height:145px;
   border-radius:50%;
-  border:1px solid rgba(255,255,255,.12);
-  background:radial-gradient(circle,#242b38,#10141c);
+  border:1px solid
+    rgba(255,255,255,.12);
+  background:
+    radial-gradient(
+      circle,
+      #242b38,
+      #10141c
+    );
   display:grid;
   place-items:center;
   touch-action:none;
@@ -663,8 +876,15 @@ select{
   width:58px;
   height:58px;
   border-radius:50%;
-  background:linear-gradient(135deg,#363f50,#171b25);
-  box-shadow:0 8px 25px rgba(0,0,0,.4);
+  background:
+    linear-gradient(
+      135deg,
+      #363f50,
+      #171b25
+    );
+  box-shadow:
+    0 8px 25px
+    rgba(0,0,0,.4);
 }
 
 .buttons{
@@ -681,15 +901,31 @@ select{
   height:52px;
   border-radius:50%;
   background:#202735;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid
+    rgba(255,255,255,.1);
   font-weight:900;
   touch-action:none;
 }
 
-.padBtn.a{right:0;top:55px}
-.padBtn.b{right:53px;top:10px}
-.padBtn.x{left:10px;top:55px}
-.padBtn.y{right:53px;bottom:0}
+.padBtn.a{
+  right:0;
+  top:55px;
+}
+
+.padBtn.b{
+  right:53px;
+  top:10px;
+}
+
+.padBtn.x{
+  left:10px;
+  top:55px;
+}
+
+.padBtn.y{
+  right:53px;
+  bottom:0;
+}
 
 .dpad{
   position:absolute;
@@ -704,13 +940,34 @@ select{
   width:36px;
   height:36px;
   background:#202735;
-  border:1px solid rgba(255,255,255,.1);
+  border:1px solid
+    rgba(255,255,255,.1);
 }
 
-.dpad .up{left:37px;top:0;border-radius:8px 8px 3px 3px}
-.dpad .down{left:37px;bottom:0;border-radius:3px 3px 8px 8px}
-.dpad .left{left:0;top:37px;border-radius:8px 3px 3px 8px}
-.dpad .right{right:0;top:37px;border-radius:3px 8px 8px 3px}
+.dpad .up{
+  left:37px;
+  top:0;
+  border-radius:8px 8px 3px 3px;
+}
+
+.dpad .down{
+  left:37px;
+  bottom:0;
+  border-radius:3px 3px 8px 8px;
+}
+
+.dpad .left{
+  left:0;
+  top:37px;
+  border-radius:8px 3px 3px 8px;
+}
+
+.dpad .right{
+  right:0;
+  top:37px;
+  border-radius:3px 8px 8px 3px;
+}
+
 .dpad .center{
   left:37px;
   top:37px;
@@ -718,36 +975,7 @@ select{
 }
 
 /* =========================
-   IMPORT
-========================= */
-
-.importBox{
-  padding:35px;
-  text-align:center;
-  border:1px dashed rgba(255,116,23,.35);
-  border-radius:22px;
-  background:rgba(255,116,23,.035);
-}
-
-.importIcon{
-  font-size:50px;
-}
-
-.importBox h2{
-  margin:13px 0 6px;
-}
-
-.importBox p{
-  color:var(--muted);
-  font-size:12px;
-}
-
-#fileInput{
-  display:none;
-}
-
-/* =========================
-   BOTTOM PLAYER
+   PLAYER
 ========================= */
 
 .player{
@@ -758,14 +986,17 @@ select{
   height:75px;
   border:1px solid var(--line);
   border-radius:19px;
-  background:rgba(14,18,26,.92);
+  background:
+    rgba(14,18,26,.92);
   backdrop-filter:blur(25px);
   display:flex;
   align-items:center;
   gap:15px;
   padding:10px 15px;
   z-index:80;
-  box-shadow:0 12px 40px rgba(0,0,0,.3);
+  box-shadow:
+    0 12px 40px
+    rgba(0,0,0,.3);
 }
 
 .playerCover{
@@ -775,7 +1006,12 @@ select{
   display:grid;
   place-items:center;
   border-radius:13px;
-  background:linear-gradient(135deg,#242c3b,#11141c);
+  background:
+    linear-gradient(
+      135deg,
+      #242c3b,
+      #11141c
+    );
   font-size:22px;
 }
 
@@ -810,7 +1046,9 @@ select{
   height:43px;
   border-radius:50%;
   background:var(--accent);
-  box-shadow:0 0 20px rgba(255,116,23,.25);
+  box-shadow:
+    0 0 20px
+    rgba(255,116,23,.25);
 }
 
 .playerProgress{
@@ -861,7 +1099,8 @@ select{
   align-items:center;
   justify-content:center;
   padding:20px;
-  background:rgba(0,0,0,.65);
+  background:
+    rgba(0,0,0,.65);
   backdrop-filter:blur(10px);
   z-index:300;
 }
@@ -871,14 +1110,16 @@ select{
 }
 
 .modalBox{
-  width:min(500px,100%);
+  width:min(520px,100%);
   max-height:90vh;
   overflow:auto;
   padding:23px;
   border-radius:23px;
   background:#10141d;
   border:1px solid var(--line);
-  box-shadow:0 30px 100px rgba(0,0,0,.5);
+  box-shadow:
+    0 30px 100px
+    rgba(0,0,0,.5);
 }
 
 .modalHeader{
@@ -896,7 +1137,8 @@ select{
   width:35px;
   height:35px;
   border-radius:10px;
-  background:rgba(255,255,255,.06);
+  background:
+    rgba(255,255,255,.06);
 }
 
 .detailCover{
@@ -905,7 +1147,12 @@ select{
   display:grid;
   place-items:center;
   border-radius:18px;
-  background:linear-gradient(135deg,#252e3e,#10131a);
+  background:
+    linear-gradient(
+      135deg,
+      #252e3e,
+      #10131a
+    );
   font-size:65px;
 }
 
@@ -917,7 +1164,8 @@ select{
   position:fixed;
   left:50%;
   bottom:105px;
-  transform:translate(-50%,20px);
+  transform:
+    translate(-50%,20px);
   opacity:0;
   pointer-events:none;
   z-index:500;
@@ -925,18 +1173,21 @@ select{
   border-radius:12px;
   background:#171c26;
   border:1px solid var(--line);
-  box-shadow:0 15px 45px rgba(0,0,0,.35);
+  box-shadow:
+    0 15px 45px
+    rgba(0,0,0,.35);
   font-size:12px;
   transition:.25s;
 }
 
 .toast.show{
   opacity:1;
-  transform:translate(-50%,0);
+  transform:
+    translate(-50%,0);
 }
 
 /* =========================
-   RESPONSIVE
+   MOBILE
 ========================= */
 
 @media(max-width:850px){
@@ -947,7 +1198,9 @@ select{
     top:0;
     bottom:0;
     transition:.25s;
-    box-shadow:20px 0 60px rgba(0,0,0,.45);
+    box-shadow:
+      20px 0 60px
+      rgba(0,0,0,.45);
   }
 
   .sidebar.open{
@@ -973,7 +1226,8 @@ select{
   }
 
   .grid{
-    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
     gap:10px;
   }
 
@@ -1069,494 +1323,1220 @@ select{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
 
-    <div class="brand">
-      <div class="logo">A</div>
-      <div class="brandText">
-        <strong>AURA GAMEHUB</strong>
-        <span>V2 • PREMIUM</span>
-      </div>
+<aside class="sidebar" id="sidebar">
+
+  <div class="brand">
+    <div class="logo">A</div>
+
+    <div class="brandText">
+      <strong>AURA GAMEHUB</strong>
+      <span>V2.5 • ANDROID</span>
+    </div>
+  </div>
+
+  <div class="menuTitle">
+    MENU PRINCIPAL
+  </div>
+
+  <nav class="nav">
+
+    <button
+      class="navBtn active"
+      data-page="home">
+      <span class="navIcon">⌂</span>
+      <span>Início</span>
+    </button>
+
+    <button
+      class="navBtn"
+      data-page="library">
+      <span class="navIcon">🎮</span>
+      <span>Biblioteca</span>
+      <span
+        class="navBadge"
+        id="libraryCount">
+        0
+      </span>
+    </button>
+
+    <button
+      class="navBtn"
+      data-page="favorites">
+      <span class="navIcon">★</span>
+      <span>Favoritos</span>
+    </button>
+
+    <button
+      class="navBtn"
+      data-page="recent">
+      <span class="navIcon">◷</span>
+      <span>Recentes</span>
+    </button>
+
+    <button
+      class="navBtn"
+      data-page="import">
+      <span class="navIcon">＋</span>
+      <span>Adicionar jogo</span>
+    </button>
+
+    <button
+      class="navBtn"
+      data-page="exe">
+      <span class="navIcon">EXE</span>
+      <span>Encontrar EXE</span>
+    </button>
+
+    <div class="menuTitle">
+      SISTEMA
     </div>
 
-    <div class="menuTitle">MENU PRINCIPAL</div>
+    <button
+      class="navBtn"
+      data-page="controller">
+      <span class="navIcon">🎛</span>
+      <span>Controles</span>
+    </button>
 
-    <nav class="nav">
+    <button
+      class="navBtn"
+      data-page="compat">
+      <span class="navIcon">⚡</span>
+      <span>Compatibilidade</span>
+    </button>
 
-      <button class="navBtn active" data-page="home">
-        <span class="navIcon">⌂</span>
-        <span>Início</span>
-      </button>
+    <button
+      class="navBtn"
+      data-page="settings">
+      <span class="navIcon">⚙</span>
+      <span>Configurações</span>
+    </button>
 
-      <button class="navBtn" data-page="library">
-        <span class="navIcon">🎮</span>
-        <span>Biblioteca</span>
-        <span class="navBadge" id="libraryCount">0</span>
-      </button>
+  </nav>
 
-      <button class="navBtn" data-page="favorites">
-        <span class="navIcon">★</span>
-        <span>Favoritos</span>
-      </button>
+  <div class="sidebarBottom">
 
-      <button class="navBtn" data-page="recent">
-        <span class="navIcon">◷</span>
-        <span>Recentes</span>
-      </button>
+    <div class="profile">
 
-      <button class="navBtn" data-page="import">
-        <span class="navIcon">＋</span>
-        <span>Adicionar jogo</span>
-      </button>
-
-      <div class="menuTitle">SISTEMA</div>
-
-      <button class="navBtn" data-page="controller">
-        <span class="navIcon">🎛</span>
-        <span>Controles</span>
-      </button>
-
-      <button class="navBtn" data-page="settings">
-        <span class="navIcon">⚙</span>
-        <span>Configurações</span>
-      </button>
-
-    </nav>
-
-    <div class="sidebarBottom">
-      <div class="profile">
-        <div class="avatar">A</div>
-        <div class="profileInfo">
-          <strong>AURA PLAYER</strong>
-          <span>Modo Premium</span>
-        </div>
-      </div>
-    </div>
-
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main">
-
-    <header class="topbar">
-
-      <button class="mobileMenu" id="mobileMenu">☰</button>
-
-      <div class="search">
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Pesquisar jogos..."
-          autocomplete="off">
-        <span class="searchIcon">⌕</span>
+      <div class="avatar">
+        A
       </div>
 
-      <div class="topActions">
-        <button class="iconBtn" id="fullscreenBtn" title="Tela cheia">⛶</button>
-        <button class="iconBtn" id="themeBtn" title="Tema">◐</button>
-      </div>
-
-    </header>
-
-    <section class="content">
-
-      <!-- HOME -->
-      <div class="page active" id="page-home">
-
-        <section class="hero">
-
-          <span class="heroTag">● AURA GAME ENGINE</span>
-
-          <h1>Seu universo gamer em um só lugar.</h1>
-
-          <p>
-            Organize seus jogos, crie sua biblioteca, configure seus controles
-            e tenha uma experiência GameHub premium no Android.
-          </p>
-
-          <div class="heroButtons">
-            <button class="primary" onclick="navigate('library')">
-              🎮 Abrir biblioteca
-            </button>
-
-            <button class="secondary" onclick="navigate('import')">
-              ＋ Adicionar jogo
-            </button>
-          </div>
-
-        </section>
-
-        <div class="sectionHeader">
-          <h2>Jogos recentes</h2>
-          <button class="secondary" onclick="navigate('recent')">
-            Ver todos
-          </button>
-        </div>
-
-        <div id="homeRecent" class="grid"></div>
-
-        <div class="sectionHeader">
-          <h2>Biblioteca</h2>
-          <span id="homeCount">0 jogos</span>
-        </div>
-
-        <div id="homeLibrary" class="grid"></div>
-
-      </div>
-
-      <!-- LIBRARY -->
-      <div class="page" id="page-library">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Minha Biblioteca</h2>
-            <span>Todos os seus jogos</span>
-          </div>
-
-          <button class="primary" onclick="navigate('import')">
-            ＋ Adicionar
-          </button>
-        </div>
-
-        <div id="libraryGrid" class="grid"></div>
-
-      </div>
-
-      <!-- FAVORITES -->
-      <div class="page" id="page-favorites">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Favoritos</h2>
-            <span>Seus jogos preferidos</span>
-          </div>
-        </div>
-
-        <div id="favoritesGrid" class="grid"></div>
-
-      </div>
-
-      <!-- RECENT -->
-      <div class="page" id="page-recent">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Jogos recentes</h2>
-            <span>Últimos jogos utilizados</span>
-          </div>
-        </div>
-
-        <div id="recentGrid" class="grid"></div>
-
-      </div>
-
-      <!-- IMPORT -->
-      <div class="page" id="page-import">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Adicionar jogo</h2>
-            <span>Importe jogos para sua biblioteca</span>
-          </div>
-        </div>
-
-        <div class="importBox">
-
-          <div class="importIcon">📦</div>
-
-          <h2>Importar jogo</h2>
-
-          <p>
-            Selecione um arquivo de jogo no armazenamento do dispositivo.
-            A biblioteca poderá guardar o registro e os metadados.
-          </p>
-
-          <button
-            class="primary"
-            id="chooseFile">
-            Selecionar arquivo
-          </button>
-
-          <input
-            id="fileInput"
-            type="file"
-            accept=".exe,.zip,.7z,.iso,.apk,.bin,.img,*">
-
-        </div>
-
-        <div class="sectionHeader">
-          <h2>Formatos</h2>
-        </div>
-
-        <div class="settingsGrid">
-
-          <div class="settingCard">
-            <h3>Windows</h3>
-            <p>
-              Arquivos EXE podem ser cadastrados na biblioteca.
-              A execução no Android requer uma camada nativa de compatibilidade.
-            </p>
-          </div>
-
-          <div class="settingCard">
-            <h3>Imagens de disco</h3>
-            <p>
-              ISO, IMG e BIN podem ser registrados para futura integração
-              com motores compatíveis.
-            </p>
-          </div>
-
-          <div class="settingCard">
-            <h3>Android</h3>
-            <p>
-              APKs podem ser identificados como conteúdo Android,
-              dependendo das permissões do sistema.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-      <!-- CONTROLLER -->
-      <div class="page" id="page-controller">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Controles virtuais</h2>
-            <span>Layout touch para jogos</span>
-          </div>
-        </div>
-
-        <div class="controller">
-
-          <div class="controllerTitle">
-            <strong>CONTROLE AURA</strong>
-          </div>
-
-          <div class="controlArea">
-
-            <div
-              class="stick"
-              id="stick">
-              <div class="stickInner" id="stickInner"></div>
-            </div>
-
-            <div class="dpad">
-              <button class="up" data-control="UP">▲</button>
-              <button class="left" data-control="LEFT">◀</button>
-              <button class="center">•</button>
-              <button class="right" data-control="RIGHT">▶</button>
-              <button class="down" data-control="DOWN">▼</button>
-            </div>
-
-            <div class="buttons">
-              <button class="padBtn a" data-control="A">A</button>
-              <button class="padBtn b" data-control="B">B</button>
-              <button class="padBtn x" data-control="X">X</button>
-              <button class="padBtn y" data-control="Y">Y</button>
-            </div>
-
-          </div>
-
-          <button
-            class="secondary"
-            style="width:100%"
-            onclick="toast('Layout dos controles salvo')">
-            💾 Salvar layout
-          </button>
-
-        </div>
-
-      </div>
-
-      <!-- SETTINGS -->
-      <div class="page" id="page-settings">
-
-        <div class="sectionHeader">
-          <div>
-            <h2>Configurações</h2>
-            <span>Personalize o AURA GameHub</span>
-          </div>
-        </div>
-
-        <div class="settingsGrid">
-
-          <div class="settingCard">
-
-            <h3>Interface</h3>
-            <p>Aparência e comportamento.</p>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Modo compacto</strong>
-                <span>Reduz o tamanho dos cards</span>
-              </div>
-              <button class="switch" data-setting="compact">
-                <span></span>
-              </button>
-            </div>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Animações</strong>
-                <span>Transições da interface</span>
-              </div>
-              <button class="switch on" data-setting="animations">
-                <span></span>
-              </button>
-            </div>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Tema</strong>
-                <span>Cor principal</span>
-              </div>
-
-              <select id="themeSelect">
-                <option value="orange">AURA Orange</option>
-                <option value="blue">Cyber Blue</option>
-                <option value="purple">Neon Purple</option>
-                <option value="green">Matrix Green</option>
-              </select>
-            </div>
-
-          </div>
-
-          <div class="settingCard">
-
-            <h3>Jogos</h3>
-            <p>Comportamento da biblioteca.</p>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Registrar recentes</strong>
-                <span>Salva os últimos jogos abertos</span>
-              </div>
-              <button class="switch on" data-setting="recent">
-                <span></span>
-              </button>
-            </div>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Confirmação ao remover</strong>
-                <span>Evita exclusões acidentais</span>
-              </div>
-              <button class="switch on" data-setting="confirmDelete">
-                <span></span>
-              </button>
-            </div>
-
-          </div>
-
-          <div class="settingCard">
-
-            <h3>Sistema</h3>
-            <p>Opções de armazenamento.</p>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Armazenamento</strong>
-                <span>Dados da biblioteca</span>
-              </div>
-
-              <button
-                class="secondary"
-                onclick="clearLibrary()">
-                Limpar
-              </button>
-            </div>
-
-            <div class="settingRow">
-              <div class="settingText">
-                <strong>Versão</strong>
-                <span>AURA GameHub</span>
-              </div>
-              <strong>V2.0</strong>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- PLAYER -->
-    <div class="player">
-
-      <div class="playerCover" id="playerCover">🎮</div>
-
-      <div class="playerInfo">
-        <strong id="playerName">Nenhum jogo selecionado</strong>
-        <span id="playerStatus">AURA GameHub</span>
-      </div>
-
-      <div class="playerControls">
-
-        <button class="iconBtn skip" onclick="previousGame()">‹</button>
-
-        <button
-          class="playMain"
-          id="mainPlay">
-          ▶
-        </button>
-
-        <button class="iconBtn skip" onclick="nextGame()">›</button>
-
-      </div>
-
-      <div class="playerProgress">
-
-        <div
-          class="progressTrack"
-          id="progressTrack">
-          <div
-            class="progressFill"
-            id="progressFill">
-          </div>
-        </div>
-
-        <div class="time">
-          <span id="elapsed">00:00</span>
-          <span id="duration">--:--</span>
-        </div>
-
-      </div>
-
-      <div class="volume">
-        <input
-          id="volume"
-          type="range"
-          min="0"
-          max="100"
-          value="80">
+      <div class="profileInfo">
+        <strong>AURA PLAYER</strong>
+        <span>GameHub Premium</span>
       </div>
 
     </div>
 
-  </main>
+  </div>
+
+</aside>
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="main">
+
+<header class="topbar">
+
+  <button
+    class="mobileMenu"
+    id="mobileMenu">
+    ☰
+  </button>
+
+  <div class="search">
+
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Pesquisar jogos..."
+      autocomplete="off">
+
+    <span class="searchIcon">
+      ⌕
+    </span>
+
+  </div>
+
+  <div class="topActions">
+
+    <button
+      class="iconBtn"
+      id="fullscreenBtn"
+      title="Tela cheia">
+      ⛶
+    </button>
+
+    <button
+      class="iconBtn"
+      id="themeBtn"
+      title="Tema">
+      ◐
+    </button>
+
+  </div>
+
+</header>
+
+<section class="content">
+
+<!-- =====================================================
+     HOME
+===================================================== -->
+
+<div
+  class="page active"
+  id="page-home">
+
+  <section class="hero">
+
+    <span class="heroTag">
+      ● AURA GAME ENGINE
+    </span>
+
+    <h1>
+      Seu universo gamer em um só lugar.
+    </h1>
+
+    <p>
+      Organize seus jogos, encontre executáveis,
+      configure controles e prepare seus jogos
+      para a futura camada de compatibilidade
+      Windows do AURA GameHub.
+    </p>
+
+    <div class="heroButtons">
+
+      <button
+        class="primary"
+        onclick="navigate('library')">
+        🎮 Abrir biblioteca
+      </button>
+
+      <button
+        class="secondary"
+        onclick="navigate('exe')">
+        🔎 Encontrar EXE
+      </button>
+
+    </div>
+
+  </section>
+
+  <div class="sectionHeader">
+
+    <h2>
+      Jogos recentes
+    </h2>
+
+    <button
+      class="secondary"
+      onclick="navigate('recent')">
+      Ver todos
+    </button>
+
+  </div>
+
+  <div
+    id="homeRecent"
+    class="grid">
+  </div>
+
+  <div class="sectionHeader">
+
+    <h2>
+      Biblioteca
+    </h2>
+
+    <span id="homeCount">
+      0 jogos
+    </span>
+
+  </div>
+
+  <div
+    id="homeLibrary"
+    class="grid">
+  </div>
 
 </div>
 
-<!-- MODAL -->
-<div class="modal" id="gameModal">
+<!-- =====================================================
+     LIBRARY
+===================================================== -->
+
+<div
+  class="page"
+  id="page-library">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Minha Biblioteca
+      </h2>
+
+      <span>
+        Todos os seus jogos
+      </span>
+    </div>
+
+    <button
+      class="primary"
+      onclick="navigate('exe')">
+      🔎 Encontrar EXE
+    </button>
+
+  </div>
+
+  <div
+    id="libraryGrid"
+    class="grid">
+  </div>
+
+</div>
+
+<!-- =====================================================
+     FAVORITES
+===================================================== -->
+
+<div
+  class="page"
+  id="page-favorites">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Favoritos
+      </h2>
+
+      <span>
+        Seus jogos preferidos
+      </span>
+    </div>
+
+  </div>
+
+  <div
+    id="favoritesGrid"
+    class="grid">
+  </div>
+
+</div>
+
+<!-- =====================================================
+     RECENT
+===================================================== -->
+
+<div
+  class="page"
+  id="page-recent">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Jogos recentes
+      </h2>
+
+      <span>
+        Últimos jogos utilizados
+      </span>
+    </div>
+
+  </div>
+
+  <div
+    id="recentGrid"
+    class="grid">
+  </div>
+
+</div>
+
+<!-- =====================================================
+     IMPORT
+===================================================== -->
+
+<div
+  class="page"
+  id="page-import">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Adicionar jogo
+      </h2>
+
+      <span>
+        Adicione arquivos à biblioteca
+      </span>
+    </div>
+
+  </div>
+
+  <div class="importBox">
+
+    <div class="importIcon">
+      📦
+    </div>
+
+    <h2>
+      Importar jogo
+    </h2>
+
+    <p>
+      Selecione um arquivo do armazenamento
+      do dispositivo para cadastrá-lo na
+      biblioteca AURA.
+    </p>
+
+    <button
+      class="primary"
+      id="chooseFile">
+      Selecionar arquivo
+    </button>
+
+    <input
+      id="fileInput"
+      type="file"
+      accept=".exe,.zip,.7z,.iso,.apk,.bin,.img,*">
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     EXE SCANNER
+===================================================== -->
+
+<div
+  class="page"
+  id="page-exe">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Encontrar jogos EXE
+      </h2>
+
+      <span>
+        Scanner de executáveis
+      </span>
+    </div>
+
+    <button
+      class="primary"
+      id="scanExeBtn">
+      🔎 Procurar EXE
+    </button>
+
+  </div>
+
+  <div class="importBox">
+
+    <div class="importIcon">
+      🖥️
+    </div>
+
+    <h2>
+      Scanner de jogos Windows
+    </h2>
+
+    <p>
+      No navegador, o Android permite selecionar
+      arquivos através do seletor do sistema.
+      Em uma versão Android nativa, este módulo
+      poderá usar o Storage Access Framework para
+      pesquisar uma pasta e seus subdiretórios.
+    </p>
+
+    <button
+      class="primary"
+      id="scanFileButton">
+      Selecionar EXE
+    </button>
+
+    <input
+      id="exeInput"
+      type="file"
+      accept=".exe">
+
+  </div>
+
+  <div
+    class="sectionHeader">
+
+    <div>
+      <h2>
+        Executáveis encontrados
+      </h2>
+
+      <span id="exeCount">
+        0 encontrados
+      </span>
+    </div>
+
+  </div>
+
+  <div
+    id="exeResults"
+    class="grid">
+  </div>
+
+</div>
+
+<!-- =====================================================
+     CONTROLLER
+===================================================== -->
+
+<div
+  class="page"
+  id="page-controller">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Controles virtuais
+      </h2>
+
+      <span>
+        Controle touch AURA
+      </span>
+    </div>
+
+  </div>
+
+  <div class="controller">
+
+    <div class="controllerTitle">
+      <strong>
+        AURA CONTROLLER
+      </strong>
+    </div>
+
+    <div class="controlArea">
+
+      <div
+        class="stick"
+        id="stick">
+
+        <div
+          class="stickInner"
+          id="stickInner">
+        </div>
+
+      </div>
+
+      <div class="dpad">
+
+        <button
+          class="up"
+          data-control="UP">
+          ▲
+        </button>
+
+        <button
+          class="left"
+          data-control="LEFT">
+          ◀
+        </button>
+
+        <button
+          class="center">
+          •
+        </button>
+
+        <button
+          class="right"
+          data-control="RIGHT">
+          ▶
+        </button>
+
+        <button
+          class="down"
+          data-control="DOWN">
+          ▼
+        </button>
+
+      </div>
+
+      <div class="buttons">
+
+        <button
+          class="padBtn a"
+          data-control="A">
+          A
+        </button>
+
+        <button
+          class="padBtn b"
+          data-control="B">
+          B
+        </button>
+
+        <button
+          class="padBtn x"
+          data-control="X">
+          X
+        </button>
+
+        <button
+          class="padBtn y"
+          data-control="Y">
+          Y
+        </button>
+
+      </div>
+
+    </div>
+
+    <button
+      class="secondary"
+      style="width:100%"
+      onclick="saveControllerLayout()">
+      💾 Salvar layout
+    </button>
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     COMPATIBILITY
+===================================================== -->
+
+<div
+  class="page"
+  id="page-compat">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Compatibilidade Windows
+      </h2>
+
+      <span>
+        AURA Compatibility Engine
+      </span>
+    </div>
+
+  </div>
+
+  <div class="compatHero">
+
+    <div class="engineStatus">
+
+      <div class="statusDot"></div>
+
+      <div>
+        <strong>
+          Módulo preparado
+        </strong>
+
+        <span>
+          Ponte Android disponível para integração nativa
+        </span>
+      </div>
+
+    </div>
+
+    <p style="
+      color:var(--muted);
+      font-size:12px;
+      line-height:1.7;
+      margin:0;
+    ">
+      Esta interface mantém a configuração do
+      ambiente separada do launcher. A execução
+      efetiva de aplicações Windows deverá ser
+      fornecida por um motor nativo compatível
+      com Android.
+    </p>
+
+    <div class="compatCards">
+
+      <div class="compatOption">
+
+        <strong>
+          Wine
+        </strong>
+
+        <span>
+          Camada de compatibilidade Windows.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+      <div class="compatOption">
+
+        <strong>
+          Box64
+        </strong>
+
+        <span>
+          Compatibilidade para aplicações
+          x86_64.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+      <div class="compatOption">
+
+        <strong>
+          Box86
+        </strong>
+
+        <span>
+          Compatibilidade para aplicações
+          x86.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+      <div class="compatOption">
+
+        <strong>
+          DXVK
+        </strong>
+
+        <span>
+          Camada gráfica para APIs
+          DirectX compatíveis.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+      <div class="compatOption">
+
+        <strong>
+          VKD3D
+        </strong>
+
+        <span>
+          Suporte planejado para
+          Direct3D 12.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+      <div class="compatOption">
+
+        <strong>
+          Vulkan
+        </strong>
+
+        <span>
+          Backend gráfico para a
+          futura camada nativa.
+        </span>
+
+        <span class="engineBadge">
+          PREPARADO
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="sectionHeader">
+    <h2>
+      Configuração padrão
+    </h2>
+  </div>
+
+  <div class="settingsGrid">
+
+    <div class="settingCard">
+
+      <h3>
+        Wine
+      </h3>
+
+      <p>
+        Versão utilizada pelo perfil
+        de compatibilidade.
+      </p>
+
+      <select
+        id="wineVersion"
+        style="width:100%">
+        <option>Wine Default</option>
+        <option>Wine Stable</option>
+        <option>Wine Experimental</option>
+      </select>
+
+    </div>
+
+    <div class="settingCard">
+
+      <h3>
+        Box64
+      </h3>
+
+      <p>
+        Perfil de tradução x86_64.
+      </p>
+
+      <select
+        id="box64Mode"
+        style="width:100%">
+        <option>Performance</option>
+        <option>Balanced</option>
+        <option>Compatibility</option>
+      </select>
+
+    </div>
+
+    <div class="settingCard">
+
+      <h3>
+        Renderização
+      </h3>
+
+      <p>
+        Backend gráfico preferencial.
+      </p>
+
+      <select
+        id="renderer"
+        style="width:100%">
+        <option>Auto</option>
+        <option>Vulkan</option>
+        <option>OpenGL</option>
+      </select>
+
+    </div>
+
+    <div class="settingCard">
+
+      <h3>
+        DirectX
+      </h3>
+
+      <p>
+        Camada gráfica selecionada.
+      </p>
+
+      <select
+        id="dxMode"
+        style="width:100%">
+        <option>Auto</option>
+        <option>DXVK</option>
+        <option>VKD3D</option>
+      </select>
+
+    </div>
+
+  </div>
+
+  <div style="
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+  ">
+
+    <button
+      class="primary"
+      onclick="saveCompatibility()">
+      💾 Salvar configuração
+    </button>
+
+    <button
+      class="secondary"
+      onclick="resetCompatibility()">
+      Restaurar padrão
+    </button>
+
+  </div>
+
+</div>
+
+<!-- =====================================================
+     SETTINGS
+===================================================== -->
+
+<div
+  class="page"
+  id="page-settings">
+
+  <div class="sectionHeader">
+
+    <div>
+      <h2>
+        Configurações
+      </h2>
+
+      <span>
+        Personalize o AURA GameHub
+      </span>
+    </div>
+
+  </div>
+
+  <div class="settingsGrid">
+
+    <div class="settingCard">
+
+      <h3>
+        Interface
+      </h3>
+
+      <p>
+        Aparência e comportamento.
+      </p>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Modo compacto
+          </strong>
+
+          <span>
+            Reduz o tamanho dos cards
+          </span>
+        </div>
+
+        <button
+          class="switch"
+          data-setting="compact">
+          <span></span>
+        </button>
+
+      </div>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Animações
+          </strong>
+
+          <span>
+            Transições da interface
+          </span>
+        </div>
+
+        <button
+          class="switch on"
+          data-setting="animations">
+          <span></span>
+        </button>
+
+      </div>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Tema
+          </strong>
+
+          <span>
+            Cor principal
+          </span>
+        </div>
+
+        <select id="themeSelect">
+
+          <option value="orange">
+            AURA Orange
+          </option>
+
+          <option value="blue">
+            Cyber Blue
+          </option>
+
+          <option value="purple">
+            Neon Purple
+          </option>
+
+          <option value="green">
+            Matrix Green
+          </option>
+
+        </select>
+
+      </div>
+
+    </div>
+
+    <div class="settingCard">
+
+      <h3>
+        Jogos
+      </h3>
+
+      <p>
+        Comportamento da biblioteca.
+      </p>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Registrar recentes
+          </strong>
+
+          <span>
+            Salva os últimos jogos
+          </span>
+        </div>
+
+        <button
+          class="switch on"
+          data-setting="recent">
+          <span></span>
+        </button>
+
+      </div>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Confirmação ao remover
+          </strong>
+
+          <span>
+            Evita exclusões acidentais
+          </span>
+        </div>
+
+        <button
+          class="switch on"
+          data-setting="confirmDelete">
+          <span></span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="settingCard">
+
+      <h3>
+        Sistema
+      </h3>
+
+      <p>
+        Armazenamento e dados.
+      </p>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Biblioteca
+          </strong>
+
+          <span>
+            Registros armazenados
+          </span>
+        </div>
+
+        <button
+          class="secondary"
+          onclick="clearLibrary()">
+          Limpar
+        </button>
+
+      </div>
+
+      <div class="settingRow">
+
+        <div class="settingText">
+          <strong>
+            Versão
+          </strong>
+
+          <span>
+            AURA GameHub
+          </span>
+        </div>
+
+        <strong>
+          V2.5
+        </strong>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
+
+<!-- =====================================================
+     PLAYER
+===================================================== -->
+
+<div class="player">
+
+  <div
+    class="playerCover"
+    id="playerCover">
+    🎮
+  </div>
+
+  <div class="playerInfo">
+
+    <strong id="playerName">
+      Nenhum jogo selecionado
+    </strong>
+
+    <span id="playerStatus">
+      AURA GameHub
+    </span>
+
+  </div>
+
+  <div class="playerControls">
+
+    <button
+      class="iconBtn skip"
+      onclick="previousGame()">
+      ‹
+    </button>
+
+    <button
+      class="playMain"
+      id="mainPlay">
+      ▶
+    </button>
+
+    <button
+      class="iconBtn skip"
+      onclick="nextGame()">
+      ›
+    </button>
+
+  </div>
+
+  <div class="playerProgress">
+
+    <div
+      class="progressTrack"
+      id="progressTrack">
+
+      <div
+        class="progressFill"
+        id="progressFill">
+      </div>
+
+    </div>
+
+    <div class="time">
+
+      <span id="elapsed">
+        00:00
+      </span>
+
+      <span id="duration">
+        --:--
+      </span>
+
+    </div>
+
+  </div>
+
+  <div class="volume">
+
+    <input
+      id="volume"
+      type="range"
+      min="0"
+      max="100"
+      value="80">
+
+  </div>
+
+</div>
+
+</main>
+
+</div>
+
+<!-- =====================================================
+     MODAL
+===================================================== -->
+
+<div
+  class="modal"
+  id="gameModal">
 
   <div class="modalBox">
 
     <div class="modalHeader">
-      <h2 id="modalTitle">Jogo</h2>
-      <button class="close" onclick="closeModal()">×</button>
+
+      <h2 id="modalTitle">
+        Jogo
+      </h2>
+
+      <button
+        class="close"
+        onclick="closeModal()">
+        ×
+      </button>
+
     </div>
 
-    <div class="detailCover" id="modalCover">🎮</div>
+    <div
+      class="detailCover"
+      id="modalCover">
+      🎮
+    </div>
 
-    <p id="modalInfo" style="color:var(--muted);font-size:12px;line-height:1.6"></p>
+    <p
+      id="modalInfo"
+      style="
+        color:var(--muted);
+        font-size:12px;
+        line-height:1.7;
+      ">
+    </p>
 
-    <div style="display:flex;gap:8px;margin-top:20px">
+    <div style="
+      display:flex;
+      gap:8px;
+      margin-top:20px;
+    ">
 
       <button
         class="primary"
@@ -1576,30 +2556,45 @@ select{
 
     <button
       class="secondary"
-      style="width:100%;margin-top:8px"
+      style="
+        width:100%;
+        margin-top:8px;
+      "
       id="modalDelete">
-      🗑 Remover da biblioteca
+      🗑 Remover
     </button>
 
   </div>
 
 </div>
 
-<div class="toast" id="toast"></div>
+<div
+  class="toast"
+  id="toast">
+</div>
 
 <script>
 "use strict";
 
 /* ==========================================================
-   AURA GAMEHUB V2
-   CORE
+   STORAGE
 ========================================================== */
 
-const STORAGE_KEY = "AURA_GAMEHUB_V2_LIBRARY";
-const SETTINGS_KEY = "AURA_GAMEHUB_V2_SETTINGS";
+const LIBRARY_KEY =
+  "AURA_GAMEHUB_V25_LIBRARY";
 
-let games = [];
-let settings = {
+const SETTINGS_KEY =
+  "AURA_GAMEHUB_V25_SETTINGS";
+
+const COMPAT_KEY =
+  "AURA_GAMEHUB_V25_COMPAT";
+
+const CONTROLLER_KEY =
+  "AURA_GAMEHUB_V25_CONTROLLER";
+
+let games=[];
+
+let settings={
   compact:false,
   animations:true,
   recent:true,
@@ -1607,75 +2602,25 @@ let settings = {
   theme:"orange"
 };
 
-let currentGame = null;
-let currentIndex = -1;
-let searchTerm = "";
-let selectedModalId = null;
+let compatibility={
+  wine:"Wine Default",
+  box64:"Performance",
+  renderer:"Auto",
+  dx:"Auto"
+};
+
+let currentGame=null;
+let currentIndex=-1;
+let searchTerm="";
+let selectedModalId=null;
 
 /* ==========================================================
-   STORAGE
+   UTILITIES
 ========================================================== */
 
-function saveGames(){
-  try{
-    const clean = games.map(g => ({
-      id:g.id,
-      name:g.name,
-      type:g.type,
-      size:g.size,
-      date:g.date,
-      favorite:!!g.favorite,
-      recentAt:g.recentAt || 0
-    }));
+function escapeHTML(value){
 
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(clean));
-  }catch(e){
-    console.warn(e);
-  }
-}
-
-function loadGames(){
-
-  try{
-    const saved = JSON.parse(
-      localStorage.getItem(STORAGE_KEY) || "[]"
-    );
-
-    if(Array.isArray(saved)){
-      games = saved;
-    }
-  }catch(e){
-    games=[];
-  }
-}
-
-function saveSettings(){
-  localStorage.setItem(
-    SETTINGS_KEY,
-    JSON.stringify(settings)
-  );
-}
-
-function loadSettings(){
-
-  try{
-    const saved = JSON.parse(
-      localStorage.getItem(SETTINGS_KEY) || "null"
-    );
-
-    if(saved){
-      settings = {...settings,...saved};
-    }
-  }catch(e){}
-}
-
-/* ==========================================================
-   UTIL
-========================================================== */
-
-function escapeHTML(str){
-
-  return String(str)
+  return String(value)
     .replaceAll("&","&amp;")
     .replaceAll("<","&lt;")
     .replaceAll(">","&gt;")
@@ -1685,44 +2630,211 @@ function escapeHTML(str){
 
 function formatBytes(bytes){
 
-  if(!bytes || bytes <= 0) return "Tamanho desconhecido";
+  if(!bytes || bytes<=0){
+    return "Tamanho desconhecido";
+  }
 
-  const units=["B","KB","MB","GB","TB"];
-  const i=Math.floor(
+  const units=[
+    "B",
+    "KB",
+    "MB",
+    "GB",
+    "TB"
+  ];
+
+  const index=Math.floor(
     Math.log(bytes)/Math.log(1024)
   );
 
   return (
-    bytes/Math.pow(1024,i)
-  ).toFixed(i ? 1 : 0)+" "+units[i];
-}
-
-function formatTime(seconds){
-
-  seconds=Math.max(0,Math.floor(seconds||0));
-
-  const m=Math.floor(seconds/60);
-  const s=seconds%60;
-
-  return (
-    String(m).padStart(2,"0")+
-    ":"+
-    String(s).padStart(2,"0")
-  );
+    bytes/
+    Math.pow(1024,index)
+  ).toFixed(index?1:0)
+  +" "+
+  units[index];
 }
 
 function toast(message){
 
-  const el=document.getElementById("toast");
+  const el=
+    document.getElementById("toast");
 
   el.textContent=message;
+
   el.classList.add("show");
 
-  clearTimeout(window.__toastTimer);
+  clearTimeout(
+    window.__auraToast
+  );
 
-  window.__toastTimer=setTimeout(()=>{
-    el.classList.remove("show");
-  },2200);
+  window.__auraToast=
+    setTimeout(()=>{
+      el.classList.remove("show");
+    },2200);
+}
+
+/* ==========================================================
+   SAVE / LOAD
+========================================================== */
+
+function saveGames(){
+
+  const clean=games.map(game=>({
+
+    id:game.id,
+    name:game.name,
+    type:game.type,
+    size:game.size,
+    date:game.date,
+    favorite:!!game.favorite,
+    recentAt:game.recentAt||0,
+    source:game.source||"manual"
+
+  }));
+
+  localStorage.setItem(
+    LIBRARY_KEY,
+    JSON.stringify(clean)
+  );
+}
+
+function loadGames(){
+
+  try{
+
+    games=
+      JSON.parse(
+        localStorage.getItem(
+          LIBRARY_KEY
+        )||"[]"
+      );
+
+    if(!Array.isArray(games)){
+      games=[];
+    }
+
+  }catch(e){
+
+    games=[];
+  }
+}
+
+function saveSettings(){
+
+  localStorage.setItem(
+    SETTINGS_KEY,
+    JSON.stringify(settings)
+  );
+}
+
+function loadSettings(){
+
+  try{
+
+    const saved=
+      JSON.parse(
+        localStorage.getItem(
+          SETTINGS_KEY
+        )||"null"
+      );
+
+    if(saved){
+      settings={
+        ...settings,
+        ...saved
+      };
+    }
+
+  }catch(e){}
+}
+
+function saveCompatibility(){
+
+  compatibility={
+    wine:
+      document.getElementById(
+        "wineVersion"
+      ).value,
+
+    box64:
+      document.getElementById(
+        "box64Mode"
+      ).value,
+
+    renderer:
+      document.getElementById(
+        "renderer"
+      ).value,
+
+    dx:
+      document.getElementById(
+        "dxMode"
+      ).value
+  };
+
+  localStorage.setItem(
+    COMPAT_KEY,
+    JSON.stringify(
+      compatibility
+    )
+  );
+
+  toast(
+    "Compatibilidade salva"
+  );
+}
+
+function loadCompatibility(){
+
+  try{
+
+    const saved=
+      JSON.parse(
+        localStorage.getItem(
+          COMPAT_KEY
+        )||"null"
+      );
+
+    if(saved){
+      compatibility={
+        ...compatibility,
+        ...saved
+      };
+    }
+
+  }catch(e){}
+}
+
+function applyCompatibility(){
+
+  document.getElementById(
+    "wineVersion"
+  ).value=compatibility.wine;
+
+  document.getElementById(
+    "box64Mode"
+  ).value=compatibility.box64;
+
+  document.getElementById(
+    "renderer"
+  ).value=compatibility.renderer;
+
+  document.getElementById(
+    "dxMode"
+  ).value=compatibility.dx;
+}
+
+function resetCompatibility(){
+
+  compatibility={
+    wine:"Wine Default",
+    box64:"Performance",
+    renderer:"Auto",
+    dx:"Auto"
+  };
+
+  applyCompatibility();
+  saveCompatibility();
 }
 
 /* ==========================================================
@@ -1732,215 +2844,398 @@ function toast(message){
 function navigate(page){
 
   document.querySelectorAll(".page")
-    .forEach(p=>p.classList.remove("active"));
-
-  const target=document.getElementById("page-"+page);
-
-  if(target){
-    target.classList.add("active");
-  }
-
-  document.querySelectorAll(".navBtn")
-    .forEach(btn=>{
-      btn.classList.toggle(
-        "active",
-        btn.dataset.page===page
+    .forEach(element=>{
+      element.classList.remove(
+        "active"
       );
     });
 
-  document.getElementById("sidebar")
-    .classList.remove("open");
+  const target=
+    document.getElementById(
+      "page-"+page
+    );
+
+  if(target){
+    target.classList.add(
+      "active"
+    );
+  }
+
+  document.querySelectorAll(
+    ".navBtn"
+  ).forEach(button=>{
+
+    button.classList.toggle(
+      "active",
+      button.dataset.page===page
+    );
+
+  });
+
+  document.getElementById(
+    "sidebar"
+  ).classList.remove("open");
 
   renderAll();
 }
 
-document.querySelectorAll(".navBtn")
-.forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    navigate(btn.dataset.page);
-  });
+document.querySelectorAll(
+  ".navBtn"
+).forEach(button=>{
+
+  button.addEventListener(
+    "click",
+    ()=>{
+      navigate(
+        button.dataset.page
+      );
+    }
+  );
+
 });
 
-document.getElementById("mobileMenu")
-.addEventListener("click",()=>{
-  document.getElementById("sidebar")
-    .classList.toggle("open");
-});
+document.getElementById(
+  "mobileMenu"
+).addEventListener(
+  "click",
+  ()=>{
+    document.getElementById(
+      "sidebar"
+    ).classList.toggle("open");
+  }
+);
 
 /* ==========================================================
    SEARCH
 ========================================================== */
 
-document.getElementById("searchInput")
-.addEventListener("input",e=>{
+document.getElementById(
+  "searchInput"
+).addEventListener(
+  "input",
+  event=>{
 
-  searchTerm=e.target.value
-    .trim()
-    .toLowerCase();
+    searchTerm=
+      event.target.value
+      .trim()
+      .toLowerCase();
 
-  renderAll();
-});
+    renderAll();
+  }
+);
 
 /* ==========================================================
    GAME CARD
 ========================================================== */
 
-function getFilteredGames(list){
-
-  if(!searchTerm) return list;
-
-  return list.filter(g =>
-    g.name.toLowerCase().includes(searchTerm) ||
-    g.type.toLowerCase().includes(searchTerm)
-  );
-}
-
 function gameCard(game){
 
-  const favorite=game.favorite ? "★" : "☆";
-
   return `
-    <article class="gameCard">
 
-      <div class="cover">
-        <div class="coverIcon">🎮</div>
+  <article class="gameCard">
+
+    <div class="cover">
+
+      <div class="coverIcon">
+        ${
+          game.type==="EXE"
+          ? "🖥️"
+          : "🎮"
+        }
       </div>
 
-      <div class="cardBody">
+    </div>
 
-        <div
-          class="gameName"
-          title="${escapeHTML(game.name)}">
-          ${escapeHTML(game.name)}
-        </div>
+    <div class="cardBody">
 
-        <div class="gameMeta">
-          <span>${escapeHTML(game.type)}</span>
-          <span>•</span>
-          <span>${escapeHTML(game.size)}</span>
-        </div>
+      <div
+        class="gameName"
+        title="${escapeHTML(game.name)}">
 
-        <div class="cardActions">
-
-          <button
-            class="cardBtn play"
-            onclick="playGame('${game.id}')">
-            ▶ Abrir
-          </button>
-
-          <button
-            class="cardBtn"
-            onclick="toggleFavorite('${game.id}')">
-            ${favorite}
-          </button>
-
-          <button
-            class="cardBtn"
-            onclick="showDetails('${game.id}')">
-            ⋯
-          </button>
-
-        </div>
+        ${escapeHTML(game.name)}
 
       </div>
 
-    </article>
+      <div class="gameMeta">
+
+        <span>
+          ${escapeHTML(game.type)}
+        </span>
+
+        <span>•</span>
+
+        <span>
+          ${escapeHTML(game.size)}
+        </span>
+
+      </div>
+
+      <div class="cardActions">
+
+        <button
+          class="cardBtn play"
+          onclick="
+            playGame('${game.id}')
+          ">
+          ▶ Abrir
+        </button>
+
+        <button
+          class="cardBtn"
+          onclick="
+            toggleFavorite('${game.id}')
+          ">
+          ${
+            game.favorite
+            ? "★"
+            : "☆"
+          }
+        </button>
+
+        <button
+          class="cardBtn"
+          onclick="
+            showDetails('${game.id}')
+          ">
+          ⋯
+        </button>
+
+      </div>
+
+    </div>
+
+  </article>
+
   `;
 }
 
 /* ==========================================================
-   RENDER
+   FILTER
+========================================================== */
+
+function filterGames(list){
+
+  if(!searchTerm){
+    return list;
+  }
+
+  return list.filter(game=>
+
+    game.name
+      .toLowerCase()
+      .includes(searchTerm)
+
+    ||
+
+    game.type
+      .toLowerCase()
+      .includes(searchTerm)
+
+  );
+}
+
+/* ==========================================================
+   GRID RENDER
 ========================================================== */
 
 function renderGrid(id,list){
 
-  const el=document.getElementById(id);
+  const element=
+    document.getElementById(id);
 
-  if(!el) return;
+  if(!element){
+    return;
+  }
 
-  const filtered=getFilteredGames(list);
+  const filtered=
+    filterGames(list);
 
-  if(filtered.length===0){
+  if(!filtered.length){
 
-    el.innerHTML=`
-      <div class="empty" style="grid-column:1/-1">
-        <div class="emptyIcon">🎮</div>
-        <strong>Nenhum jogo encontrado</strong>
-        <span style="margin-top:6px">
-          Adicione um jogo ou altere sua pesquisa.
+    element.innerHTML=`
+
+      <div
+        class="empty"
+        style="grid-column:1/-1">
+
+        <div class="emptyIcon">
+          🎮
+        </div>
+
+        <strong>
+          Nenhum jogo encontrado
+        </strong>
+
+        <span
+          style="margin-top:6px">
+          Adicione um jogo ou altere
+          sua pesquisa.
         </span>
+
       </div>
+
     `;
 
     return;
   }
 
-  el.innerHTML=filtered
+  element.innerHTML=
+    filtered
     .map(gameCard)
     .join("");
 }
 
 function renderAll(){
 
-  document.getElementById("libraryCount")
-    .textContent=games.length;
+  document.getElementById(
+    "libraryCount"
+  ).textContent=
+    games.length;
 
-  document.getElementById("homeCount")
-    .textContent=
-      games.length+
-      (games.length===1 ? " jogo" : " jogos");
+  document.getElementById(
+    "homeCount"
+  ).textContent=
+    games.length+
+    (
+      games.length===1
+      ? " jogo"
+      : " jogos"
+    );
 
-  const recent=[...games]
-    .filter(g=>g.recentAt)
-    .sort((a,b)=>b.recentAt-a.recentAt)
-    .slice(0,6);
+  const recent=
+    [...games]
+    .filter(game=>game.recentAt)
+    .sort(
+      (a,b)=>
+        b.recentAt-a.recentAt
+    )
+    .slice(0,8);
 
-  const favorites=games.filter(g=>g.favorite);
+  const favorites=
+    games.filter(
+      game=>game.favorite
+    );
 
-  renderGrid("homeRecent",recent);
-  renderGrid("homeLibrary",games.slice(0,8));
-  renderGrid("libraryGrid",games);
-  renderGrid("favoritesGrid",favorites);
-  renderGrid("recentGrid",recent);
+  renderGrid(
+    "homeRecent",
+    recent
+  );
+
+  renderGrid(
+    "homeLibrary",
+    games.slice(0,8)
+  );
+
+  renderGrid(
+    "libraryGrid",
+    games
+  );
+
+  renderGrid(
+    "favoritesGrid",
+    favorites
+  );
+
+  renderGrid(
+    "recentGrid",
+    recent
+  );
+
+  renderExeResults();
 }
 
 /* ==========================================================
-   IMPORT FILE
+   ADD FILE
 ========================================================== */
 
-document.getElementById("chooseFile")
-.addEventListener("click",()=>{
-  document.getElementById("fileInput").click();
-});
+document.getElementById(
+  "chooseFile"
+).addEventListener(
+  "click",
+  ()=>{
+    document.getElementById(
+      "fileInput"
+    ).click();
+  }
+);
 
-document.getElementById("fileInput")
-.addEventListener("change",async e=>{
+document.getElementById(
+  "fileInput"
+).addEventListener(
+  "change",
+  event=>{
 
-  const file=e.target.files[0];
+    const file=
+      event.target.files[0];
 
-  if(!file) return;
+    if(!file){
+      return;
+    }
+
+    addFileToLibrary(file);
+
+    event.target.value="";
+  }
+);
+
+function addFileToLibrary(file){
 
   const extension=
     file.name.includes(".")
-    ? file.name.split(".").pop().toUpperCase()
+    ? file.name
+        .split(".")
+        .pop()
+        .toUpperCase()
     : "FILE";
 
+  const name=
+    file.name.replace(
+      /\.[^/.]+$/,
+      ""
+    );
+
+  const exists=
+    games.some(game=>
+      game.name.toLowerCase()===
+      name.toLowerCase()
+    );
+
+  if(exists){
+
+    toast(
+      "Esse jogo já está na biblioteca"
+    );
+
+    return;
+  }
+
   const game={
+
     id:
       Date.now().toString(36)+
-      Math.random().toString(36).slice(2),
+      Math.random()
+      .toString(36)
+      .slice(2),
 
-    name:file.name.replace(/\.[^/.]+$/,""),
+    name,
 
     type:extension,
 
-    size:formatBytes(file.size),
+    size:
+      formatBytes(file.size),
 
-    date:new Date().toLocaleDateString("pt-BR"),
+    date:
+      new Date()
+      .toLocaleDateString(
+        "pt-BR"
+      ),
 
     favorite:false,
 
-    recentAt:0
+    recentAt:0,
+
+    source:"file"
+
   };
 
   games.unshift(game);
@@ -1949,100 +3244,394 @@ document.getElementById("fileInput")
   renderAll();
 
   toast(
-    `"${game.name}" adicionado à biblioteca`
+    `"${name}" adicionado`
   );
-
-  e.target.value="";
-});
+}
 
 /* ==========================================================
-   FAVORITES
+   EXE SCANNER
+========================================================== */
+
+document.getElementById(
+  "scanExeBtn"
+).addEventListener(
+  "click",
+  ()=>{
+    document.getElementById(
+      "exeInput"
+    ).click();
+  }
+);
+
+document.getElementById(
+  "scanFileButton"
+).addEventListener(
+  "click",
+  ()=>{
+    document.getElementById(
+      "exeInput"
+    ).click();
+  }
+);
+
+document.getElementById(
+  "exeInput"
+).addEventListener(
+  "change",
+  event=>{
+
+    const files=
+      Array.from(
+        event.target.files
+      );
+
+    if(!files.length){
+      return;
+    }
+
+    let added=0;
+
+    files.forEach(file=>{
+
+      if(
+        !file.name
+        .toLowerCase()
+        .endsWith(".exe")
+      ){
+        return;
+      }
+
+      const name=
+        file.name.replace(
+          /\.exe$/i,
+          ""
+        );
+
+      const exists=
+        games.some(game=>
+          game.name
+            .toLowerCase()===
+          name.toLowerCase()
+        );
+
+      if(exists){
+        return;
+      }
+
+      games.unshift({
+
+        id:
+          Date.now()
+          .toString(36)+
+          Math.random()
+          .toString(36)
+          .slice(2),
+
+        name,
+
+        type:"EXE",
+
+        size:
+          formatBytes(
+            file.size
+          ),
+
+        date:
+          new Date()
+          .toLocaleDateString(
+            "pt-BR"
+          ),
+
+        favorite:false,
+
+        recentAt:0,
+
+        source:"exe"
+
+      });
+
+      added++;
+
+    });
+
+    saveGames();
+    renderAll();
+
+    toast(
+      added+
+      (
+        added===1
+        ? " EXE encontrado"
+        : " EXEs encontrados"
+      )
+    );
+
+    event.target.value="";
+  }
+);
+
+function renderExeResults(){
+
+  const element=
+    document.getElementById(
+      "exeResults"
+    );
+
+  if(!element){
+    return;
+  }
+
+  const exeGames=
+    filterGames(
+      games.filter(
+        game=>game.type==="EXE"
+      )
+    );
+
+  document.getElementById(
+    "exeCount"
+  ).textContent=
+    exeGames.length+
+    (
+      exeGames.length===1
+      ? " encontrado"
+      : " encontrados"
+    );
+
+  if(!exeGames.length){
+
+    element.innerHTML=`
+
+      <div
+        class="empty"
+        style="grid-column:1/-1">
+
+        <div class="emptyIcon">
+          🖥️
+        </div>
+
+        <strong>
+          Nenhum EXE cadastrado
+        </strong>
+
+        <span style="margin-top:6px">
+          Toque em "Procurar EXE"
+          para selecionar um executável.
+        </span>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+  element.innerHTML=
+    exeGames
+      .map(gameCard)
+      .join("");
+}
+
+/* ==========================================================
+   FAVORITE
 ========================================================== */
 
 function toggleFavorite(id){
 
-  const game=games.find(g=>g.id===id);
+  const game=
+    games.find(
+      item=>item.id===id
+    );
 
-  if(!game) return;
+  if(!game){
+    return;
+  }
 
-  game.favorite=!game.favorite;
+  game.favorite=
+    !game.favorite;
 
   saveGames();
   renderAll();
 
   toast(
     game.favorite
-      ? "Adicionado aos favoritos ★"
-      : "Removido dos favoritos"
+    ? "Adicionado aos favoritos ★"
+    : "Removido dos favoritos"
   );
 }
 
 /* ==========================================================
-   PLAY
+   GAME LAUNCHER
 ========================================================== */
 
 function playGame(id){
 
-  const game=games.find(g=>g.id===id);
+  const game=
+    games.find(
+      item=>item.id===id
+    );
 
-  if(!game) return;
+  if(!game){
+    return;
+  }
 
   currentGame=game;
-  currentIndex=games.findIndex(
-    g=>g.id===id
-  );
 
-  game.recentAt=Date.now();
+  currentIndex=
+    games.findIndex(
+      item=>item.id===id
+    );
+
+  game.recentAt=
+    Date.now();
 
   if(settings.recent){
     saveGames();
   }
 
-  document.getElementById("playerName")
-    .textContent=game.name;
+  document.getElementById(
+    "playerName"
+  ).textContent=
+    game.name;
 
-  document.getElementById("playerStatus")
-    .textContent=
-      game.type+
-      " • "+
-      game.size;
+  document.getElementById(
+    "playerStatus"
+  ).textContent=
+    game.type+
+    " • "+
+    game.size;
 
-  document.getElementById("playerCover")
-    .textContent="🎮";
+  document.getElementById(
+    "playerCover"
+  ).textContent=
+    game.type==="EXE"
+    ? "🖥️"
+    : "🎮";
 
-  document.getElementById("mainPlay")
-    .textContent="■";
+  document.getElementById(
+    "mainPlay"
+  ).textContent=
+    "■";
 
-  document.getElementById("progressFill")
-    .style.width="100%";
+  document.getElementById(
+    "progressFill"
+  ).style.width=
+    "100%";
 
-  toast(
-    "Jogo selecionado: "+game.name
-  );
+  if(game.type==="EXE"){
 
-  renderAll();
+    toast(
+      "EXE preparado para o motor nativo"
+    );
 
-  /*
-    Importante:
-    O HTML registra/seleciona o jogo.
-    A execução real de EXE requer integração
-    com uma camada nativa/emulador Android.
-  */
-}
+  }else{
 
-document.getElementById("mainPlay")
-.addEventListener("click",()=>{
-
-  if(!currentGame){
-
-    toast("Selecione um jogo primeiro");
-    return;
+    toast(
+      "Jogo selecionado"
+    );
   }
 
-  toast(
-    "Jogo pronto para execução pelo motor nativo"
-  );
-});
+  renderAll();
+}
+
+/* ==========================================================
+   ANDROID BRIDGE
+========================================================== */
+
+window.AURA_ANDROID={
+
+  isAvailable(){
+
+    return !!(
+      window.AURA &&
+      typeof window.AURA
+        .launchExe==="function"
+    );
+
+  },
+
+  launchExe(game){
+
+    if(
+      window.AURA &&
+      typeof window.AURA
+        .launchExe==="function"
+    ){
+
+      window.AURA.launchExe(
+        JSON.stringify(game)
+      );
+
+      return true;
+    }
+
+    return false;
+  },
+
+  scanStorage(){
+
+    if(
+      window.AURA &&
+      typeof window.AURA
+        .scanExe==="function"
+    ){
+
+      window.AURA.scanExe();
+
+      return true;
+    }
+
+    return false;
+  }
+
+};
+
+document.getElementById(
+  "mainPlay"
+).addEventListener(
+  "click",
+  ()=>{
+
+    if(!currentGame){
+
+      toast(
+        "Selecione um jogo primeiro"
+      );
+
+      return;
+    }
+
+    if(
+      currentGame.type==="EXE"
+    ){
+
+      if(
+        window.AURA_ANDROID
+          .launchExe(
+            currentGame
+          )
+      ){
+
+        toast(
+          "Enviando EXE ao motor Android"
+        );
+
+      }else{
+
+        toast(
+          "Ponte Android ainda não conectada"
+        );
+
+      }
+
+      return;
+    }
+
+    toast(
+      "Jogo preparado para execução"
+    );
+  }
+);
 
 /* ==========================================================
    NEXT / PREVIOUS
@@ -2051,27 +3640,44 @@ document.getElementById("mainPlay")
 function nextGame(){
 
   if(!games.length){
-    toast("Biblioteca vazia");
+
+    toast(
+      "Biblioteca vazia"
+    );
+
     return;
   }
 
   currentIndex=
-    (currentIndex+1)%games.length;
+    (currentIndex+1)%
+    games.length;
 
-  playGame(games[currentIndex].id);
+  playGame(
+    games[currentIndex].id
+  );
 }
 
 function previousGame(){
 
   if(!games.length){
-    toast("Biblioteca vazia");
+
+    toast(
+      "Biblioteca vazia"
+    );
+
     return;
   }
 
   currentIndex=
-    (currentIndex-1+games.length)%games.length;
+    (
+      currentIndex-1+
+      games.length
+    )%
+    games.length;
 
-  playGame(games[currentIndex].id);
+  playGame(
+    games[currentIndex].id
+  );
 }
 
 /* ==========================================================
@@ -2080,117 +3686,201 @@ function previousGame(){
 
 function showDetails(id){
 
-  const game=games.find(g=>g.id===id);
+  const game=
+    games.find(
+      item=>item.id===id
+    );
 
-  if(!game) return;
+  if(!game){
+    return;
+  }
 
   selectedModalId=id;
 
-  document.getElementById("modalTitle")
-    .textContent=game.name;
+  document.getElementById(
+    "modalTitle"
+  ).textContent=
+    game.name;
 
-  document.getElementById("modalCover")
-    .textContent="🎮";
+  document.getElementById(
+    "modalCover"
+  ).textContent=
+    game.type==="EXE"
+    ? "🖥️"
+    : "🎮";
 
-  document.getElementById("modalInfo")
-    .innerHTML=`
-      <strong>Tipo:</strong> ${escapeHTML(game.type)}<br>
-      <strong>Tamanho:</strong> ${escapeHTML(game.size)}<br>
-      <strong>Adicionado:</strong> ${escapeHTML(game.date)}<br>
-      <strong>Favorito:</strong> ${game.favorite ? "Sim" : "Não"}
-    `;
+  document.getElementById(
+    "modalInfo"
+  ).innerHTML=`
 
-  document.getElementById("modalFavorite")
-    .textContent=
-      game.favorite
-      ? "★ Remover favorito"
-      : "★ Favoritar";
+    <strong>Tipo:</strong>
+    ${escapeHTML(game.type)}
+    <br>
 
-  document.getElementById("gameModal")
-    .classList.add("show");
+    <strong>Tamanho:</strong>
+    ${escapeHTML(game.size)}
+    <br>
+
+    <strong>Adicionado:</strong>
+    ${escapeHTML(game.date)}
+    <br>
+
+    <strong>Fonte:</strong>
+    ${escapeHTML(game.source)}
+    <br>
+
+    <strong>Favorito:</strong>
+    ${game.favorite?"Sim":"Não"}
+
+  `;
+
+  document.getElementById(
+    "modalFavorite"
+  ).textContent=
+    game.favorite
+    ? "★ Remover favorito"
+    : "★ Favoritar";
+
+  document.getElementById(
+    "gameModal"
+  ).classList.add("show");
 }
 
 function closeModal(){
 
-  document.getElementById("gameModal")
-    .classList.remove("show");
+  document.getElementById(
+    "gameModal"
+  ).classList.remove("show");
 
   selectedModalId=null;
 }
 
-document.getElementById("modalPlay")
-.addEventListener("click",()=>{
+document.getElementById(
+  "modalPlay"
+).addEventListener(
+  "click",
+  ()=>{
 
-  if(selectedModalId){
-    playGame(selectedModalId);
+    if(selectedModalId){
+
+      playGame(
+        selectedModalId
+      );
+
+      closeModal();
+    }
+
+  }
+);
+
+document.getElementById(
+  "modalFavorite"
+).addEventListener(
+  "click",
+  ()=>{
+
+    if(!selectedModalId){
+      return;
+    }
+
+    toggleFavorite(
+      selectedModalId
+    );
+
+    showDetails(
+      selectedModalId
+    );
+  }
+);
+
+document.getElementById(
+  "modalDelete"
+).addEventListener(
+  "click",
+  ()=>{
+
+    if(!selectedModalId){
+      return;
+    }
+
+    const game=
+      games.find(
+        item=>
+          item.id===
+          selectedModalId
+      );
+
+    if(!game){
+      return;
+    }
+
+    if(
+      settings.confirmDelete &&
+      !confirm(
+        `Remover "${game.name}" da biblioteca?`
+      )
+    ){
+
+      return;
+    }
+
+    games=
+      games.filter(
+        item=>
+          item.id!==
+          selectedModalId
+      );
+
+    saveGames();
+
     closeModal();
+    renderAll();
+
+    toast(
+      "Jogo removido"
+    );
+
   }
-});
+);
 
-document.getElementById("modalFavorite")
-.addEventListener("click",()=>{
+document.getElementById(
+  "gameModal"
+).addEventListener(
+  "click",
+  event=>{
 
-  if(selectedModalId){
-    toggleFavorite(selectedModalId);
-    showDetails(selectedModalId);
+    if(
+      event.target.id===
+      "gameModal"
+    ){
+
+      closeModal();
+    }
+
   }
-});
-
-document.getElementById("modalDelete")
-.addEventListener("click",()=>{
-
-  if(!selectedModalId) return;
-
-  const game=games.find(
-    g=>g.id===selectedModalId
-  );
-
-  if(!game) return;
-
-  if(
-    settings.confirmDelete &&
-    !confirm(
-      `Remover "${game.name}" da biblioteca?`
-    )
-  ){
-    return;
-  }
-
-  games=games.filter(
-    g=>g.id!==selectedModalId
-  );
-
-  saveGames();
-  closeModal();
-  renderAll();
-
-  toast("Jogo removido");
-});
-
-document.getElementById("gameModal")
-.addEventListener("click",e=>{
-
-  if(e.target.id==="gameModal"){
-    closeModal();
-  }
-});
+);
 
 /* ==========================================================
-   CLEAR LIBRARY
+   CLEAR
 ========================================================== */
 
 function clearLibrary(){
 
   if(!games.length){
-    toast("A biblioteca já está vazia");
+
+    toast(
+      "Biblioteca já está vazia"
+    );
+
     return;
   }
 
   if(
     !confirm(
-      "Deseja realmente limpar toda a biblioteca?"
+      "Limpar toda a biblioteca?"
     )
   ){
+
     return;
   }
 
@@ -2199,62 +3889,98 @@ function clearLibrary(){
   saveGames();
   renderAll();
 
-  toast("Biblioteca limpa");
+  toast(
+    "Biblioteca limpa"
+  );
 }
 
 /* ==========================================================
    SETTINGS
 ========================================================== */
 
-document.querySelectorAll(".switch")
-.forEach(sw=>{
+document.querySelectorAll(
+  ".switch"
+).forEach(button=>{
 
-  sw.addEventListener("click",()=>{
+  button.addEventListener(
+    "click",
+    ()=>{
 
-    const key=sw.dataset.setting;
+      const key=
+        button.dataset.setting;
 
-    settings[key]=!settings[key];
+      settings[key]=
+        !settings[key];
 
-    sw.classList.toggle(
-      "on",
-      settings[key]
-    );
+      button.classList.toggle(
+        "on",
+        settings[key]
+      );
+
+      saveSettings();
+
+      toast(
+        settings[key]
+        ? "Configuração ativada"
+        : "Configuração desativada"
+      );
+
+    }
+  );
+
+});
+
+document.getElementById(
+  "themeSelect"
+).addEventListener(
+  "change",
+  event=>{
+
+    settings.theme=
+      event.target.value;
 
     saveSettings();
 
+    applyTheme();
+
     toast(
-      settings[key]
-      ? "Configuração ativada"
-      : "Configuração desativada"
+      "Tema atualizado"
     );
-  });
-
-});
-
-document.getElementById("themeSelect")
-.addEventListener("change",e=>{
-
-  settings.theme=e.target.value;
-
-  saveSettings();
-  applyTheme();
-
-  toast("Tema atualizado");
-});
+  }
+);
 
 function applyTheme(){
 
-  const root=document.documentElement;
+  const root=
+    document.documentElement;
 
   const themes={
-    orange:["#ff7417","#ff9d52"],
-    blue:["#2587ff","#63b1ff"],
-    purple:["#9a5cff","#c094ff"],
-    green:["#28d17c","#70efa9"]
+
+    orange:[
+      "#ff7417",
+      "#ff9d52"
+    ],
+
+    blue:[
+      "#2587ff",
+      "#63b1ff"
+    ],
+
+    purple:[
+      "#9a5cff",
+      "#c094ff"
+    ],
+
+    green:[
+      "#28d17c",
+      "#70efa9"
+    ]
+
   };
 
   const selected=
-    themes[settings.theme] ||
+    themes[settings.theme]
+    ||
     themes.orange;
 
   root.style.setProperty(
@@ -2267,160 +3993,286 @@ function applyTheme(){
     selected[1]
   );
 
-  document.getElementById("themeSelect")
-    .value=settings.theme;
+  document.getElementById(
+    "themeSelect"
+  ).value=
+    settings.theme;
 }
 
 function applySwitches(){
 
-  document.querySelectorAll(".switch")
-    .forEach(sw=>{
+  document.querySelectorAll(
+    ".switch"
+  ).forEach(button=>{
 
-      const key=sw.dataset.setting;
+    const key=
+      button.dataset.setting;
 
-      sw.classList.toggle(
-        "on",
-        !!settings[key]
+    button.classList.toggle(
+      "on",
+      !!settings[key]
+    );
+
+  });
+}
+
+/* ==========================================================
+   COMPACT MODE
+========================================================== */
+
+function applyCompact(){
+
+  if(settings.compact){
+
+    document.documentElement
+      .style.setProperty(
+        "--radius",
+        "14px"
       );
 
-    });
+  }else{
+
+    document.documentElement
+      .style.setProperty(
+        "--radius",
+        "20px"
+      );
+  }
 }
 
 /* ==========================================================
    FULLSCREEN
 ========================================================== */
 
-document.getElementById("fullscreenBtn")
-.addEventListener("click",async()=>{
+document.getElementById(
+  "fullscreenBtn"
+).addEventListener(
+  "click",
+  async()=>{
 
-  try{
+    try{
 
-    if(!document.fullscreenElement){
+      if(
+        !document.fullscreenElement
+      ){
 
-      await document.documentElement
-        .requestFullscreen();
+        await document.documentElement
+          .requestFullscreen();
 
-      toast("Tela cheia ativada");
+        toast(
+          "Tela cheia ativada"
+        );
 
-    }else{
+      }else{
 
-      await document.exitFullscreen();
+        await document.exitFullscreen();
 
-      toast("Tela cheia desativada");
+        toast(
+          "Tela cheia desativada"
+        );
+      }
+
+    }catch(error){
+
+      toast(
+        "Tela cheia indisponível"
+      );
     }
 
-  }catch(e){
+  }
+);
+
+/* ==========================================================
+   QUICK THEME
+========================================================== */
+
+document.getElementById(
+  "themeBtn"
+).addEventListener(
+  "click",
+  ()=>{
+
+    const themes=[
+      "orange",
+      "blue",
+      "purple",
+      "green"
+    ];
+
+    const index=
+      themes.indexOf(
+        settings.theme
+      );
+
+    settings.theme=
+      themes[
+        (index+1)%
+        themes.length
+      ];
+
+    saveSettings();
+    applyTheme();
 
     toast(
-      "Tela cheia não disponível neste navegador"
+      "Tema: "+
+      settings.theme
     );
+
   }
-});
-
-/* ==========================================================
-   THEME QUICK BUTTON
-========================================================== */
-
-document.getElementById("themeBtn")
-.addEventListener("click",()=>{
-
-  const order=[
-    "orange",
-    "blue",
-    "purple",
-    "green"
-  ];
-
-  const index=
-    order.indexOf(settings.theme);
-
-  settings.theme=
-    order[(index+1)%order.length];
-
-  saveSettings();
-  applyTheme();
-
-  toast(
-    "Tema: "+settings.theme
-  );
-});
-
-/* ==========================================================
-   VOLUME
-========================================================== */
-
-document.getElementById("volume")
-.addEventListener("input",e=>{
-
-  const value=Number(e.target.value);
-
-  toast("Volume: "+value+"%");
-});
+);
 
 /* ==========================================================
    PROGRESS
 ========================================================== */
 
-document.getElementById("progressTrack")
-.addEventListener("click",e=>{
+document.getElementById(
+  "progressTrack"
+).addEventListener(
+  "click",
+  event=>{
 
-  const rect=
-    e.currentTarget.getBoundingClientRect();
+    const rect=
+      event.currentTarget
+      .getBoundingClientRect();
 
-  const percent=
-    ((e.clientX-rect.left)/rect.width)*100;
+    const percent=
+      (
+        (event.clientX-rect.left)/
+        rect.width
+      )*100;
 
-  document.getElementById("progressFill")
-    .style.width=
-      Math.max(0,Math.min(100,percent))+"%";
+    const safe=
+      Math.max(
+        0,
+        Math.min(
+          100,
+          percent
+        )
+      );
 
-  document.getElementById("elapsed")
-    .textContent=
-      formatTime(percent*3);
-});
+    document.getElementById(
+      "progressFill"
+    ).style.width=
+      safe+"%";
+
+  }
+);
 
 /* ==========================================================
-   CONTROLLER TOUCH
+   CONTROLLER
 ========================================================== */
 
-document.querySelectorAll("[data-control]")
-.forEach(btn=>{
+function saveControllerLayout(){
+
+  localStorage.setItem(
+    CONTROLLER_KEY,
+    JSON.stringify({
+      savedAt:Date.now()
+    })
+  );
+
+  toast(
+    "Layout dos controles salvo"
+  );
+}
+
+document.querySelectorAll(
+  "[data-control]"
+).forEach(button=>{
 
   const press=()=>{
-    btn.style.transform="scale(.9)";
-    btn.style.boxShadow=
+
+    button.style.transform=
+      "scale(.9)";
+
+    button.style.boxShadow=
       "0 0 25px rgba(255,116,23,.45)";
 
-    toast(
-      "Controle: "+btn.dataset.control
-    );
+    if(
+      window.AURA &&
+      typeof window.AURA
+        .controller==="function"
+    ){
+
+      window.AURA.controller(
+        button.dataset.control,
+        true
+      );
+
+    }else{
+
+      toast(
+        "Controle: "+
+        button.dataset.control
+      );
+    }
   };
 
   const release=()=>{
-    btn.style.transform="";
-    btn.style.boxShadow="";
+
+    button.style.transform="";
+    button.style.boxShadow="";
+
+    if(
+      window.AURA &&
+      typeof window.AURA
+        .controller==="function"
+    ){
+
+      window.AURA.controller(
+        button.dataset.control,
+        false
+      );
+
+    }
   };
 
-  btn.addEventListener("pointerdown",press);
-  btn.addEventListener("pointerup",release);
-  btn.addEventListener("pointercancel",release);
-  btn.addEventListener("pointerleave",release);
+  button.addEventListener(
+    "pointerdown",
+    press
+  );
+
+  button.addEventListener(
+    "pointerup",
+    release
+  );
+
+  button.addEventListener(
+    "pointercancel",
+    release
+  );
+
+  button.addEventListener(
+    "pointerleave",
+    release
+  );
+
 });
 
 /* ==========================================================
    ANALOG STICK
 ========================================================== */
 
-const stick=document.getElementById("stick");
-const stickInner=document.getElementById("stickInner");
+const stick=
+  document.getElementById(
+    "stick"
+  );
+
+const stickInner=
+  document.getElementById(
+    "stickInner"
+  );
 
 let dragging=false;
 
-function moveStick(e){
+function moveStick(event){
 
-  if(!dragging) return;
+  if(!dragging){
+    return;
+  }
 
-  const rect=stick.getBoundingClientRect();
+  const rect=
+    stick.getBoundingClientRect();
 
   const cx=
     rect.left+
@@ -2430,101 +4282,209 @@ function moveStick(e){
     rect.top+
     rect.height/2;
 
-  let x=e.clientX-cx;
-  let y=e.clientY-cy;
+  let x=
+    event.clientX-cx;
+
+  let y=
+    event.clientY-cy;
 
   const max=
     rect.width*.27;
 
   const distance=
-    Math.sqrt(x*x+y*y);
+    Math.sqrt(
+      x*x+y*y
+    );
 
   if(distance>max){
 
-    x=(x/distance)*max;
-    y=(y/distance)*max;
+    x=
+      (x/distance)*
+      max;
+
+    y=
+      (y/distance)*
+      max;
   }
 
   stickInner.style.transform=
     `translate(${x}px,${y}px)`;
-}
-
-stick.addEventListener("pointerdown",e=>{
-
-  dragging=true;
-  stick.setPointerCapture(e.pointerId);
-  moveStick(e);
-
-});
-
-stick.addEventListener("pointermove",moveStick);
-
-stick.addEventListener("pointerup",()=>{
-
-  dragging=false;
-  stickInner.style.transform=
-    "translate(0,0)";
-});
-
-stick.addEventListener("pointercancel",()=>{
-
-  dragging=false;
-  stickInner.style.transform=
-    "translate(0,0)";
-});
-
-/* ==========================================================
-   KEYBOARD CONTROLS
-========================================================== */
-
-document.addEventListener("keydown",e=>{
 
   if(
-    e.target.tagName==="INPUT" ||
-    e.target.tagName==="SELECT"
-  ) return;
+    window.AURA &&
+    typeof window.AURA
+      .analog==="function"
+  ){
 
-  const key=e.key.toLowerCase();
-
-  const map={
-    w:"UP",
-    a:"LEFT",
-    s:"DOWN",
-    d:"RIGHT",
-    j:"A",
-    k:"B",
-    u:"X",
-    i:"Y"
-  };
-
-  if(map[key]){
-    toast("Controle: "+map[key]);
+    window.AURA.analog(
+      x/max,
+      y/max
+    );
   }
+}
 
-  if(e.key==="Escape"){
-    closeModal();
+stick.addEventListener(
+  "pointerdown",
+  event=>{
+
+    dragging=true;
+
+    stick.setPointerCapture(
+      event.pointerId
+    );
+
+    moveStick(event);
   }
+);
 
-});
+stick.addEventListener(
+  "pointermove",
+  moveStick
+);
+
+function resetStick(){
+
+  dragging=false;
+
+  stickInner.style.transform=
+    "translate(0,0)";
+
+  if(
+    window.AURA &&
+    typeof window.AURA
+      .analog==="function"
+  ){
+
+    window.AURA.analog(
+      0,
+      0
+    );
+  }
+}
+
+stick.addEventListener(
+  "pointerup",
+  resetStick
+);
+
+stick.addEventListener(
+  "pointercancel",
+  resetStick
+);
 
 /* ==========================================================
-   INIT
+   KEYBOARD
+========================================================== */
+
+document.addEventListener(
+  "keydown",
+  event=>{
+
+    if(
+      event.target.tagName==="INPUT" ||
+      event.target.tagName==="SELECT"
+    ){
+
+      return;
+    }
+
+    const key=
+      event.key.toLowerCase();
+
+    const map={
+
+      w:"UP",
+      a:"LEFT",
+      s:"DOWN",
+      d:"RIGHT",
+
+      j:"A",
+      k:"B",
+      u:"X",
+      i:"Y"
+
+    };
+
+    if(map[key]){
+
+      toast(
+        "Controle: "+
+        map[key]
+      );
+
+    }
+
+    if(
+      event.key==="Escape"
+    ){
+
+      closeModal();
+    }
+
+  }
+);
+
+/* ==========================================================
+   VOLUME
+========================================================== */
+
+document.getElementById(
+  "volume"
+).addEventListener(
+  "input",
+  event=>{
+
+    const value=
+      Number(
+        event.target.value
+      );
+
+    if(
+      window.AURA &&
+      typeof window.AURA
+        .volume==="function"
+    ){
+
+      window.AURA.volume(
+        value
+      );
+
+    }
+
+  }
+);
+
+/* ==========================================================
+   INITIALIZATION
 ========================================================== */
 
 function init(){
 
   loadSettings();
+
   loadGames();
 
+  loadCompatibility();
+
   applyTheme();
+
   applySwitches();
+
+  applyCompact();
+
+  applyCompatibility();
+
   renderAll();
 
-  document.getElementById("elapsed")
-    .textContent="00:00";
+  document.getElementById(
+    "elapsed"
+  ).textContent=
+    "00:00";
 
-  document.getElementById("duration")
-    .textContent="--:--";
+  document.getElementById(
+    "duration"
+  ).textContent=
+    "--:--";
 }
 
 init();
