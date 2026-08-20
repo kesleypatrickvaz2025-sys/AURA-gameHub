@@ -1,4495 +1,1218 @@
+package com.aura.gamehub
+
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
+import android.webkit.JavascriptInterface
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import org.json.JSONArray
+import org.json.JSONObject
+import java.util.UUID
+
+class MainActivity : Activity() {
+
+    private lateinit var web: WebView
+
+    private val games = mutableListOf<Game>()
+
+    data class Game(
+        val id: String,
+        val name: String,
+        val path: String,
+        var resolution: String = "Auto",
+        var fps: Int = 60,
+        var graphics: String = "Auto",
+        var controls: String = "Touch + Gamepad"
+    )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        web = WebView(this)
+
+        web.settings.javaScriptEnabled = true
+        web.settings.domStorageEnabled = true
+        web.settings.allowFileAccess = true
+        web.settings.allowContentAccess = true
+        web.webViewClient = WebViewClient()
+        web.webChromeClient = WebChromeClient()
+
+        web.addJavascriptInterface(Bridge(), "AURA")
+
+        setContentView(web)
+
+        web.loadDataWithBaseURL(
+            null,
+            HTML,
+            "text/html",
+            "UTF-8",
+            null
+        )
+    }
+
+    private fun escolherExe() {
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+        intent.type = "*/*"
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
+
+        startActivityForResult(intent, 100)
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(
+            requestCode,
+            resultCode,
+            data
+        )
+
+        if (requestCode != 100 ||
+            resultCode != RESULT_OK
+        ) return
+
+        val uri = data?.data ?: return
+
+        val nome =
+            uri.lastPathSegment
+                ?.substringAfterLast("/")
+                ?: "Jogo"
+
+        val nomeJogo =
+            nome
+                .removeSuffix(".exe")
+                .removeSuffix(".EXE")
+
+        try {
+            contentResolver.takePersistableUriPermission(
+                uri,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
+        } catch (_: Exception) {}
+
+        games.add(
+            Game(
+                id = UUID.randomUUID().toString(),
+                name = nomeJogo,
+                path = uri.toString()
+            )
+        )
+
+        atualizar()
+    }
+
+    private fun atualizar() {
+        val json = JSONArray()
+
+        games.forEach {
+            json.put(
+                JSONObject().apply {
+                    put("id", it.id)
+                    put("name", it.name)
+                    put("path", it.path)
+                    put("resolution", it.resolution)
+                    put("fps", it.fps)
+                    put("graphics", it.graphics)
+                    put("controls", it.controls)
+                }
+            )
+        }
+
+        web.evaluateJavascript(
+            "window.carregarJogos(${json});",
+            null
+        )
+    }
+
+    inner class Bridge {
+
+        @JavascriptInterface
+        fun adicionarJogo() {
+            runOnUiThread {
+                escolherExe()
+            }
+        }
+
+        @JavascriptInterface
+        fun listarJogos(): String {
+            val json = JSONArray()
+
+            games.forEach {
+                json.put(
+                    JSONObject().apply {
+                        put("id", it.id)
+                        put("name", it.name)
+                        put("path", it.path)
+                        put("resolution", it.resolution)
+                        put("fps", it.fps)
+                        put("graphics", it.graphics)
+                        put("controls", it.controls)
+                    }
+                )
+            }
+
+            return json.toString()
+        }
+
+        @JavascriptInterface
+        fun configurarAutomaticamente(id: String) {
+
+            val jogo =
+                games.firstOrNull {
+                    it.id == id
+                } ?: return
+
+            jogo.resolution = "Auto"
+            jogo.fps = 60
+            jogo.graphics = "Auto"
+            jogo.controls = "Touch + Gamepad"
+
+            atualizar()
+        }
+
+        @JavascriptInterface
+        fun jogar(id: String): String {
+
+            val jogo =
+                games.firstOrNull {
+                    it.id == id
+                }
+                ?: return """
+                    {"ok":false,
+                     "message":"Jogo não encontrado"}
+                """.trimIndent()
+
+            /*
+             * =================================================
+             * AURA COMPATIBILITY ENGINE
+             * =================================================
+             *
+             * É AQUI que será conectado o runtime capaz
+             * de executar Windows no Android.
+             *
+             * Fluxo planejado:
+             *
+             * EXE
+             *  ↓
+             * AURA ENGINE
+             *  ↓
+             * Wine
+             *  ↓
+             * Box64/Box86
+             *  ↓
+             * Windows APIs
+             *  ↓
+             * JOGO
+             *
+             * Um WebView/Kotlin puro NÃO executa um EXE
+             * Windows diretamente.
+             *
+             * Por enquanto informamos corretamente ao usuário
+             * que o runtime ainda precisa estar instalado.
+             */
+
+            return JSONObject().apply {
+                put("ok", false)
+                put(
+                    "message",
+                    "O jogo foi configurado, mas o runtime Windows ainda não está conectado."
+                )
+                put("game", jogo.name)
+                put("path", jogo.path)
+            }.toString()
+        }
+
+        @JavascriptInterface
+        fun statusEngine(): String {
+
+            return JSONObject().apply {
+                put("engine", "AURA Compatibility Engine")
+                put("installed", false)
+                put("ready", false)
+                put("architecture", "ARM64")
+                put("runtime", "Não instalado")
+            }.toString()
+        }
+    }
+
+    private val HTML = """
 <!DOCTYPE html>
+
 <html lang="pt-BR">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 
-<meta name="theme-color" content="#07080d">
-<meta name="mobile-web-app-capable" content="yes">
+<meta
+ name="viewport"
+ content="width=device-width,
+ maximum-scale=1,
+ user-scalable=no"
+>
 
-<title>AURA GameHub V2.5</title>
+<title>AURA GAMEHUB V2</title>
 
 <style>
-:root{
-  --bg:#06070b;
-  --bg2:#0b0e15;
-  --panel:#10141d;
-  --panel2:#151a25;
-  --card:#111722;
-  --text:#f7f8fb;
-  --muted:#8e98aa;
-  --accent:#ff7417;
-  --accent2:#ff9d52;
-  --line:rgba(255,255,255,.08);
-  --danger:#ff4057;
-  --success:#32d583;
-  --radius:20px;
-  --sidebar:255px;
-}
 
 *{
-  box-sizing:border-box;
-  -webkit-tap-highlight-color:transparent;
+ box-sizing:border-box;
 }
 
 html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:var(--bg);
-  color:var(--text);
-  font-family:
-    Inter,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
+ margin:0;
+ width:100%;
+ height:100%;
+ background:#07080d;
+ color:#fff;
+ font-family:Arial,sans-serif;
 }
 
-button,
-input,
-select{
-  font:inherit;
+body{
+ overflow:auto;
 }
 
-button{
-  border:0;
-  color:inherit;
-  cursor:pointer;
-}
+.header{
+ position:sticky;
+ top:0;
+ z-index:10;
 
-.app{
-  display:flex;
-  width:100%;
-  height:100vh;
-  background:
-    radial-gradient(
-      circle at 80% 0%,
-      rgba(255,116,23,.09),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 20% 100%,
-      rgba(95,80,255,.06),
-      transparent 35%
-    ),
-    var(--bg);
-}
+ height:70px;
 
-/* =========================
-   SIDEBAR
-========================= */
+ display:flex;
+ align-items:center;
 
-.sidebar{
-  width:var(--sidebar);
-  min-width:var(--sidebar);
-  height:100%;
-  padding:22px 16px;
-  background:rgba(8,10,15,.94);
-  border-right:1px solid var(--line);
-  display:flex;
-  flex-direction:column;
-  z-index:100;
-  backdrop-filter:blur(25px);
-}
+ padding:12px 18px;
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:4px 8px 25px;
+ background:#0b0d13;
+
+ border-bottom:1px solid #252936;
+
+ gap:12px;
 }
 
 .logo{
-  width:43px;
-  height:43px;
-  border-radius:14px;
-  display:grid;
-  place-items:center;
-  background:
-    linear-gradient(
-      135deg,
-      var(--accent),
-      #ff3b00
-    );
-  box-shadow:
-    0 0 30px
-    rgba(255,116,23,.3);
-  font-weight:900;
+ font-size:21px;
+ font-weight:bold;
+ letter-spacing:2px;
 }
 
-.brandText strong{
-  display:block;
-  font-size:16px;
-  letter-spacing:.8px;
-}
-
-.brandText span{
-  color:var(--accent2);
-  font-size:10px;
-  letter-spacing:2px;
-  font-weight:800;
-}
-
-.menuTitle{
-  color:#667083;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  padding:8px 12px;
-}
-
-.nav{
-  display:flex;
-  flex-direction:column;
-  gap:5px;
-}
-
-.navBtn{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:13px;
-  width:100%;
-  padding:13px 14px;
-  border-radius:14px;
-  background:transparent;
-  color:#aeb6c6;
-  text-align:left;
-  transition:.2s;
-}
-
-.navBtn:hover{
-  background:rgba(255,255,255,.045);
-  color:white;
-}
-
-.navBtn.active{
-  color:white;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(255,116,23,.20),
-      rgba(255,116,23,.04)
-    );
-}
-
-.navBtn.active::before{
-  content:"";
-  position:absolute;
-  left:0;
-  top:9px;
-  bottom:9px;
-  width:3px;
-  border-radius:4px;
-  background:var(--accent);
-  box-shadow:
-    0 0 12px var(--accent);
-}
-
-.navIcon{
-  width:23px;
-  text-align:center;
-  font-size:18px;
-}
-
-.navBadge{
-  margin-left:auto;
-  min-width:22px;
-  padding:2px 6px;
-  border-radius:20px;
-  background:rgba(255,255,255,.07);
-  font-size:10px;
-  text-align:center;
-}
-
-.sidebarBottom{
-  margin-top:auto;
-}
-
-.profile{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:12px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.025);
-  border-radius:15px;
-}
-
-.avatar{
-  width:35px;
-  height:35px;
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  background:
-    linear-gradient(
-      135deg,
-      #2d3342,
-      #11141d
-    );
-}
-
-.profileInfo{
-  min-width:0;
-}
-
-.profileInfo strong{
-  display:block;
-  font-size:12px;
-}
-
-.profileInfo span{
-  color:var(--muted);
-  font-size:10px;
-}
-
-/* =========================
-   MAIN
-========================= */
-
-.main{
-  flex:1;
-  min-width:0;
-  height:100%;
-  overflow:hidden;
-  position:relative;
-}
-
-.topbar{
-  height:74px;
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:0 25px;
-  border-bottom:1px solid var(--line);
-  background:rgba(6,7,11,.65);
-  backdrop-filter:blur(18px);
-}
-
-.mobileMenu{
-  display:none;
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:var(--panel);
+.logo span{
+ color:#ff7518;
 }
 
 .search{
-  flex:1;
-  max-width:550px;
-  position:relative;
+ flex:1;
+
+ max-width:500px;
+
+ background:#151821;
+
+ border:1px solid #292d39;
+
+ border-radius:12px;
+
+ color:#fff;
+
+ padding:13px;
+
+ outline:none;
 }
 
-.search input{
-  width:100%;
-  height:43px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  outline:0;
-  padding:0 45px 0 15px;
-  color:white;
-  background:rgba(255,255,255,.035);
+.settings{
+ width:45px;
+ height:45px;
+
+ border:0;
+
+ border-radius:12px;
+
+ background:#171a24;
+
+ color:#fff;
+
+ font-size:20px;
 }
 
-.search input:focus{
-  border-color:
-    rgba(255,116,23,.5);
-  box-shadow:
-    0 0 0 3px
-    rgba(255,116,23,.08);
+.container{
+ padding:20px;
+
+ max-width:1200px;
+
+ margin:auto;
 }
-
-.searchIcon{
-  position:absolute;
-  right:15px;
-  top:12px;
-  color:#778093;
-}
-
-.topActions{
-  margin-left:auto;
-  display:flex;
-  gap:8px;
-}
-
-.iconBtn{
-  width:42px;
-  height:42px;
-  border-radius:13px;
-  background:var(--panel);
-  border:1px solid var(--line);
-}
-
-.iconBtn:hover{
-  border-color:
-    rgba(255,116,23,.4);
-}
-
-.content{
-  height:calc(100% - 74px);
-  overflow:auto;
-  padding:25px;
-  padding-bottom:130px;
-}
-
-.content::-webkit-scrollbar{
-  width:7px;
-}
-
-.content::-webkit-scrollbar-thumb{
-  background:#252b38;
-  border-radius:20px;
-}
-
-/* =========================
-   PAGES
-========================= */
-
-.page{
-  display:none;
-  animation:
-    fade .25s ease;
-}
-
-.page.active{
-  display:block;
-}
-
-@keyframes fade{
-  from{
-    opacity:0;
-    transform:translateY(5px);
-  }
-  to{
-    opacity:1;
-    transform:none;
-  }
-}
-
-/* =========================
-   HERO
-========================= */
 
 .hero{
-  position:relative;
-  min-height:270px;
-  overflow:hidden;
-  padding:32px;
-  border-radius:25px;
-  border:1px solid var(--line);
-  background:
-    radial-gradient(
-      circle at 85% 20%,
-      rgba(255,116,23,.24),
-      transparent 28%
-    ),
-    linear-gradient(
-      135deg,
-      #121722,
-      #0b0e15
-    );
-}
+ padding:25px;
 
-.hero::after{
-  content:"";
-  position:absolute;
-  right:-100px;
-  bottom:-130px;
-  width:350px;
-  height:350px;
-  border-radius:50%;
-  border:50px solid rgba(255,116,23,.035);
-}
+ border:1px solid #282c38;
 
-.heroTag{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:20px;
-  background:
-    rgba(255,116,23,.11);
-  color:var(--accent2);
-  font-size:10px;
-  font-weight:900;
-  letter-spacing:1px;
+ border-radius:22px;
+
+ background:
+ radial-gradient(
+   circle at 90% 20%,
+   rgba(255,117,24,.25),
+   transparent 40%
+ ),
+ #11141c;
+
+ margin-bottom:25px;
 }
 
 .hero h1{
-  max-width:650px;
-  font-size:
-    clamp(29px,4vw,48px);
-  line-height:1;
-  margin:20px 0 12px;
+ margin:0;
+
+ font-size:30px;
 }
 
 .hero p{
-  max-width:590px;
-  color:var(--muted);
-  line-height:1.6;
-  font-size:14px;
+ color:#8f96a8;
+
+ line-height:1.5;
 }
 
-.heroButtons{
-  display:flex;
-  gap:10px;
-  margin-top:24px;
+button{
+ color:#fff;
+
+ border:0;
+
+ cursor:pointer;
 }
 
 .primary{
-  background:
-    linear-gradient(
-      135deg,
-      var(--accent),
-      #ff4d00
-    );
-  color:white;
-  padding:12px 17px;
-  border-radius:13px;
-  font-weight:800;
-  box-shadow:
-    0 10px 30px
-    rgba(255,116,23,.18);
+ background:#ff7518;
+
+ padding:13px 18px;
+
+ border-radius:11px;
+
+ font-weight:bold;
 }
 
 .secondary{
-  background:
-    rgba(255,255,255,.055);
-  border:1px solid var(--line);
-  padding:12px 17px;
-  border-radius:13px;
+ background:#191d27;
+
+ padding:12px 16px;
+
+ border-radius:11px;
 }
 
-.sectionHeader{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin:27px 0 14px;
+.toolbar{
+ display:flex;
+
+ align-items:center;
+
+ justify-content:space-between;
+
+ margin-bottom:15px;
 }
 
-.sectionHeader h2{
-  margin:0;
-  font-size:18px;
+.toolbar h2{
+ margin:0;
 }
 
-.sectionHeader span{
-  color:var(--muted);
-  font-size:12px;
+.games{
+ display:grid;
+
+ grid-template-columns:
+ repeat(
+  auto-fill,
+  minmax(220px,1fr)
+ );
+
+ gap:15px;
 }
 
-/* =========================
-   GRID
-========================= */
+.card{
+ overflow:hidden;
 
-.grid{
-  display:grid;
-  grid-template-columns:
-    repeat(
-      auto-fill,
-      minmax(190px,1fr)
-    );
-  gap:15px;
-}
+ background:#11141c;
 
-.gameCard{
-  position:relative;
-  overflow:hidden;
-  min-height:235px;
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:var(--card);
-  transition:.22s;
-}
+ border:1px solid #292d39;
 
-.gameCard:hover{
-  transform:translateY(-3px);
-  border-color:
-    rgba(255,116,23,.35);
+ border-radius:18px;
 }
 
 .cover{
-  height:140px;
-  display:grid;
-  place-items:center;
-  position:relative;
-  background:
-    linear-gradient(
-      135deg,
-      #1d2532,
-      #0b0d12
-    );
-  overflow:hidden;
+ height:140px;
+
+ display:flex;
+
+ align-items:center;
+
+ justify-content:center;
+
+ font-size:50px;
+
+ background:
+ radial-gradient(
+  circle,
+  rgba(255,117,24,.25),
+  transparent 60%
+ ),
+ #171a23;
 }
 
-.cover::before{
-  content:"";
-  position:absolute;
-  width:130px;
-  height:130px;
-  border-radius:50%;
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,116,23,.3),
-      transparent 65%
-    );
+.info{
+ padding:15px;
 }
 
-.coverIcon{
-  position:relative;
-  z-index:1;
-  font-size:45px;
+.name{
+ font-weight:bold;
+
+ white-space:nowrap;
+
+ overflow:hidden;
+
+ text-overflow:ellipsis;
 }
 
-.cardBody{
-  padding:13px;
+.meta{
+ margin-top:5px;
+
+ color:#858c9e;
+
+ font-size:12px;
 }
 
-.gameName{
-  font-weight:800;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.actions{
+ display:flex;
+
+ gap:8px;
+
+ margin-top:14px;
 }
 
-.gameMeta{
-  display:flex;
-  gap:7px;
-  margin-top:7px;
-  color:var(--muted);
-  font-size:10px;
+.play{
+ flex:1;
+
+ background:#ff7518;
+
+ border-radius:10px;
+
+ padding:11px;
+
+ font-weight:bold;
 }
 
-.cardActions{
-  display:flex;
-  gap:6px;
-  margin-top:12px;
-}
+.config{
+ width:45px;
 
-.cardBtn{
-  flex:1;
-  padding:8px;
-  border-radius:9px;
-  background:
-    rgba(255,255,255,.055);
-  font-size:11px;
-}
+ background:#1d202a;
 
-.cardBtn.play{
-  background:
-    rgba(255,116,23,.14);
-  color:var(--accent2);
+ border-radius:10px;
 }
-
-/* =========================
-   EMPTY
-========================= */
 
 .empty{
-  min-height:250px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  border:1px dashed
-    rgba(255,255,255,.12);
-  border-radius:20px;
-  color:var(--muted);
+ padding:60px 20px;
+
+ text-align:center;
+
+ border:1px dashed #303442;
+
+ border-radius:18px;
+
+ color:#8f96a8;
 }
 
-.emptyIcon{
-  font-size:48px;
-  margin-bottom:12px;
-  opacity:.55;
+.modal-bg{
+ display:none;
+
+ position:fixed;
+
+ inset:0;
+
+ z-index:50;
+
+ align-items:center;
+
+ justify-content:center;
+
+ background:rgba(0,0,0,.75);
+
+ padding:20px;
 }
 
-.empty strong{
-  color:white;
+.modal-bg.show{
+ display:flex;
 }
 
-/* =========================
-   SETTINGS
-========================= */
+.modal{
+ width:100%;
 
-.settingsGrid{
-  display:grid;
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(270px,1fr)
-    );
-  gap:15px;
+ max-width:520px;
+
+ background:#11141c;
+
+ border:1px solid #292d39;
+
+ border-radius:20px;
+
+ padding:20px;
 }
 
-.settingCard{
-  padding:20px;
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:var(--panel);
+.row{
+ display:flex;
+
+ justify-content:space-between;
+
+ align-items:center;
+
+ padding:15px 0;
+
+ border-bottom:1px solid #252936;
 }
 
-.settingCard h3{
-  margin:0 0 5px;
-  font-size:15px;
-}
-
-.settingCard p{
-  color:var(--muted);
-  font-size:11px;
-  line-height:1.5;
-}
-
-.settingRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  padding:13px 0;
-  border-bottom:1px solid var(--line);
-}
-
-.settingRow:last-child{
-  border-bottom:0;
-}
-
-.settingText strong{
-  display:block;
-  font-size:12px;
-}
-
-.settingText span{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:3px;
+.row span{
+ color:#8f96a8;
 }
 
 select{
-  min-width:115px;
-  padding:9px;
-  border-radius:10px;
-  color:white;
-  background:#171c26;
-  border:1px solid var(--line);
-  outline:none;
+ background:#191d27;
+
+ color:#fff;
+
+ border:1px solid #303442;
+
+ border-radius:8px;
+
+ padding:8px;
 }
 
-.switch{
-  width:46px;
-  height:25px;
-  border-radius:20px;
-  padding:3px;
-  background:#292f3b;
-  transition:.2s;
+.modal-actions{
+ display:flex;
+
+ justify-content:flex-end;
+
+ gap:8px;
+
+ margin-top:20px;
 }
 
-.switch span{
-  display:block;
-  width:19px;
-  height:19px;
-  border-radius:50%;
-  background:#9da5b4;
-  transition:.2s;
+.status{
+ display:flex;
+
+ align-items:center;
+
+ gap:8px;
+
+ color:#ff5964;
+
+ font-size:13px;
 }
 
-.switch.on{
-  background:
-    rgba(255,116,23,.35);
+.dot{
+ width:8px;
+
+ height:8px;
+
+ border-radius:50%;
+
+ background:#ff5964;
 }
-
-.switch.on span{
-  transform:translateX(21px);
-  background:var(--accent);
-}
-
-/* =========================
-   COMPATIBILITY
-========================= */
-
-.compatHero{
-  padding:25px;
-  border:1px solid var(--line);
-  border-radius:22px;
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      rgba(255,116,23,.14),
-      transparent 35%
-    ),
-    var(--panel);
-}
-
-.engineStatus{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:15px;
-}
-
-.statusDot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background:var(--success);
-  box-shadow:
-    0 0 12px var(--success);
-}
-
-.engineStatus strong{
-  font-size:13px;
-}
-
-.engineStatus span{
-  color:var(--muted);
-  font-size:10px;
-}
-
-.compatCards{
-  display:grid;
-  grid-template-columns:
-    repeat(
-      auto-fit,
-      minmax(210px,1fr)
-    );
-  gap:12px;
-  margin-top:18px;
-}
-
-.compatOption{
-  padding:16px;
-  border:1px solid var(--line);
-  border-radius:15px;
-  background:
-    rgba(255,255,255,.025);
-}
-
-.compatOption strong{
-  display:block;
-  font-size:12px;
-}
-
-.compatOption span{
-  display:block;
-  margin-top:5px;
-  color:var(--muted);
-  font-size:10px;
-  line-height:1.5;
-}
-
-.engineBadge{
-  display:inline-block;
-  margin-top:10px;
-  padding:5px 8px;
-  border-radius:8px;
-  background:
-    rgba(255,116,23,.1);
-  color:var(--accent2);
-  font-size:9px;
-  font-weight:800;
-}
-
-/* =========================
-   IMPORT
-========================= */
-
-.importBox{
-  padding:35px;
-  text-align:center;
-  border:1px dashed
-    rgba(255,116,23,.35);
-  border-radius:22px;
-  background:
-    rgba(255,116,23,.035);
-}
-
-.importIcon{
-  font-size:50px;
-}
-
-.importBox h2{
-  margin:13px 0 6px;
-}
-
-.importBox p{
-  color:var(--muted);
-  font-size:12px;
-  line-height:1.6;
-}
-
-#fileInput,
-#folderInput{
-  display:none;
-}
-
-/* =========================
-   CONTROLLER
-========================= */
-
-.controller{
-  max-width:650px;
-  margin:auto;
-  padding:25px;
-  border-radius:25px;
-  border:1px solid var(--line);
-  background:var(--panel);
-}
-
-.controllerTitle{
-  text-align:center;
-  margin-bottom:25px;
-}
-
-.controlArea{
-  min-height:380px;
-  position:relative;
-}
-
-.stick{
-  position:absolute;
-  left:15px;
-  bottom:15px;
-  width:145px;
-  height:145px;
-  border-radius:50%;
-  border:1px solid
-    rgba(255,255,255,.12);
-  background:
-    radial-gradient(
-      circle,
-      #242b38,
-      #10141c
-    );
-  display:grid;
-  place-items:center;
-  touch-action:none;
-}
-
-.stickInner{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:
-    linear-gradient(
-      135deg,
-      #363f50,
-      #171b25
-    );
-  box-shadow:
-    0 8px 25px
-    rgba(0,0,0,.4);
-}
-
-.buttons{
-  position:absolute;
-  right:15px;
-  bottom:20px;
-  width:170px;
-  height:160px;
-}
-
-.padBtn{
-  position:absolute;
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background:#202735;
-  border:1px solid
-    rgba(255,255,255,.1);
-  font-weight:900;
-  touch-action:none;
-}
-
-.padBtn.a{
-  right:0;
-  top:55px;
-}
-
-.padBtn.b{
-  right:53px;
-  top:10px;
-}
-
-.padBtn.x{
-  left:10px;
-  top:55px;
-}
-
-.padBtn.y{
-  right:53px;
-  bottom:0;
-}
-
-.dpad{
-  position:absolute;
-  left:195px;
-  bottom:30px;
-  width:110px;
-  height:110px;
-}
-
-.dpad button{
-  position:absolute;
-  width:36px;
-  height:36px;
-  background:#202735;
-  border:1px solid
-    rgba(255,255,255,.1);
-}
-
-.dpad .up{
-  left:37px;
-  top:0;
-  border-radius:8px 8px 3px 3px;
-}
-
-.dpad .down{
-  left:37px;
-  bottom:0;
-  border-radius:3px 3px 8px 8px;
-}
-
-.dpad .left{
-  left:0;
-  top:37px;
-  border-radius:8px 3px 3px 8px;
-}
-
-.dpad .right{
-  right:0;
-  top:37px;
-  border-radius:3px 8px 8px 3px;
-}
-
-.dpad .center{
-  left:37px;
-  top:37px;
-  background:#151a24;
-}
-
-/* =========================
-   PLAYER
-========================= */
-
-.player{
-  position:absolute;
-  left:18px;
-  right:18px;
-  bottom:15px;
-  height:75px;
-  border:1px solid var(--line);
-  border-radius:19px;
-  background:
-    rgba(14,18,26,.92);
-  backdrop-filter:blur(25px);
-  display:flex;
-  align-items:center;
-  gap:15px;
-  padding:10px 15px;
-  z-index:80;
-  box-shadow:
-    0 12px 40px
-    rgba(0,0,0,.3);
-}
-
-.playerCover{
-  width:52px;
-  height:52px;
-  flex:none;
-  display:grid;
-  place-items:center;
-  border-radius:13px;
-  background:
-    linear-gradient(
-      135deg,
-      #242c3b,
-      #11141c
-    );
-  font-size:22px;
-}
-
-.playerInfo{
-  min-width:130px;
-  max-width:210px;
-}
-
-.playerInfo strong{
-  display:block;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  font-size:12px;
-}
-
-.playerInfo span{
-  display:block;
-  color:var(--muted);
-  font-size:10px;
-  margin-top:4px;
-}
-
-.playerControls{
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.playMain{
-  width:43px;
-  height:43px;
-  border-radius:50%;
-  background:var(--accent);
-  box-shadow:
-    0 0 20px
-    rgba(255,116,23,.25);
-}
-
-.playerProgress{
-  flex:1;
-  min-width:100px;
-}
-
-.progressTrack{
-  width:100%;
-  height:5px;
-  border-radius:10px;
-  background:#252b36;
-  overflow:hidden;
-  cursor:pointer;
-}
-
-.progressFill{
-  width:0%;
-  height:100%;
-  background:var(--accent);
-}
-
-.time{
-  display:flex;
-  justify-content:space-between;
-  color:#697386;
-  font-size:9px;
-  margin-top:5px;
-}
-
-.volume{
-  width:120px;
-}
-
-.volume input{
-  width:100%;
-  accent-color:var(--accent);
-}
-
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  background:
-    rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);
-  z-index:300;
-}
-
-.modal.show{
-  display:flex;
-}
-
-.modalBox{
-  width:min(520px,100%);
-  max-height:90vh;
-  overflow:auto;
-  padding:23px;
-  border-radius:23px;
-  background:#10141d;
-  border:1px solid var(--line);
-  box-shadow:
-    0 30px 100px
-    rgba(0,0,0,.5);
-}
-
-.modalHeader{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.modalHeader h2{
-  margin:0;
-  font-size:18px;
-}
-
-.close{
-  width:35px;
-  height:35px;
-  border-radius:10px;
-  background:
-    rgba(255,255,255,.06);
-}
-
-.detailCover{
-  height:200px;
-  margin:20px 0;
-  display:grid;
-  place-items:center;
-  border-radius:18px;
-  background:
-    linear-gradient(
-      135deg,
-      #252e3e,
-      #10131a
-    );
-  font-size:65px;
-}
-
-/* =========================
-   TOAST
-========================= */
 
 .toast{
-  position:fixed;
-  left:50%;
-  bottom:105px;
-  transform:
-    translate(-50%,20px);
-  opacity:0;
-  pointer-events:none;
-  z-index:500;
-  padding:11px 16px;
-  border-radius:12px;
-  background:#171c26;
-  border:1px solid var(--line);
-  box-shadow:
-    0 15px 45px
-    rgba(0,0,0,.35);
-  font-size:12px;
-  transition:.25s;
+ position:fixed;
+
+ left:50%;
+
+ bottom:25px;
+
+ transform:
+ translate(-50%,100px);
+
+ opacity:0;
+
+ background:#1b1f29;
+
+ border:1px solid #303442;
+
+ border-radius:12px;
+
+ padding:13px 18px;
+
+ transition:.25s;
+
+ z-index:100;
 }
 
 .toast.show{
-  opacity:1;
-  transform:
-    translate(-50%,0);
+ transform:translate(-50%,0);
+
+ opacity:1;
 }
 
-/* =========================
-   MOBILE
-========================= */
+@media(max-width:600px){
 
-@media(max-width:850px){
+ .container{
+  padding:12px;
+ }
 
-  .sidebar{
-    position:fixed;
-    left:-280px;
-    top:0;
-    bottom:0;
-    transition:.25s;
-    box-shadow:
-      20px 0 60px
-      rgba(0,0,0,.45);
-  }
+ .hero h1{
+  font-size:25px;
+ }
 
-  .sidebar.open{
-    left:0;
-  }
+ .games{
+  grid-template-columns:
+  repeat(2,1fr);
+  gap:10px;
+ }
 
-  .mobileMenu{
-    display:block;
-  }
+ .cover{
+  height:110px;
+ }
 
-  .topbar{
-    padding:0 13px;
-  }
-
-  .content{
-    padding:15px;
-    padding-bottom:115px;
-  }
-
-  .hero{
-    padding:23px;
-    min-height:300px;
-  }
-
-  .grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-    gap:10px;
-  }
-
-  .gameCard{
-    min-height:215px;
-  }
-
-  .cover{
-    height:115px;
-  }
-
-  .player{
-    left:8px;
-    right:8px;
-    bottom:8px;
-    height:70px;
-    padding:8px;
-    gap:8px;
-  }
-
-  .playerInfo{
-    min-width:0;
-    max-width:105px;
-  }
-
-  .volume{
-    display:none;
-  }
-
-  .playerProgress{
-    display:none;
-  }
-
-  .playerControls .skip{
-    display:none;
-  }
-
-  .controlArea{
-    min-height:450px;
-  }
-
-  .stick{
-    width:120px;
-    height:120px;
-  }
-
-  .dpad{
-    left:15px;
-    bottom:175px;
-  }
-
-  .buttons{
-    right:5px;
-    bottom:15px;
-  }
 }
 
-@media(max-width:430px){
-
-  .topActions .iconBtn:nth-child(2){
-    display:none;
-  }
-
-  .hero h1{
-    font-size:30px;
-  }
-
-  .heroButtons{
-    flex-direction:column;
-  }
-
-  .primary,
-  .secondary{
-    width:100%;
-  }
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .gameMeta{
-    display:none;
-  }
-
-  .cardBtn{
-    font-size:10px;
-  }
-}
 </style>
+
 </head>
 
 <body>
 
-<div class="app">
+<header class="header">
 
-<!-- =====================================================
-     SIDEBAR
-===================================================== -->
+ <div class="logo">
+  AURA <span>GAMEHUB</span>
+ </div>
 
-<aside class="sidebar" id="sidebar">
+ <input
+  id="search"
+  class="search"
+  placeholder="Pesquisar jogos..."
+  oninput="render()"
+ >
 
-  <div class="brand">
-    <div class="logo">A</div>
-
-    <div class="brandText">
-      <strong>AURA GAMEHUB</strong>
-      <span>V2.5 • ANDROID</span>
-    </div>
-  </div>
-
-  <div class="menuTitle">
-    MENU PRINCIPAL
-  </div>
-
-  <nav class="nav">
-
-    <button
-      class="navBtn active"
-      data-page="home">
-      <span class="navIcon">⌂</span>
-      <span>Início</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="library">
-      <span class="navIcon">🎮</span>
-      <span>Biblioteca</span>
-      <span
-        class="navBadge"
-        id="libraryCount">
-        0
-      </span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="favorites">
-      <span class="navIcon">★</span>
-      <span>Favoritos</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="recent">
-      <span class="navIcon">◷</span>
-      <span>Recentes</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="import">
-      <span class="navIcon">＋</span>
-      <span>Adicionar jogo</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="exe">
-      <span class="navIcon">EXE</span>
-      <span>Encontrar EXE</span>
-    </button>
-
-    <div class="menuTitle">
-      SISTEMA
-    </div>
-
-    <button
-      class="navBtn"
-      data-page="controller">
-      <span class="navIcon">🎛</span>
-      <span>Controles</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="compat">
-      <span class="navIcon">⚡</span>
-      <span>Compatibilidade</span>
-    </button>
-
-    <button
-      class="navBtn"
-      data-page="settings">
-      <span class="navIcon">⚙</span>
-      <span>Configurações</span>
-    </button>
-
-  </nav>
-
-  <div class="sidebarBottom">
-
-    <div class="profile">
-
-      <div class="avatar">
-        A
-      </div>
-
-      <div class="profileInfo">
-        <strong>AURA PLAYER</strong>
-        <span>GameHub Premium</span>
-      </div>
-
-    </div>
-
-  </div>
-
-</aside>
-
-<!-- =====================================================
-     MAIN
-===================================================== -->
-
-<main class="main">
-
-<header class="topbar">
-
-  <button
-    class="mobileMenu"
-    id="mobileMenu">
-    ☰
-  </button>
-
-  <div class="search">
-
-    <input
-      id="searchInput"
-      type="search"
-      placeholder="Pesquisar jogos..."
-      autocomplete="off">
-
-    <span class="searchIcon">
-      ⌕
-    </span>
-
-  </div>
-
-  <div class="topActions">
-
-    <button
-      class="iconBtn"
-      id="fullscreenBtn"
-      title="Tela cheia">
-      ⛶
-    </button>
-
-    <button
-      class="iconBtn"
-      id="themeBtn"
-      title="Tema">
-      ◐
-    </button>
-
-  </div>
+ <button
+  class="settings"
+  onclick="engine()"
+ >
+ ⚙
+ </button>
 
 </header>
 
-<section class="content">
-
-<!-- =====================================================
-     HOME
-===================================================== -->
-
-<div
-  class="page active"
-  id="page-home">
-
-  <section class="hero">
-
-    <span class="heroTag">
-      ● AURA GAME ENGINE
-    </span>
-
-    <h1>
-      Seu universo gamer em um só lugar.
-    </h1>
-
-    <p>
-      Organize seus jogos, encontre executáveis,
-      configure controles e prepare seus jogos
-      para a futura camada de compatibilidade
-      Windows do AURA GameHub.
-    </p>
-
-    <div class="heroButtons">
-
-      <button
-        class="primary"
-        onclick="navigate('library')">
-        🎮 Abrir biblioteca
-      </button>
-
-      <button
-        class="secondary"
-        onclick="navigate('exe')">
-        🔎 Encontrar EXE
-      </button>
-
-    </div>
-
-  </section>
-
-  <div class="sectionHeader">
-
-    <h2>
-      Jogos recentes
-    </h2>
-
-    <button
-      class="secondary"
-      onclick="navigate('recent')">
-      Ver todos
-    </button>
-
-  </div>
-
-  <div
-    id="homeRecent"
-    class="grid">
-  </div>
-
-  <div class="sectionHeader">
-
-    <h2>
-      Biblioteca
-    </h2>
-
-    <span id="homeCount">
-      0 jogos
-    </span>
-
-  </div>
-
-  <div
-    id="homeLibrary"
-    class="grid">
-  </div>
-
-</div>
-
-<!-- =====================================================
-     LIBRARY
-===================================================== -->
-
-<div
-  class="page"
-  id="page-library">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Minha Biblioteca
-      </h2>
-
-      <span>
-        Todos os seus jogos
-      </span>
-    </div>
-
-    <button
-      class="primary"
-      onclick="navigate('exe')">
-      🔎 Encontrar EXE
-    </button>
-
-  </div>
-
-  <div
-    id="libraryGrid"
-    class="grid">
-  </div>
-
-</div>
-
-<!-- =====================================================
-     FAVORITES
-===================================================== -->
-
-<div
-  class="page"
-  id="page-favorites">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Favoritos
-      </h2>
-
-      <span>
-        Seus jogos preferidos
-      </span>
-    </div>
-
-  </div>
-
-  <div
-    id="favoritesGrid"
-    class="grid">
-  </div>
-
-</div>
-
-<!-- =====================================================
-     RECENT
-===================================================== -->
-
-<div
-  class="page"
-  id="page-recent">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Jogos recentes
-      </h2>
-
-      <span>
-        Últimos jogos utilizados
-      </span>
-    </div>
-
-  </div>
-
-  <div
-    id="recentGrid"
-    class="grid">
-  </div>
-
-</div>
-
-<!-- =====================================================
-     IMPORT
-===================================================== -->
-
-<div
-  class="page"
-  id="page-import">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Adicionar jogo
-      </h2>
-
-      <span>
-        Adicione arquivos à biblioteca
-      </span>
-    </div>
-
-  </div>
-
-  <div class="importBox">
-
-    <div class="importIcon">
-      📦
-    </div>
-
-    <h2>
-      Importar jogo
-    </h2>
-
-    <p>
-      Selecione um arquivo do armazenamento
-      do dispositivo para cadastrá-lo na
-      biblioteca AURA.
-    </p>
-
-    <button
-      class="primary"
-      id="chooseFile">
-      Selecionar arquivo
-    </button>
-
-    <input
-      id="fileInput"
-      type="file"
-      accept=".exe,.zip,.7z,.iso,.apk,.bin,.img,*">
-
-  </div>
-
-</div>
-
-<!-- =====================================================
-     EXE SCANNER
-===================================================== -->
-
-<div
-  class="page"
-  id="page-exe">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Encontrar jogos EXE
-      </h2>
-
-      <span>
-        Scanner de executáveis
-      </span>
-    </div>
-
-    <button
-      class="primary"
-      id="scanExeBtn">
-      🔎 Procurar EXE
-    </button>
-
-  </div>
-
-  <div class="importBox">
-
-    <div class="importIcon">
-      🖥️
-    </div>
-
-    <h2>
-      Scanner de jogos Windows
-    </h2>
-
-    <p>
-      No navegador, o Android permite selecionar
-      arquivos através do seletor do sistema.
-      Em uma versão Android nativa, este módulo
-      poderá usar o Storage Access Framework para
-      pesquisar uma pasta e seus subdiretórios.
-    </p>
-
-    <button
-      class="primary"
-      id="scanFileButton">
-      Selecionar EXE
-    </button>
-
-    <input
-      id="exeInput"
-      type="file"
-      accept=".exe">
-
-  </div>
-
-  <div
-    class="sectionHeader">
-
-    <div>
-      <h2>
-        Executáveis encontrados
-      </h2>
-
-      <span id="exeCount">
-        0 encontrados
-      </span>
-    </div>
-
-  </div>
-
-  <div
-    id="exeResults"
-    class="grid">
-  </div>
-
-</div>
-
-<!-- =====================================================
-     CONTROLLER
-===================================================== -->
-
-<div
-  class="page"
-  id="page-controller">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Controles virtuais
-      </h2>
-
-      <span>
-        Controle touch AURA
-      </span>
-    </div>
-
-  </div>
-
-  <div class="controller">
-
-    <div class="controllerTitle">
-      <strong>
-        AURA CONTROLLER
-      </strong>
-    </div>
-
-    <div class="controlArea">
-
-      <div
-        class="stick"
-        id="stick">
-
-        <div
-          class="stickInner"
-          id="stickInner">
-        </div>
-
-      </div>
-
-      <div class="dpad">
-
-        <button
-          class="up"
-          data-control="UP">
-          ▲
-        </button>
-
-        <button
-          class="left"
-          data-control="LEFT">
-          ◀
-        </button>
-
-        <button
-          class="center">
-          •
-        </button>
-
-        <button
-          class="right"
-          data-control="RIGHT">
-          ▶
-        </button>
-
-        <button
-          class="down"
-          data-control="DOWN">
-          ▼
-        </button>
-
-      </div>
-
-      <div class="buttons">
-
-        <button
-          class="padBtn a"
-          data-control="A">
-          A
-        </button>
-
-        <button
-          class="padBtn b"
-          data-control="B">
-          B
-        </button>
-
-        <button
-          class="padBtn x"
-          data-control="X">
-          X
-        </button>
-
-        <button
-          class="padBtn y"
-          data-control="Y">
-          Y
-        </button>
-
-      </div>
-
-    </div>
-
-    <button
-      class="secondary"
-      style="width:100%"
-      onclick="saveControllerLayout()">
-      💾 Salvar layout
-    </button>
-
-  </div>
-
-</div>
-
-<!-- =====================================================
-     COMPATIBILITY
-===================================================== -->
-
-<div
-  class="page"
-  id="page-compat">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Compatibilidade Windows
-      </h2>
-
-      <span>
-        AURA Compatibility Engine
-      </span>
-    </div>
-
-  </div>
-
-  <div class="compatHero">
-
-    <div class="engineStatus">
-
-      <div class="statusDot"></div>
-
-      <div>
-        <strong>
-          Módulo preparado
-        </strong>
-
-        <span>
-          Ponte Android disponível para integração nativa
-        </span>
-      </div>
-
-    </div>
-
-    <p style="
-      color:var(--muted);
-      font-size:12px;
-      line-height:1.7;
-      margin:0;
-    ">
-      Esta interface mantém a configuração do
-      ambiente separada do launcher. A execução
-      efetiva de aplicações Windows deverá ser
-      fornecida por um motor nativo compatível
-      com Android.
-    </p>
-
-    <div class="compatCards">
-
-      <div class="compatOption">
-
-        <strong>
-          Wine
-        </strong>
-
-        <span>
-          Camada de compatibilidade Windows.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-      <div class="compatOption">
-
-        <strong>
-          Box64
-        </strong>
-
-        <span>
-          Compatibilidade para aplicações
-          x86_64.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-      <div class="compatOption">
-
-        <strong>
-          Box86
-        </strong>
-
-        <span>
-          Compatibilidade para aplicações
-          x86.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-      <div class="compatOption">
-
-        <strong>
-          DXVK
-        </strong>
-
-        <span>
-          Camada gráfica para APIs
-          DirectX compatíveis.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-      <div class="compatOption">
-
-        <strong>
-          VKD3D
-        </strong>
-
-        <span>
-          Suporte planejado para
-          Direct3D 12.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-      <div class="compatOption">
-
-        <strong>
-          Vulkan
-        </strong>
-
-        <span>
-          Backend gráfico para a
-          futura camada nativa.
-        </span>
-
-        <span class="engineBadge">
-          PREPARADO
-        </span>
-
-      </div>
-
-    </div>
-
-  </div>
-
-  <div class="sectionHeader">
-    <h2>
-      Configuração padrão
-    </h2>
-  </div>
-
-  <div class="settingsGrid">
-
-    <div class="settingCard">
-
-      <h3>
-        Wine
-      </h3>
-
-      <p>
-        Versão utilizada pelo perfil
-        de compatibilidade.
-      </p>
-
-      <select
-        id="wineVersion"
-        style="width:100%">
-        <option>Wine Default</option>
-        <option>Wine Stable</option>
-        <option>Wine Experimental</option>
-      </select>
-
-    </div>
-
-    <div class="settingCard">
-
-      <h3>
-        Box64
-      </h3>
-
-      <p>
-        Perfil de tradução x86_64.
-      </p>
-
-      <select
-        id="box64Mode"
-        style="width:100%">
-        <option>Performance</option>
-        <option>Balanced</option>
-        <option>Compatibility</option>
-      </select>
-
-    </div>
-
-    <div class="settingCard">
-
-      <h3>
-        Renderização
-      </h3>
-
-      <p>
-        Backend gráfico preferencial.
-      </p>
-
-      <select
-        id="renderer"
-        style="width:100%">
-        <option>Auto</option>
-        <option>Vulkan</option>
-        <option>OpenGL</option>
-      </select>
-
-    </div>
-
-    <div class="settingCard">
-
-      <h3>
-        DirectX
-      </h3>
-
-      <p>
-        Camada gráfica selecionada.
-      </p>
-
-      <select
-        id="dxMode"
-        style="width:100%">
-        <option>Auto</option>
-        <option>DXVK</option>
-        <option>VKD3D</option>
-      </select>
-
-    </div>
-
-  </div>
-
-  <div style="
-    display:flex;
-    gap:10px;
-    margin-top:15px;
-  ">
-
-    <button
-      class="primary"
-      onclick="saveCompatibility()">
-      💾 Salvar configuração
-    </button>
-
-    <button
-      class="secondary"
-      onclick="resetCompatibility()">
-      Restaurar padrão
-    </button>
-
-  </div>
-
-</div>
-
-<!-- =====================================================
-     SETTINGS
-===================================================== -->
-
-<div
-  class="page"
-  id="page-settings">
-
-  <div class="sectionHeader">
-
-    <div>
-      <h2>
-        Configurações
-      </h2>
-
-      <span>
-        Personalize o AURA GameHub
-      </span>
-    </div>
-
-  </div>
-
-  <div class="settingsGrid">
-
-    <div class="settingCard">
-
-      <h3>
-        Interface
-      </h3>
-
-      <p>
-        Aparência e comportamento.
-      </p>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Modo compacto
-          </strong>
-
-          <span>
-            Reduz o tamanho dos cards
-          </span>
-        </div>
-
-        <button
-          class="switch"
-          data-setting="compact">
-          <span></span>
-        </button>
-
-      </div>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Animações
-          </strong>
-
-          <span>
-            Transições da interface
-          </span>
-        </div>
-
-        <button
-          class="switch on"
-          data-setting="animations">
-          <span></span>
-        </button>
-
-      </div>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Tema
-          </strong>
-
-          <span>
-            Cor principal
-          </span>
-        </div>
-
-        <select id="themeSelect">
-
-          <option value="orange">
-            AURA Orange
-          </option>
-
-          <option value="blue">
-            Cyber Blue
-          </option>
-
-          <option value="purple">
-            Neon Purple
-          </option>
-
-          <option value="green">
-            Matrix Green
-          </option>
-
-        </select>
-
-      </div>
-
-    </div>
-
-    <div class="settingCard">
-
-      <h3>
-        Jogos
-      </h3>
-
-      <p>
-        Comportamento da biblioteca.
-      </p>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Registrar recentes
-          </strong>
-
-          <span>
-            Salva os últimos jogos
-          </span>
-        </div>
-
-        <button
-          class="switch on"
-          data-setting="recent">
-          <span></span>
-        </button>
-
-      </div>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Confirmação ao remover
-          </strong>
-
-          <span>
-            Evita exclusões acidentais
-          </span>
-        </div>
-
-        <button
-          class="switch on"
-          data-setting="confirmDelete">
-          <span></span>
-        </button>
-
-      </div>
-
-    </div>
-
-    <div class="settingCard">
-
-      <h3>
-        Sistema
-      </h3>
-
-      <p>
-        Armazenamento e dados.
-      </p>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Biblioteca
-          </strong>
-
-          <span>
-            Registros armazenados
-          </span>
-        </div>
-
-        <button
-          class="secondary"
-          onclick="clearLibrary()">
-          Limpar
-        </button>
-
-      </div>
-
-      <div class="settingRow">
-
-        <div class="settingText">
-          <strong>
-            Versão
-          </strong>
-
-          <span>
-            AURA GameHub
-          </span>
-        </div>
-
-        <strong>
-          V2.5
-        </strong>
-
-      </div>
-
-    </div>
-
-  </div>
-
-</div>
+<main class="container">
+
+<section class="hero">
+
+ <h1>
+  AURA GAMEHUB V2
+ </h1>
+
+ <p>
+  Central de jogos Android com biblioteca,
+  configuração automática e arquitetura
+  preparada para compatibilidade com jogos
+  Windows.
+ </p>
+
+ <button
+  class="primary"
+  onclick="adicionar()"
+ >
+ ＋ ADICIONAR JOGO
+ </button>
 
 </section>
 
-<!-- =====================================================
-     PLAYER
-===================================================== -->
+<div class="toolbar">
 
-<div class="player">
+ <h2>
+  Meus Jogos
+ </h2>
 
-  <div
-    class="playerCover"
-    id="playerCover">
-    🎮
-  </div>
-
-  <div class="playerInfo">
-
-    <strong id="playerName">
-      Nenhum jogo selecionado
-    </strong>
-
-    <span id="playerStatus">
-      AURA GameHub
-    </span>
-
-  </div>
-
-  <div class="playerControls">
-
-    <button
-      class="iconBtn skip"
-      onclick="previousGame()">
-      ‹
-    </button>
-
-    <button
-      class="playMain"
-      id="mainPlay">
-      ▶
-    </button>
-
-    <button
-      class="iconBtn skip"
-      onclick="nextGame()">
-      ›
-    </button>
-
-  </div>
-
-  <div class="playerProgress">
-
-    <div
-      class="progressTrack"
-      id="progressTrack">
-
-      <div
-        class="progressFill"
-        id="progressFill">
-      </div>
-
-    </div>
-
-    <div class="time">
-
-      <span id="elapsed">
-        00:00
-      </span>
-
-      <span id="duration">
-        --:--
-      </span>
-
-    </div>
-
-  </div>
-
-  <div class="volume">
-
-    <input
-      id="volume"
-      type="range"
-      min="0"
-      max="100"
-      value="80">
-
-  </div>
+ <button
+  class="secondary"
+  onclick="configurarTodos()"
+ >
+ ⚡ Auto Config
+ </button>
 
 </div>
+
+<div
+ id="games"
+ class="games"
+></div>
 
 </main>
 
-</div>
-
-<!-- =====================================================
-     MODAL
-===================================================== -->
-
 <div
-  class="modal"
-  id="gameModal">
+ id="configModal"
+ class="modal-bg"
+>
 
-  <div class="modalBox">
+ <div class="modal">
 
-    <div class="modalHeader">
+  <h2>
+   Configuração automática
+  </h2>
 
-      <h2 id="modalTitle">
-        Jogo
-      </h2>
+  <div id="configData"></div>
 
-      <button
-        class="close"
-        onclick="closeModal()">
-        ×
-      </button>
+  <div class="modal-actions">
 
-    </div>
+   <button
+    class="secondary"
+    onclick="fecharConfig()"
+   >
+    Fechar
+   </button>
 
-    <div
-      class="detailCover"
-      id="modalCover">
-      🎮
-    </div>
-
-    <p
-      id="modalInfo"
-      style="
-        color:var(--muted);
-        font-size:12px;
-        line-height:1.7;
-      ">
-    </p>
-
-    <div style="
-      display:flex;
-      gap:8px;
-      margin-top:20px;
-    ">
-
-      <button
-        class="primary"
-        style="flex:1"
-        id="modalPlay">
-        ▶ Iniciar
-      </button>
-
-      <button
-        class="secondary"
-        style="flex:1"
-        id="modalFavorite">
-        ★ Favoritar
-      </button>
-
-    </div>
-
-    <button
-      class="secondary"
-      style="
-        width:100%;
-        margin-top:8px;
-      "
-      id="modalDelete">
-      🗑 Remover
-    </button>
+   <button
+    class="primary"
+    onclick="aplicarConfig()"
+   >
+    Aplicar
+   </button>
 
   </div>
 
+ </div>
+
 </div>
 
 <div
-  class="toast"
-  id="toast">
+ id="engineModal"
+ class="modal-bg"
+>
+
+ <div class="modal">
+
+  <h2>
+   AURA Compatibility Engine
+  </h2>
+
+  <div id="engineData"></div>
+
+  <div class="modal-actions">
+
+   <button
+    class="primary"
+    onclick="fecharEngine()"
+   >
+    Fechar
+   </button>
+
+  </div>
+
+ </div>
+
 </div>
 
+<div
+ id="toast"
+ class="toast"
+></div>
+
 <script>
-"use strict";
 
-/* ==========================================================
-   STORAGE
-========================================================== */
+let jogos = [];
 
-const LIBRARY_KEY =
-  "AURA_GAMEHUB_V25_LIBRARY";
+let jogoAtual = null;
 
-const SETTINGS_KEY =
-  "AURA_GAMEHUB_V25_SETTINGS";
+function adicionar(){
 
-const COMPAT_KEY =
-  "AURA_GAMEHUB_V25_COMPAT";
+ AURA.adicionarJogo();
 
-const CONTROLLER_KEY =
-  "AURA_GAMEHUB_V25_CONTROLLER";
-
-let games=[];
-
-let settings={
-  compact:false,
-  animations:true,
-  recent:true,
-  confirmDelete:true,
-  theme:"orange"
-};
-
-let compatibility={
-  wine:"Wine Default",
-  box64:"Performance",
-  renderer:"Auto",
-  dx:"Auto"
-};
-
-let currentGame=null;
-let currentIndex=-1;
-let searchTerm="";
-let selectedModalId=null;
-
-/* ==========================================================
-   UTILITIES
-========================================================== */
-
-function escapeHTML(value){
-
-  return String(value)
-    .replaceAll("&","&amp;")
-    .replaceAll("<","&lt;")
-    .replaceAll(">","&gt;")
-    .replaceAll('"',"&quot;")
-    .replaceAll("'","&#039;");
 }
 
-function formatBytes(bytes){
+function carregar(){
 
-  if(!bytes || bytes<=0){
-    return "Tamanho desconhecido";
-  }
+ try{
 
-  const units=[
-    "B",
-    "KB",
-    "MB",
-    "GB",
-    "TB"
-  ];
+  jogos =
+   JSON.parse(
+    AURA.listarJogos()
+   );
 
-  const index=Math.floor(
-    Math.log(bytes)/Math.log(1024)
-  );
+ }catch(e){
 
-  return (
-    bytes/
-    Math.pow(1024,index)
-  ).toFixed(index?1:0)
-  +" "+
-  units[index];
+  jogos=[];
+
+ }
+
+ render();
+
 }
 
-function toast(message){
-
-  const el=
-    document.getElementById("toast");
-
-  el.textContent=message;
-
-  el.classList.add("show");
-
-  clearTimeout(
-    window.__auraToast
-  );
-
-  window.__auraToast=
-    setTimeout(()=>{
-      el.classList.remove("show");
-    },2200);
-}
-
-/* ==========================================================
-   SAVE / LOAD
-========================================================== */
-
-function saveGames(){
-
-  const clean=games.map(game=>({
-
-    id:game.id,
-    name:game.name,
-    type:game.type,
-    size:game.size,
-    date:game.date,
-    favorite:!!game.favorite,
-    recentAt:game.recentAt||0,
-    source:game.source||"manual"
-
-  }));
-
-  localStorage.setItem(
-    LIBRARY_KEY,
-    JSON.stringify(clean)
-  );
-}
-
-function loadGames(){
+window.carregarJogos =
+ function(data){
 
   try{
 
-    games=
-      JSON.parse(
-        localStorage.getItem(
-          LIBRARY_KEY
-        )||"[]"
-      );
-
-    if(!Array.isArray(games)){
-      games=[];
-    }
-
-  }catch(e){
-
-    games=[];
-  }
-}
-
-function saveSettings(){
-
-  localStorage.setItem(
-    SETTINGS_KEY,
-    JSON.stringify(settings)
-  );
-}
-
-function loadSettings(){
-
-  try{
-
-    const saved=
-      JSON.parse(
-        localStorage.getItem(
-          SETTINGS_KEY
-        )||"null"
-      );
-
-    if(saved){
-      settings={
-        ...settings,
-        ...saved
-      };
-    }
+   jogos=data;
 
   }catch(e){}
-}
 
-function saveCompatibility(){
+  render();
 
-  compatibility={
-    wine:
-      document.getElementById(
-        "wineVersion"
-      ).value,
+ };
 
-    box64:
-      document.getElementById(
-        "box64Mode"
-      ).value,
+function render(){
 
-    renderer:
-      document.getElementById(
-        "renderer"
-      ).value,
-
-    dx:
-      document.getElementById(
-        "dxMode"
-      ).value
-  };
-
-  localStorage.setItem(
-    COMPAT_KEY,
-    JSON.stringify(
-      compatibility
-    )
+ const area =
+  document.getElementById(
+   "games"
   );
 
-  toast(
-    "Compatibilidade salva"
-  );
-}
+ const busca =
+  document
+   .getElementById("search")
+   .value
+   .toLowerCase();
 
-function loadCompatibility(){
-
-  try{
-
-    const saved=
-      JSON.parse(
-        localStorage.getItem(
-          COMPAT_KEY
-        )||"null"
-      );
-
-    if(saved){
-      compatibility={
-        ...compatibility,
-        ...saved
-      };
-    }
-
-  }catch(e){}
-}
-
-function applyCompatibility(){
-
-  document.getElementById(
-    "wineVersion"
-  ).value=compatibility.wine;
-
-  document.getElementById(
-    "box64Mode"
-  ).value=compatibility.box64;
-
-  document.getElementById(
-    "renderer"
-  ).value=compatibility.renderer;
-
-  document.getElementById(
-    "dxMode"
-  ).value=compatibility.dx;
-}
-
-function resetCompatibility(){
-
-  compatibility={
-    wine:"Wine Default",
-    box64:"Performance",
-    renderer:"Auto",
-    dx:"Auto"
-  };
-
-  applyCompatibility();
-  saveCompatibility();
-}
-
-/* ==========================================================
-   NAVIGATION
-========================================================== */
-
-function navigate(page){
-
-  document.querySelectorAll(".page")
-    .forEach(element=>{
-      element.classList.remove(
-        "active"
-      );
-    });
-
-  const target=
-    document.getElementById(
-      "page-"+page
-    );
-
-  if(target){
-    target.classList.add(
-      "active"
-    );
-  }
-
-  document.querySelectorAll(
-    ".navBtn"
-  ).forEach(button=>{
-
-    button.classList.toggle(
-      "active",
-      button.dataset.page===page
-    );
-
-  });
-
-  document.getElementById(
-    "sidebar"
-  ).classList.remove("open");
-
-  renderAll();
-}
-
-document.querySelectorAll(
-  ".navBtn"
-).forEach(button=>{
-
-  button.addEventListener(
-    "click",
-    ()=>{
-      navigate(
-        button.dataset.page
-      );
-    }
+ const lista =
+  jogos.filter(
+   j =>
+    j.name
+     .toLowerCase()
+     .includes(busca)
   );
 
-});
+ if(!lista.length){
 
-document.getElementById(
-  "mobileMenu"
-).addEventListener(
-  "click",
-  ()=>{
-    document.getElementById(
-      "sidebar"
-    ).classList.toggle("open");
-  }
-);
+  area.innerHTML = `
 
-/* ==========================================================
-   SEARCH
-========================================================== */
+   <div class="empty">
 
-document.getElementById(
-  "searchInput"
-).addEventListener(
-  "input",
-  event=>{
+    <div style="font-size:50px">
+     🎮
+    </div>
 
-    searchTerm=
-      event.target.value
-      .trim()
-      .toLowerCase();
+    <h3>
+     Nenhum jogo
+    </h3>
 
-    renderAll();
-  }
-);
+    <p>
+     Adicione um arquivo .EXE
+     para criar sua biblioteca.
+    </p>
 
-/* ==========================================================
-   GAME CARD
-========================================================== */
+    <button
+     class="primary"
+     onclick="adicionar()"
+    >
+     ＋ Adicionar jogo
+    </button>
 
-function gameCard(game){
+   </div>
 
-  return `
+  `;
 
-  <article class="gameCard">
+  return;
+ }
+
+ area.innerHTML =
+  lista.map(j => `
+
+   <article class="card">
 
     <div class="cover">
+     🎮
+    </div>
 
-      <div class="coverIcon">
-        ${
-          game.type==="EXE"
-          ? "🖥️"
-          : "🎮"
-        }
-      </div>
+    <div class="info">
+
+     <div class="name">
+      ${safe(j.name)}
+     </div>
+
+     <div class="meta">
+      EXE • ${j.graphics}
+     </div>
+
+     <div class="actions">
+
+      <button
+       class="play"
+       onclick="jogar('${j.id}')"
+      >
+       ▶ JOGAR
+      </button>
+
+      <button
+       class="config"
+       onclick="configurar('${j.id}')"
+      >
+       ⚙
+      </button>
+
+     </div>
 
     </div>
 
-    <div class="cardBody">
+   </article>
 
-      <div
-        class="gameName"
-        title="${escapeHTML(game.name)}">
+  `).join("");
 
-        ${escapeHTML(game.name)}
+}
 
-      </div>
+function jogar(id){
 
-      <div class="gameMeta">
+ AURA.configurarAutomaticamente(id);
 
-        <span>
-          ${escapeHTML(game.type)}
-        </span>
+ const resposta =
+  JSON.parse(
+   AURA.jogar(id)
+  );
 
-        <span>•</span>
+ if(resposta.ok){
 
-        <span>
-          ${escapeHTML(game.size)}
-        </span>
+  aviso(
+   "Jogo iniciado!"
+  );
 
-      </div>
+ }else{
 
-      <div class="cardActions">
+  aviso(
+   resposta.message
+  );
 
-        <button
-          class="cardBtn play"
-          onclick="
-            playGame('${game.id}')
-          ">
-          ▶ Abrir
-        </button>
+ }
 
-        <button
-          class="cardBtn"
-          onclick="
-            toggleFavorite('${game.id}')
-          ">
-          ${
-            game.favorite
-            ? "★"
-            : "☆"
-          }
-        </button>
+ carregar();
 
-        <button
-          class="cardBtn"
-          onclick="
-            showDetails('${game.id}')
-          ">
-          ⋯
-        </button>
+}
 
-      </div>
+function configurar(id){
+
+ jogoAtual =
+  jogos.find(
+   j => j.id===id
+  );
+
+ if(!jogoAtual) return;
+
+ document
+  .getElementById("configData")
+  .innerHTML = `
+
+   <div class="row">
+    <span>Jogo</span>
+    <b>${safe(jogoAtual.name)}</b>
+   </div>
+
+   <div class="row">
+    <span>Resolução</span>
+    <select>
+     <option>Auto</option>
+     <option>1280x720</option>
+     <option>1600x900</option>
+     <option>1920x1080</option>
+    </select>
+   </div>
+
+   <div class="row">
+    <span>FPS</span>
+    <select>
+     <option>30</option>
+     <option selected>60</option>
+     <option>90</option>
+    </select>
+   </div>
+
+   <div class="row">
+    <span>Gráficos</span>
+    <select>
+     <option>Auto</option>
+     <option>Baixo</option>
+     <option>Médio</option>
+     <option>Alto</option>
+    </select>
+   </div>
+
+   <div class="row">
+    <span>Controles</span>
+    <select>
+     <option>Touch + Gamepad</option>
+     <option>Touch</option>
+     <option>Gamepad</option>
+    </select>
+   </div>
+
+  `;
+
+ document
+  .getElementById("configModal")
+  .classList.add("show");
+
+}
+
+function aplicarConfig(){
+
+ if(jogoAtual){
+
+  AURA.configurarAutomaticamente(
+   jogoAtual.id
+  );
+
+ }
+
+ fecharConfig();
+
+ carregar();
+
+ aviso(
+  "Configuração aplicada."
+ );
+
+}
+
+function configurarTodos(){
+
+ jogos.forEach(
+  j =>
+   AURA.configurarAutomaticamente(
+    j.id
+   )
+ );
+
+ carregar();
+
+ aviso(
+  "Todos os jogos foram configurados."
+ );
+
+}
+
+function fecharConfig(){
+
+ document
+  .getElementById("configModal")
+  .classList.remove("show");
+
+}
+
+function engine(){
+
+ let info;
+
+ try{
+
+  info =
+   JSON.parse(
+    AURA.statusEngine()
+   );
+
+ }catch(e){
+
+  info={
+   engine:"AURA Compatibility Engine",
+   installed:false,
+   ready:false,
+   architecture:"ARM64",
+   runtime:"Não instalado"
+  };
+
+ }
+
+ document
+  .getElementById("engineData")
+  .innerHTML = `
+
+   <div class="row">
+    <span>Engine</span>
+    <b>${info.engine}</b>
+   </div>
+
+   <div class="row">
+    <span>Arquitetura</span>
+    <b>${info.architecture}</b>
+   </div>
+
+   <div class="row">
+    <span>Runtime</span>
+    <b>${info.runtime}</b>
+   </div>
+
+   <div class="row">
+
+    <span>Status</span>
+
+    <div class="status">
+
+     <span class="dot"></span>
+
+     ${info.ready
+       ? "Pronto"
+       : "Runtime não instalado"}
 
     </div>
 
-  </article>
+   </div>
+
+   <p style="
+    color:#8f96a8;
+    line-height:1.6;
+   ">
+
+    O GameHub está preparado para
+    receber o runtime de compatibilidade
+    Windows. O runtime é o componente
+    responsável por executar o EXE.
+
+   </p>
 
   `;
+
+ document
+  .getElementById("engineModal")
+  .classList.add("show");
+
 }
 
-/* ==========================================================
-   FILTER
-========================================================== */
+function fecharEngine(){
 
-function filterGames(list){
+ document
+  .getElementById("engineModal")
+  .classList.remove("show");
 
-  if(!searchTerm){
-    return list;
-  }
-
-  return list.filter(game=>
-
-    game.name
-      .toLowerCase()
-      .includes(searchTerm)
-
-    ||
-
-    game.type
-      .toLowerCase()
-      .includes(searchTerm)
-
-  );
 }
 
-/* ==========================================================
-   GRID RENDER
-========================================================== */
+function aviso(texto){
 
-function renderGrid(id,list){
-
-  const element=
-    document.getElementById(id);
-
-  if(!element){
-    return;
-  }
-
-  const filtered=
-    filterGames(list);
-
-  if(!filtered.length){
-
-    element.innerHTML=`
-
-      <div
-        class="empty"
-        style="grid-column:1/-1">
-
-        <div class="emptyIcon">
-          🎮
-        </div>
-
-        <strong>
-          Nenhum jogo encontrado
-        </strong>
-
-        <span
-          style="margin-top:6px">
-          Adicione um jogo ou altere
-          sua pesquisa.
-        </span>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  element.innerHTML=
-    filtered
-    .map(gameCard)
-    .join("");
-}
-
-function renderAll(){
-
+ const t =
   document.getElementById(
-    "libraryCount"
-  ).textContent=
-    games.length;
-
-  document.getElementById(
-    "homeCount"
-  ).textContent=
-    games.length+
-    (
-      games.length===1
-      ? " jogo"
-      : " jogos"
-    );
-
-  const recent=
-    [...games]
-    .filter(game=>game.recentAt)
-    .sort(
-      (a,b)=>
-        b.recentAt-a.recentAt
-    )
-    .slice(0,8);
-
-  const favorites=
-    games.filter(
-      game=>game.favorite
-    );
-
-  renderGrid(
-    "homeRecent",
-    recent
+   "toast"
   );
 
-  renderGrid(
-    "homeLibrary",
-    games.slice(0,8)
-  );
+ t.textContent=texto;
 
-  renderGrid(
-    "libraryGrid",
-    games
-  );
+ t.classList.add("show");
 
-  renderGrid(
-    "favoritesGrid",
-    favorites
-  );
+ setTimeout(
+  () =>
+   t.classList.remove("show"),
+  2800
+ );
 
-  renderGrid(
-    "recentGrid",
-    recent
-  );
-
-  renderExeResults();
 }
 
-/* ==========================================================
-   ADD FILE
-========================================================== */
+function safe(text){
 
-document.getElementById(
-  "chooseFile"
-).addEventListener(
-  "click",
-  ()=>{
-    document.getElementById(
-      "fileInput"
-    ).click();
-  }
-);
+ return String(text)
+  .replaceAll("&","&amp;")
+  .replaceAll("<","&lt;")
+  .replaceAll(">","&gt;")
+  .replaceAll('"',"&quot;")
+  .replaceAll("'","&#039;");
 
-document.getElementById(
-  "fileInput"
-).addEventListener(
-  "change",
-  event=>{
-
-    const file=
-      event.target.files[0];
-
-    if(!file){
-      return;
-    }
-
-    addFileToLibrary(file);
-
-    event.target.value="";
-  }
-);
-
-function addFileToLibrary(file){
-
-  const extension=
-    file.name.includes(".")
-    ? file.name
-        .split(".")
-        .pop()
-        .toUpperCase()
-    : "FILE";
-
-  const name=
-    file.name.replace(
-      /\.[^/.]+$/,
-      ""
-    );
-
-  const exists=
-    games.some(game=>
-      game.name.toLowerCase()===
-      name.toLowerCase()
-    );
-
-  if(exists){
-
-    toast(
-      "Esse jogo já está na biblioteca"
-    );
-
-    return;
-  }
-
-  const game={
-
-    id:
-      Date.now().toString(36)+
-      Math.random()
-      .toString(36)
-      .slice(2),
-
-    name,
-
-    type:extension,
-
-    size:
-      formatBytes(file.size),
-
-    date:
-      new Date()
-      .toLocaleDateString(
-        "pt-BR"
-      ),
-
-    favorite:false,
-
-    recentAt:0,
-
-    source:"file"
-
-  };
-
-  games.unshift(game);
-
-  saveGames();
-  renderAll();
-
-  toast(
-    `"${name}" adicionado`
-  );
 }
 
-/* ==========================================================
-   EXE SCANNER
-========================================================== */
-
-document.getElementById(
-  "scanExeBtn"
-).addEventListener(
-  "click",
-  ()=>{
-    document.getElementById(
-      "exeInput"
-    ).click();
-  }
-);
-
-document.getElementById(
-  "scanFileButton"
-).addEventListener(
-  "click",
-  ()=>{
-    document.getElementById(
-      "exeInput"
-    ).click();
-  }
-);
-
-document.getElementById(
-  "exeInput"
-).addEventListener(
-  "change",
-  event=>{
-
-    const files=
-      Array.from(
-        event.target.files
-      );
-
-    if(!files.length){
-      return;
-    }
-
-    let added=0;
-
-    files.forEach(file=>{
-
-      if(
-        !file.name
-        .toLowerCase()
-        .endsWith(".exe")
-      ){
-        return;
-      }
-
-      const name=
-        file.name.replace(
-          /\.exe$/i,
-          ""
-        );
-
-      const exists=
-        games.some(game=>
-          game.name
-            .toLowerCase()===
-          name.toLowerCase()
-        );
-
-      if(exists){
-        return;
-      }
-
-      games.unshift({
-
-        id:
-          Date.now()
-          .toString(36)+
-          Math.random()
-          .toString(36)
-          .slice(2),
-
-        name,
-
-        type:"EXE",
-
-        size:
-          formatBytes(
-            file.size
-          ),
-
-        date:
-          new Date()
-          .toLocaleDateString(
-            "pt-BR"
-          ),
-
-        favorite:false,
-
-        recentAt:0,
-
-        source:"exe"
-
-      });
-
-      added++;
-
-    });
-
-    saveGames();
-    renderAll();
-
-    toast(
-      added+
-      (
-        added===1
-        ? " EXE encontrado"
-        : " EXEs encontrados"
-      )
-    );
-
-    event.target.value="";
-  }
-);
-
-function renderExeResults(){
-
-  const element=
-    document.getElementById(
-      "exeResults"
-    );
-
-  if(!element){
-    return;
-  }
-
-  const exeGames=
-    filterGames(
-      games.filter(
-        game=>game.type==="EXE"
-      )
-    );
-
-  document.getElementById(
-    "exeCount"
-  ).textContent=
-    exeGames.length+
-    (
-      exeGames.length===1
-      ? " encontrado"
-      : " encontrados"
-    );
-
-  if(!exeGames.length){
-
-    element.innerHTML=`
-
-      <div
-        class="empty"
-        style="grid-column:1/-1">
-
-        <div class="emptyIcon">
-          🖥️
-        </div>
-
-        <strong>
-          Nenhum EXE cadastrado
-        </strong>
-
-        <span style="margin-top:6px">
-          Toque em "Procurar EXE"
-          para selecionar um executável.
-        </span>
-
-      </div>
-
-    `;
-
-    return;
-  }
-
-  element.innerHTML=
-    exeGames
-      .map(gameCard)
-      .join("");
-}
-
-/* ==========================================================
-   FAVORITE
-========================================================== */
-
-function toggleFavorite(id){
-
-  const game=
-    games.find(
-      item=>item.id===id
-    );
-
-  if(!game){
-    return;
-  }
-
-  game.favorite=
-    !game.favorite;
-
-  saveGames();
-  renderAll();
-
-  toast(
-    game.favorite
-    ? "Adicionado aos favoritos ★"
-    : "Removido dos favoritos"
-  );
-}
-
-/* ==========================================================
-   GAME LAUNCHER
-========================================================== */
-
-function playGame(id){
-
-  const game=
-    games.find(
-      item=>item.id===id
-    );
-
-  if(!game){
-    return;
-  }
-
-  currentGame=game;
-
-  currentIndex=
-    games.findIndex(
-      item=>item.id===id
-    );
-
-  game.recentAt=
-    Date.now();
-
-  if(settings.recent){
-    saveGames();
-  }
-
-  document.getElementById(
-    "playerName"
-  ).textContent=
-    game.name;
-
-  document.getElementById(
-    "playerStatus"
-  ).textContent=
-    game.type+
-    " • "+
-    game.size;
-
-  document.getElementById(
-    "playerCover"
-  ).textContent=
-    game.type==="EXE"
-    ? "🖥️"
-    : "🎮";
-
-  document.getElementById(
-    "mainPlay"
-  ).textContent=
-    "■";
-
-  document.getElementById(
-    "progressFill"
-  ).style.width=
-    "100%";
-
-  if(game.type==="EXE"){
-
-    toast(
-      "EXE preparado para o motor nativo"
-    );
-
-  }else{
-
-    toast(
-      "Jogo selecionado"
-    );
-  }
-
-  renderAll();
-}
-
-/* ==========================================================
-   ANDROID BRIDGE
-========================================================== */
-
-window.AURA_ANDROID={
-
-  isAvailable(){
-
-    return !!(
-      window.AURA &&
-      typeof window.AURA
-        .launchExe==="function"
-    );
-
-  },
-
-  launchExe(game){
-
-    if(
-      window.AURA &&
-      typeof window.AURA
-        .launchExe==="function"
-    ){
-
-      window.AURA.launchExe(
-        JSON.stringify(game)
-      );
-
-      return true;
-    }
-
-    return false;
-  },
-
-  scanStorage(){
-
-    if(
-      window.AURA &&
-      typeof window.AURA
-        .scanExe==="function"
-    ){
-
-      window.AURA.scanExe();
-
-      return true;
-    }
-
-    return false;
-  }
-
-};
-
-document.getElementById(
-  "mainPlay"
-).addEventListener(
-  "click",
-  ()=>{
-
-    if(!currentGame){
-
-      toast(
-        "Selecione um jogo primeiro"
-      );
-
-      return;
-    }
-
-    if(
-      currentGame.type==="EXE"
-    ){
-
-      if(
-        window.AURA_ANDROID
-          .launchExe(
-            currentGame
-          )
-      ){
-
-        toast(
-          "Enviando EXE ao motor Android"
-        );
-
-      }else{
-
-        toast(
-          "Ponte Android ainda não conectada"
-        );
-
-      }
-
-      return;
-    }
-
-    toast(
-      "Jogo preparado para execução"
-    );
-  }
-);
-
-/* ==========================================================
-   NEXT / PREVIOUS
-========================================================== */
-
-function nextGame(){
-
-  if(!games.length){
-
-    toast(
-      "Biblioteca vazia"
-    );
-
-    return;
-  }
-
-  currentIndex=
-    (currentIndex+1)%
-    games.length;
-
-  playGame(
-    games[currentIndex].id
-  );
-}
-
-function previousGame(){
-
-  if(!games.length){
-
-    toast(
-      "Biblioteca vazia"
-    );
-
-    return;
-  }
-
-  currentIndex=
-    (
-      currentIndex-1+
-      games.length
-    )%
-    games.length;
-
-  playGame(
-    games[currentIndex].id
-  );
-}
-
-/* ==========================================================
-   MODAL
-========================================================== */
-
-function showDetails(id){
-
-  const game=
-    games.find(
-      item=>item.id===id
-    );
-
-  if(!game){
-    return;
-  }
-
-  selectedModalId=id;
-
-  document.getElementById(
-    "modalTitle"
-  ).textContent=
-    game.name;
-
-  document.getElementById(
-    "modalCover"
-  ).textContent=
-    game.type==="EXE"
-    ? "🖥️"
-    : "🎮";
-
-  document.getElementById(
-    "modalInfo"
-  ).innerHTML=`
-
-    <strong>Tipo:</strong>
-    ${escapeHTML(game.type)}
-    <br>
-
-    <strong>Tamanho:</strong>
-    ${escapeHTML(game.size)}
-    <br>
-
-    <strong>Adicionado:</strong>
-    ${escapeHTML(game.date)}
-    <br>
-
-    <strong>Fonte:</strong>
-    ${escapeHTML(game.source)}
-    <br>
-
-    <strong>Favorito:</strong>
-    ${game.favorite?"Sim":"Não"}
-
-  `;
-
-  document.getElementById(
-    "modalFavorite"
-  ).textContent=
-    game.favorite
-    ? "★ Remover favorito"
-    : "★ Favoritar";
-
-  document.getElementById(
-    "gameModal"
-  ).classList.add("show");
-}
-
-function closeModal(){
-
-  document.getElementById(
-    "gameModal"
-  ).classList.remove("show");
-
-  selectedModalId=null;
-}
-
-document.getElementById(
-  "modalPlay"
-).addEventListener(
-  "click",
-  ()=>{
-
-    if(selectedModalId){
-
-      playGame(
-        selectedModalId
-      );
-
-      closeModal();
-    }
-
-  }
-);
-
-document.getElementById(
-  "modalFavorite"
-).addEventListener(
-  "click",
-  ()=>{
-
-    if(!selectedModalId){
-      return;
-    }
-
-    toggleFavorite(
-      selectedModalId
-    );
-
-    showDetails(
-      selectedModalId
-    );
-  }
-);
-
-document.getElementById(
-  "modalDelete"
-).addEventListener(
-  "click",
-  ()=>{
-
-    if(!selectedModalId){
-      return;
-    }
-
-    const game=
-      games.find(
-        item=>
-          item.id===
-          selectedModalId
-      );
-
-    if(!game){
-      return;
-    }
-
-    if(
-      settings.confirmDelete &&
-      !confirm(
-        `Remover "${game.name}" da biblioteca?`
-      )
-    ){
-
-      return;
-    }
-
-    games=
-      games.filter(
-        item=>
-          item.id!==
-          selectedModalId
-      );
-
-    saveGames();
-
-    closeModal();
-    renderAll();
-
-    toast(
-      "Jogo removido"
-    );
-
-  }
-);
-
-document.getElementById(
-  "gameModal"
-).addEventListener(
-  "click",
-  event=>{
-
-    if(
-      event.target.id===
-      "gameModal"
-    ){
-
-      closeModal();
-    }
-
-  }
-);
-
-/* ==========================================================
-   CLEAR
-========================================================== */
-
-function clearLibrary(){
-
-  if(!games.length){
-
-    toast(
-      "Biblioteca já está vazia"
-    );
-
-    return;
-  }
-
-  if(
-    !confirm(
-      "Limpar toda a biblioteca?"
-    )
-  ){
-
-    return;
-  }
-
-  games=[];
-
-  saveGames();
-  renderAll();
-
-  toast(
-    "Biblioteca limpa"
-  );
-}
-
-/* ==========================================================
-   SETTINGS
-========================================================== */
-
-document.querySelectorAll(
-  ".switch"
-).forEach(button=>{
-
-  button.addEventListener(
-    "click",
-    ()=>{
-
-      const key=
-        button.dataset.setting;
-
-      settings[key]=
-        !settings[key];
-
-      button.classList.toggle(
-        "on",
-        settings[key]
-      );
-
-      saveSettings();
-
-      toast(
-        settings[key]
-        ? "Configuração ativada"
-        : "Configuração desativada"
-      );
-
-    }
-  );
-
-});
-
-document.getElementById(
-  "themeSelect"
-).addEventListener(
-  "change",
-  event=>{
-
-    settings.theme=
-      event.target.value;
-
-    saveSettings();
-
-    applyTheme();
-
-    toast(
-      "Tema atualizado"
-    );
-  }
-);
-
-function applyTheme(){
-
-  const root=
-    document.documentElement;
-
-  const themes={
-
-    orange:[
-      "#ff7417",
-      "#ff9d52"
-    ],
-
-    blue:[
-      "#2587ff",
-      "#63b1ff"
-    ],
-
-    purple:[
-      "#9a5cff",
-      "#c094ff"
-    ],
-
-    green:[
-      "#28d17c",
-      "#70efa9"
-    ]
-
-  };
-
-  const selected=
-    themes[settings.theme]
-    ||
-    themes.orange;
-
-  root.style.setProperty(
-    "--accent",
-    selected[0]
-  );
-
-  root.style.setProperty(
-    "--accent2",
-    selected[1]
-  );
-
-  document.getElementById(
-    "themeSelect"
-  ).value=
-    settings.theme;
-}
-
-function applySwitches(){
-
-  document.querySelectorAll(
-    ".switch"
-  ).forEach(button=>{
-
-    const key=
-      button.dataset.setting;
-
-    button.classList.toggle(
-      "on",
-      !!settings[key]
-    );
-
-  });
-}
-
-/* ==========================================================
-   COMPACT MODE
-========================================================== */
-
-function applyCompact(){
-
-  if(settings.compact){
-
-    document.documentElement
-      .style.setProperty(
-        "--radius",
-        "14px"
-      );
-
-  }else{
-
-    document.documentElement
-      .style.setProperty(
-        "--radius",
-        "20px"
-      );
-  }
-}
-
-/* ==========================================================
-   FULLSCREEN
-========================================================== */
-
-document.getElementById(
-  "fullscreenBtn"
-).addEventListener(
-  "click",
-  async()=>{
-
-    try{
-
-      if(
-        !document.fullscreenElement
-      ){
-
-        await document.documentElement
-          .requestFullscreen();
-
-        toast(
-          "Tela cheia ativada"
-        );
-
-      }else{
-
-        await document.exitFullscreen();
-
-        toast(
-          "Tela cheia desativada"
-        );
-      }
-
-    }catch(error){
-
-      toast(
-        "Tela cheia indisponível"
-      );
-    }
-
-  }
-);
-
-/* ==========================================================
-   QUICK THEME
-========================================================== */
-
-document.getElementById(
-  "themeBtn"
-).addEventListener(
-  "click",
-  ()=>{
-
-    const themes=[
-      "orange",
-      "blue",
-      "purple",
-      "green"
-    ];
-
-    const index=
-      themes.indexOf(
-        settings.theme
-      );
-
-    settings.theme=
-      themes[
-        (index+1)%
-        themes.length
-      ];
-
-    saveSettings();
-    applyTheme();
-
-    toast(
-      "Tema: "+
-      settings.theme
-    );
-
-  }
-);
-
-/* ==========================================================
-   PROGRESS
-========================================================== */
-
-document.getElementById(
-  "progressTrack"
-).addEventListener(
-  "click",
-  event=>{
-
-    const rect=
-      event.currentTarget
-      .getBoundingClientRect();
-
-    const percent=
-      (
-        (event.clientX-rect.left)/
-        rect.width
-      )*100;
-
-    const safe=
-      Math.max(
-        0,
-        Math.min(
-          100,
-          percent
-        )
-      );
-
-    document.getElementById(
-      "progressFill"
-    ).style.width=
-      safe+"%";
-
-  }
-);
-
-/* ==========================================================
-   CONTROLLER
-========================================================== */
-
-function saveControllerLayout(){
-
-  localStorage.setItem(
-    CONTROLLER_KEY,
-    JSON.stringify({
-      savedAt:Date.now()
-    })
-  );
-
-  toast(
-    "Layout dos controles salvo"
-  );
-}
-
-document.querySelectorAll(
-  "[data-control]"
-).forEach(button=>{
-
-  const press=()=>{
-
-    button.style.transform=
-      "scale(.9)";
-
-    button.style.boxShadow=
-      "0 0 25px rgba(255,116,23,.45)";
-
-    if(
-      window.AURA &&
-      typeof window.AURA
-        .controller==="function"
-    ){
-
-      window.AURA.controller(
-        button.dataset.control,
-        true
-      );
-
-    }else{
-
-      toast(
-        "Controle: "+
-        button.dataset.control
-      );
-    }
-  };
-
-  const release=()=>{
-
-    button.style.transform="";
-    button.style.boxShadow="";
-
-    if(
-      window.AURA &&
-      typeof window.AURA
-        .controller==="function"
-    ){
-
-      window.AURA.controller(
-        button.dataset.control,
-        false
-      );
-
-    }
-  };
-
-  button.addEventListener(
-    "pointerdown",
-    press
-  );
-
-  button.addEventListener(
-    "pointerup",
-    release
-  );
-
-  button.addEventListener(
-    "pointercancel",
-    release
-  );
-
-  button.addEventListener(
-    "pointerleave",
-    release
-  );
-
-});
-
-/* ==========================================================
-   ANALOG STICK
-========================================================== */
-
-const stick=
-  document.getElementById(
-    "stick"
-  );
-
-const stickInner=
-  document.getElementById(
-    "stickInner"
-  );
-
-let dragging=false;
-
-function moveStick(event){
-
-  if(!dragging){
-    return;
-  }
-
-  const rect=
-    stick.getBoundingClientRect();
-
-  const cx=
-    rect.left+
-    rect.width/2;
-
-  const cy=
-    rect.top+
-    rect.height/2;
-
-  let x=
-    event.clientX-cx;
-
-  let y=
-    event.clientY-cy;
-
-  const max=
-    rect.width*.27;
-
-  const distance=
-    Math.sqrt(
-      x*x+y*y
-    );
-
-  if(distance>max){
-
-    x=
-      (x/distance)*
-      max;
-
-    y=
-      (y/distance)*
-      max;
-  }
-
-  stickInner.style.transform=
-    `translate(${x}px,${y}px)`;
-
-  if(
-    window.AURA &&
-    typeof window.AURA
-      .analog==="function"
-  ){
-
-    window.AURA.analog(
-      x/max,
-      y/max
-    );
-  }
-}
-
-stick.addEventListener(
-  "pointerdown",
-  event=>{
-
-    dragging=true;
-
-    stick.setPointerCapture(
-      event.pointerId
-    );
-
-    moveStick(event);
-  }
-);
-
-stick.addEventListener(
-  "pointermove",
-  moveStick
-);
-
-function resetStick(){
-
-  dragging=false;
-
-  stickInner.style.transform=
-    "translate(0,0)";
-
-  if(
-    window.AURA &&
-    typeof window.AURA
-      .analog==="function"
-  ){
-
-    window.AURA.analog(
-      0,
-      0
-    );
-  }
-}
-
-stick.addEventListener(
-  "pointerup",
-  resetStick
-);
-
-stick.addEventListener(
-  "pointercancel",
-  resetStick
-);
-
-/* ==========================================================
-   KEYBOARD
-========================================================== */
-
-document.addEventListener(
-  "keydown",
-  event=>{
-
-    if(
-      event.target.tagName==="INPUT" ||
-      event.target.tagName==="SELECT"
-    ){
-
-      return;
-    }
-
-    const key=
-      event.key.toLowerCase();
-
-    const map={
-
-      w:"UP",
-      a:"LEFT",
-      s:"DOWN",
-      d:"RIGHT",
-
-      j:"A",
-      k:"B",
-      u:"X",
-      i:"Y"
-
-    };
-
-    if(map[key]){
-
-      toast(
-        "Controle: "+
-        map[key]
-      );
-
-    }
-
-    if(
-      event.key==="Escape"
-    ){
-
-      closeModal();
-    }
-
-  }
-);
-
-/* ==========================================================
-   VOLUME
-========================================================== */
-
-document.getElementById(
-  "volume"
-).addEventListener(
-  "input",
-  event=>{
-
-    const value=
-      Number(
-        event.target.value
-      );
-
-    if(
-      window.AURA &&
-      typeof window.AURA
-        .volume==="function"
-    ){
-
-      window.AURA.volume(
-        value
-      );
-
-    }
-
-  }
-);
-
-/* ==========================================================
-   INITIALIZATION
-========================================================== */
-
-function init(){
-
-  loadSettings();
-
-  loadGames();
-
-  loadCompatibility();
-
-  applyTheme();
-
-  applySwitches();
-
-  applyCompact();
-
-  applyCompatibility();
-
-  renderAll();
-
-  document.getElementById(
-    "elapsed"
-  ).textContent=
-    "00:00";
-
-  document.getElementById(
-    "duration"
-  ).textContent=
-    "--:--";
-}
-
-init();
+carregar();
 
 </script>
 
 </body>
+
 </html>
+""".trimIndent()
+}
