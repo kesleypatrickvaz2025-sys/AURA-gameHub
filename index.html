@@ -2,296 +2,1573 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <meta name="theme-color" content="#08090d">
-<title>AURA PRO STUDIO V5.0</title>
+<title>GAME HUB V1</title>
+
 <style>
-:root{--bg:#07080c;--panel:#11131b;--panel2:#171923;--line:rgba(255,255,255,.08);--text:#fff;--muted:#8f93a1;--accent:#ff7417;--accent2:#ff9b45;--danger:#ff4058;--radius:20px}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);color:var(--text);font-family:Inter,Roboto,Arial,sans-serif;min-height:100vh;padding-bottom:88px}
-button,input,select{font:inherit}button{border:0;color:inherit;cursor:pointer}
-.bg{position:fixed;inset:0;z-index:-2;background:radial-gradient(circle at 50% -10%,rgba(255,116,23,.18),transparent 34%),#07080c}
-.top{height:66px;position:sticky;top:0;z-index:100;display:flex;align-items:center;gap:11px;padding:9px 13px;background:rgba(7,8,12,.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--line)}
-.iconbtn{width:44px;height:44px;border-radius:14px;background:#151720;display:grid;place-items:center;font-size:19px}
-.brand{flex:1;min-width:0}.brand b{display:block;font-size:15px}.brand small{color:var(--accent);font-size:8px;letter-spacing:2px}
-.sidebar{position:fixed;z-index:300;left:0;top:0;bottom:0;width:285px;padding:18px;background:#0d0f15;border-right:1px solid var(--line);transform:translateX(-105%);transition:.28s;overflow:auto;box-shadow:0 20px 60px #000}.sidebar.open{transform:none}
-.overlay{position:fixed;inset:0;background:#000b;z-index:250;display:none}.overlay.show{display:block}
-.sidehead{display:flex;align-items:center;gap:11px;margin-bottom:22px}.logo{width:45px;height:45px;border-radius:14px;background:linear-gradient(135deg,var(--accent),#ffb26d);display:grid;place-items:center;color:#111;font-weight:900}.sidetitle{flex:1}.sidetitle b{display:block}.sidetitle small{color:var(--accent);letter-spacing:2px;font-size:8px}
-.navtitle{font-size:9px;color:#5e626e;letter-spacing:2px;margin:18px 8px 7px}.nav{width:100%;display:flex;align-items:center;gap:13px;padding:13px;border-radius:14px;background:none;color:#c0c3cc;text-align:left;margin:3px 0}.nav.active,.nav:hover{background:#ff741718;color:#fff}.nav.active{box-shadow:inset 3px 0 var(--accent)}.badge{margin-left:auto;color:var(--accent);font-size:10px}
-main{max-width:920px;margin:auto;padding:15px}.page{display:none}.page.active{display:block;animation:in .2s}@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-.title{margin:7px 0 17px}.title h1{font-size:25px}.title p{font-size:12px;color:var(--muted);margin-top:4px}
-.search{height:47px;background:#12141c;border:1px solid var(--line);border-radius:15px;display:flex;align-items:center;gap:9px;padding:0 13px;margin-bottom:13px}.search input{background:none;border:0;outline:0;color:#fff;width:100%}.search input::placeholder{color:#686c77}
-.card{background:linear-gradient(145deg,#171923,#0f1118);border:1px solid var(--line);border-radius:25px;padding:17px;box-shadow:0 20px 55px #0008}
-.coverwrap{width:min(76vw,330px);aspect-ratio:1;margin:3px auto 17px;position:relative}.cover{width:100%;height:100%;object-fit:cover;border-radius:23px;background:#181b24;box-shadow:0 25px 60px #0009}.placeholder{position:absolute;inset:0;display:grid;place-items:center;font-size:55px;color:#5e6370;pointer-events:none}
-.info{text-align:center}.info h2{font-size:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.info p{font-size:12px;color:var(--muted);margin-top:5px}.heart{margin-top:9px;width:40px;height:40px;border-radius:50%;background:#191b24;color:#999}.heart.on{color:#ff4058}
-.progress{margin-top:18px}.progress input,.volume input,.effect input{width:100%;accent-color:var(--accent)}.times{display:flex;justify-content:space-between;color:#777b87;font-size:9px}
-.controls{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:12px}.control{width:43px;height:43px;border-radius:50%;background:#181a23}.control.play{width:61px;height:61px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#111;font-size:21px}.volume{display:flex;align-items:center;gap:8px;margin-top:12px}
-.visual{height:145px;margin-top:13px;background:#090a0f;border:1px solid var(--line);border-radius:18px;overflow:hidden;position:relative}.visual canvas{width:100%;height:100%}.stats{position:absolute;bottom:8px;left:9px;right:9px;display:flex;justify-content:space-between;font-size:8px;color:#999;background:#0005;padding:5px;border-radius:8px}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.quick button{min-height:72px;border-radius:16px;background:#11131a;border:1px solid var(--line);color:#bbb}.quick b{display:block;font-size:18px;margin-bottom:5px}.section{margin-top:20px}.secthead{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px}.secthead h3{font-size:14px}.secthead button{background:none;color:var(--accent);font-size:10px}
-.list{display:flex;flex-direction:column;gap:7px}.song{display:flex;align-items:center;gap:10px;padding:7px;background:#11131a;border:1px solid transparent;border-radius:15px;min-height:65px}.song.active{border-color:#ff741750}.song img{width:51px;height:51px;border-radius:11px;object-fit:cover;background:#20232d}.songinfo{flex:1;min-width:0}.songinfo b{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.songinfo span{display:block;color:#777b87;font-size:9px;margin-top:4px}.songactions{display:flex;gap:3px}.songactions button{width:32px;height:32px;border-radius:9px;background:#191b24;color:#999}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.tile{padding:17px;border-radius:18px;background:#11131a;border:1px solid var(--line)}.tile b{font-size:25px;display:block;margin-bottom:9px}.tile span{font-size:10px;color:#888}.tile small{display:block;color:var(--accent);margin-top:5px}
-.upload{padding:26px;text-align:center;border:1px dashed #ff741766;border-radius:19px;background:#ff741708}.upload strong{font-size:33px}.upload p{font-size:11px;color:#888;margin:6px 0 13px}.btn{padding:11px 15px;border-radius:12px;background:#191b24}.primary{background:var(--accent);color:#111;font-weight:700}
-.eq{background:#11131a;border:1px solid var(--line);border-radius:20px;padding:14px}.eqtop{display:flex;gap:7px;margin-bottom:13px}.eqtop select{flex:1;background:#191b24;color:#fff;border:1px solid var(--line);border-radius:11px;padding:10px}.eqtop button{background:#191b24;border-radius:11px;padding:0 12px}.bands{display:grid;grid-template-columns:repeat(10,1fr);gap:8px;overflow:auto;padding-bottom:8px}.band{height:225px;min-width:37px;display:flex;flex-direction:column;align-items:center;justify-content:space-between}.band input{width:175px;transform:rotate(-90deg);accent-color:var(--accent)}.band small{font-size:8px;color:#777}.band b{font-size:8px;color:var(--accent)}
-.effects{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.effect{padding:14px;background:#11131a;border:1px solid var(--line);border-radius:16px}.effecthead{display:flex;justify-content:space-between;font-size:11px}.switch{width:40px;height:22px;border-radius:20px;background:#292c35;padding:3px}.switch i{display:block;width:16px;height:16px;border-radius:50%;background:#777;transition:.2s}.switch.on{background:#ff741755}.switch.on i{transform:translateX(18px);background:var(--accent)}
-.presets{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.preset{padding:13px;text-align:left;background:#11131a;border:1px solid var(--line);border-radius:14px}.preset b{display:block;font-size:11px}.preset span{font-size:8px;color:#777}.preset.active{border-color:var(--accent);background:#ff741711}
-.lyrics{min-height:340px;padding:25px 12px;text-align:center;background:#11131a;border:1px solid var(--line);border-radius:20px}.lyric{padding:10px;color:#666b78;font-size:14px}.lyric.active{color:#fff;font-size:18px;font-weight:700}
-.setting{display:flex;align-items:center;gap:11px;padding:14px;background:#11131a;border:1px solid var(--line);border-radius:15px;margin-bottom:7px}.setting .si{width:39px;height:39px;border-radius:11px;background:#191b24;display:grid;place-items:center}.setting div:nth-child(2){flex:1}.setting b{font-size:11px;display:block}.setting span{font-size:8px;color:#777}.setting input{accent-color:var(--accent)}
-.bottom{position:fixed;left:0;right:0;bottom:0;z-index:180;background:#0d0f14ed;backdrop-filter:blur(22px);border-top:1px solid var(--line);padding:7px 11px}.bottomin{max-width:920px;margin:auto;display:flex;align-items:center;gap:9px}.mini{width:51px;height:51px;border-radius:11px;object-fit:cover;background:#20232d}.miniinfo{flex:1;min-width:0}.miniinfo b{display:block;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.miniinfo span{display:block;font-size:8px;color:#777;margin-top:4px}.minictl{display:flex;gap:5px}.minictl button{width:37px;height:37px;border-radius:50%;background:#191b24}.minictl .mp{background:var(--accent);color:#111}
-.empty{text-align:center;padding:32px;color:#656a77}.empty strong{display:block;font-size:35px}.empty span{font-size:10px}.toast{position:fixed;z-index:500;left:50%;bottom:99px;transform:translate(-50%,15px);opacity:0;background:#191b24;border:1px solid var(--line);padding:10px 14px;border-radius:12px;font-size:10px;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
-@media(min-width:700px){main{padding:25px}.grid{grid-template-columns:repeat(4,1fr)}.effects{grid-template-columns:repeat(4,1fr)}.presets{grid-template-columns:repeat(4,1fr)}}
-@media(max-width:380px){.quick{grid-template-columns:repeat(2,1fr)}.controls{gap:6px}}
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+:root{
+    --bg:#08090d;
+    --panel:#11131a;
+    --panel2:#171923;
+    --border:rgba(255,255,255,.08);
+    --text:#fff;
+    --muted:#9297a7;
+    --accent:#7c5cff;
+    --accent2:#9b7cff;
+    --green:#42e695;
+    --danger:#ff4d67;
+    --shadow:0 20px 60px rgba(0,0,0,.35);
+}
+
+body{
+    min-height:100vh;
+    background:
+        radial-gradient(circle at 75% 0%,rgba(124,92,255,.16),transparent 30%),
+        radial-gradient(circle at 0% 100%,rgba(66,230,149,.07),transparent 30%),
+        var(--bg);
+    color:var(--text);
+    font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    overflow-x:hidden;
+}
+
+button,
+input{
+    font:inherit;
+}
+
+button{
+    border:0;
+    cursor:pointer;
+}
+
+/* APP */
+
+.app{
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:245px;
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+    padding:25px 16px;
+    background:rgba(12,13,19,.92);
+    border-right:1px solid var(--border);
+    backdrop-filter:blur(25px);
+    z-index:20;
+}
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    margin:4px 10px 34px;
+    font-weight:900;
+    font-size:19px;
+    letter-spacing:.5px;
+}
+
+.logoIcon{
+    width:38px;
+    height:38px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    background:linear-gradient(135deg,var(--accent),#4b36c7);
+    box-shadow:0 10px 30px rgba(124,92,255,.35);
+    font-size:20px;
+}
+
+.logo span{
+    color:var(--accent2);
+}
+
+.menuTitle{
+    color:#555968;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    margin:20px 12px 9px;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.nav button{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+    padding:12px 13px;
+    color:var(--muted);
+    background:transparent;
+    border-radius:12px;
+    text-align:left;
+    transition:.2s;
+}
+
+.nav button:hover{
+    color:#fff;
+    background:rgba(255,255,255,.05);
+}
+
+.nav button.active{
+    color:#fff;
+    background:linear-gradient(90deg,rgba(124,92,255,.25),rgba(124,92,255,.06));
+}
+
+.navIcon{
+    width:21px;
+    text-align:center;
+    font-size:17px;
+}
+
+.storageBox{
+    position:absolute;
+    left:16px;
+    right:16px;
+    bottom:18px;
+    padding:15px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:16px;
+}
+
+.storageTop{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:9px;
+    font-size:12px;
+}
+
+.storageTop span:last-child{
+    color:var(--muted);
+}
+
+.storageBar{
+    height:5px;
+    border-radius:20px;
+    background:#242631;
+    overflow:hidden;
+}
+
+.storageFill{
+    height:100%;
+    width:8%;
+    background:linear-gradient(90deg,var(--accent),var(--green));
+    border-radius:20px;
+}
+
+/* MAIN */
+
+.main{
+    width:calc(100% - 245px);
+    margin-left:245px;
+    padding:25px 30px 100px;
+}
+
+.topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:20px;
+    margin-bottom:28px;
+}
+
+.search{
+    max-width:520px;
+    width:100%;
+    position:relative;
+}
+
+.search input{
+    width:100%;
+    height:46px;
+    border-radius:14px;
+    border:1px solid var(--border);
+    outline:none;
+    background:rgba(255,255,255,.045);
+    color:white;
+    padding:0 18px 0 45px;
+}
+
+.search input:focus{
+    border-color:rgba(124,92,255,.6);
+}
+
+.searchIcon{
+    position:absolute;
+    left:16px;
+    top:13px;
+    color:#777c8d;
+}
+
+.topActions{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.iconBtn{
+    width:43px;
+    height:43px;
+    border-radius:13px;
+    color:white;
+    background:rgba(255,255,255,.05);
+    border:1px solid var(--border);
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding-left:7px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,#f6c365,#9f6bff);
+    font-weight:900;
+}
+
+/* HERO */
+
+.hero{
+    position:relative;
+    min-height:265px;
+    border-radius:25px;
+    overflow:hidden;
+    padding:38px;
+    display:flex;
+    align-items:center;
+    background:
+        linear-gradient(90deg,rgba(6,7,12,.98),rgba(6,7,12,.65),rgba(6,7,12,.15)),
+        radial-gradient(circle at 75% 45%,#5335b7,#15131f 45%,#08090d 80%);
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    right:-90px;
+    top:-130px;
+    width:450px;
+    height:450px;
+    border-radius:50%;
+    background:linear-gradient(135deg,rgba(124,92,255,.35),transparent);
+    filter:blur(15px);
+}
+
+.heroContent{
+    position:relative;
+    z-index:2;
+    max-width:600px;
+}
+
+.badge{
+    display:inline-flex;
+    padding:6px 10px;
+    border-radius:7px;
+    background:rgba(124,92,255,.18);
+    color:#b9aaff;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1px;
+    margin-bottom:13px;
+}
+
+.hero h1{
+    font-size:38px;
+    line-height:1.05;
+    margin-bottom:12px;
+}
+
+.hero p{
+    color:#a4a8b6;
+    line-height:1.6;
+    max-width:500px;
+}
+
+.heroActions{
+    display:flex;
+    gap:10px;
+    margin-top:22px;
+}
+
+.primary{
+    padding:12px 20px;
+    border-radius:11px;
+    color:white;
+    font-weight:800;
+    background:linear-gradient(135deg,var(--accent),#6045d8);
+    box-shadow:0 10px 25px rgba(124,92,255,.25);
+}
+
+.secondary{
+    padding:12px 20px;
+    border-radius:11px;
+    color:white;
+    background:rgba(255,255,255,.07);
+    border:1px solid var(--border);
+}
+
+/* SECTIONS */
+
+.section{
+    margin-top:28px;
+}
+
+.sectionHead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.sectionHead h2{
+    font-size:19px;
+}
+
+.sectionHead button{
+    color:var(--accent2);
+    background:none;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+}
+
+.stat{
+    padding:18px;
+    border-radius:16px;
+    background:var(--panel);
+    border:1px solid var(--border);
+}
+
+.statTop{
+    color:var(--muted);
+    font-size:12px;
+    margin-bottom:8px;
+}
+
+.statValue{
+    font-size:25px;
+    font-weight:900;
+}
+
+.statSmall{
+    margin-top:5px;
+    color:var(--green);
+    font-size:11px;
+}
+
+/* CATEGORIES */
+
+.categories{
+    display:flex;
+    gap:10px;
+    overflow-x:auto;
+    padding-bottom:3px;
+}
+
+.category{
+    flex:0 0 auto;
+    padding:10px 16px;
+    border-radius:11px;
+    color:#9b9fad;
+    background:rgba(255,255,255,.04);
+    border:1px solid var(--border);
+}
+
+.category.active,
+.category:hover{
+    color:white;
+    background:rgba(124,92,255,.18);
+    border-color:rgba(124,92,255,.45);
+}
+
+/* GAMES */
+
+.games{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:16px;
+}
+
+.gameCard{
+    overflow:hidden;
+    border-radius:17px;
+    background:var(--panel);
+    border:1px solid var(--border);
+    transition:.25s;
+}
+
+.gameCard:hover{
+    transform:translateY(-4px);
+    border-color:rgba(124,92,255,.4);
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+}
+
+.cover{
+    height:180px;
+    position:relative;
+    overflow:hidden;
+    display:grid;
+    place-items:center;
+    font-size:45px;
+    background:linear-gradient(135deg,#1f2140,#11131c);
+}
+
+.cover:before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 30% 25%,rgba(255,255,255,.14),transparent 25%),
+        linear-gradient(135deg,transparent,rgba(124,92,255,.35));
+}
+
+.cover span{
+    position:relative;
+    z-index:1;
+}
+
+.favorite{
+    position:absolute;
+    z-index:3;
+    right:10px;
+    top:10px;
+    width:32px;
+    height:32px;
+    border-radius:9px;
+    color:white;
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(10px);
+}
+
+.favorite.active{
+    color:#ff5570;
+}
+
+.gameInfo{
+    padding:13px;
+}
+
+.gameTitle{
+    font-weight:800;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.gameMeta{
+    color:var(--muted);
+    font-size:11px;
+    margin-top:5px;
+}
+
+.gameBottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:13px;
+}
+
+.playBtn{
+    padding:8px 13px;
+    border-radius:9px;
+    color:white;
+    background:var(--accent);
+    font-size:11px;
+    font-weight:800;
+}
+
+/* EMPTY */
+
+.empty{
+    display:none;
+    text-align:center;
+    padding:60px 20px;
+    color:var(--muted);
+    background:var(--panel);
+    border:1px dashed var(--border);
+    border-radius:17px;
+}
+
+.emptyIcon{
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:none;
+    place-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.7);
+    backdrop-filter:blur(10px);
+}
+
+.modal.show{
+    display:grid;
+}
+
+.modalBox{
+    width:min(500px,100%);
+    padding:25px;
+    border-radius:22px;
+    background:#12141c;
+    border:1px solid var(--border);
+    box-shadow:0 30px 100px rgba(0,0,0,.55);
+}
+
+.modalHead{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.close{
+    width:35px;
+    height:35px;
+    border-radius:10px;
+    color:white;
+    background:rgba(255,255,255,.06);
+}
+
+.form{
+    display:grid;
+    gap:12px;
+}
+
+.form input,
+.form select{
+    width:100%;
+    height:45px;
+    padding:0 13px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:#0c0e14;
+    color:white;
+    outline:none;
+}
+
+.fileInput{
+    padding:20px;
+    border:1px dashed rgba(124,92,255,.5);
+    border-radius:14px;
+    text-align:center;
+    color:var(--muted);
+}
+
+.fileInput input{
+    margin-top:10px;
+}
+
+.modalButtons{
+    display:flex;
+    gap:10px;
+    margin-top:5px;
+}
+
+/* TOAST */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:25px;
+    transform:translate(-50%,120px);
+    z-index:200;
+    padding:12px 18px;
+    border-radius:12px;
+    background:#20232d;
+    border:1px solid var(--border);
+    box-shadow:var(--shadow);
+    transition:.3s;
+    opacity:0;
+}
+
+.toast.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+/* MOBILE */
+
+.mobileNav{
+    display:none;
+}
+
+@media(max-width:1000px){
+    .games{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media(max-width:760px){
+
+    .sidebar{
+        display:none;
+    }
+
+    .main{
+        width:100%;
+        margin:0;
+        padding:16px 15px 90px;
+    }
+
+    .topbar{
+        margin-bottom:18px;
+    }
+
+    .topActions .iconBtn{
+        display:none;
+    }
+
+    .profile{
+        display:none;
+    }
+
+    .hero{
+        min-height:310px;
+        padding:25px;
+        border-radius:21px;
+    }
+
+    .hero h1{
+        font-size:30px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .games{
+        grid-template-columns:repeat(2,1fr);
+        gap:11px;
+    }
+
+    .cover{
+        height:145px;
+    }
+
+    .gameInfo{
+        padding:11px;
+    }
+
+    .playBtn{
+        padding:7px 10px;
+    }
+
+    .mobileNav{
+        position:fixed;
+        display:flex;
+        left:10px;
+        right:10px;
+        bottom:10px;
+        z-index:50;
+        height:64px;
+        border-radius:19px;
+        background:rgba(18,20,28,.94);
+        border:1px solid var(--border);
+        backdrop-filter:blur(20px);
+        justify-content:space-around;
+        align-items:center;
+    }
+
+    .mobileNav button{
+        color:#74798a;
+        background:none;
+        font-size:18px;
+    }
+
+    .mobileNav button.active{
+        color:var(--accent2);
+    }
+}
+
+@media(max-width:420px){
+    .games{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .cover{
+        height:125px;
+    }
+
+    .gameTitle{
+        font-size:13px;
+    }
+
+    .heroActions{
+        flex-wrap:wrap;
+    }
+}
 </style>
 </head>
+
 <body>
-<div class="bg"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidehead">
-    <div class="logo">A</div><div class="sidetitle"><b>AURA PRO</b><small>STUDIO V5.0</small></div>
-    <button class="iconbtn" id="closeSide">×</button>
-  </div>
-  <div class="navtitle">PRINCIPAL</div>
-  <button class="nav active" data-page="home">⌂ Início</button>
-  <button class="nav" data-page="library">♫ Biblioteca <span class="badge" id="count">0</span></button>
-  <button class="nav" data-page="favorites">♥ Favoritos</button>
-  <button class="nav" data-page="playlists">☷ Playlists</button>
-  <button class="nav" data-page="history">◷ Histórico</button>
-  <div class="navtitle">ÁUDIO</div>
-  <button class="nav" data-page="equalizer">≋ Equalizador 20</button>
-  <button class="nav" data-page="effects">✦ Audio Lab</button>
-  <button class="nav" data-page="visualizer">▥ Visualizador</button>
-  <button class="nav" data-page="lyrics">♬ Letras</button>
-  <div class="navtitle">SISTEMA</div>
-  <button class="nav" data-page="settings">⚙ Configurações</button>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        <div class="logoIcon">🎮</div>
+        GAME <span>HUB</span>
+    </div>
+
+    <div class="menuTitle">BIBLIOTECA</div>
+
+    <div class="nav">
+        <button class="active" data-page="home">
+            <span class="navIcon">⌂</span> Início
+        </button>
+
+        <button data-page="library">
+            <span class="navIcon">▦</span> Minha Biblioteca
+        </button>
+
+        <button data-page="favorites">
+            <span class="navIcon">♡</span> Favoritos
+        </button>
+
+        <button data-page="recent">
+            <span class="navIcon">◷</span> Recentes
+        </button>
+    </div>
+
+    <div class="menuTitle">GERENCIAMENTO</div>
+
+    <div class="nav">
+        <button id="importSidebar">
+            <span class="navIcon">＋</span> Adicionar jogo
+        </button>
+
+        <button id="settingsBtn">
+            <span class="navIcon">⚙</span> Configurações
+        </button>
+    </div>
+
+    <div class="storageBox">
+        <div class="storageTop">
+            <span>Armazenamento</span>
+            <span id="storageText">0 jogos</span>
+        </div>
+
+        <div class="storageBar">
+            <div class="storageFill"></div>
+        </div>
+    </div>
+
 </aside>
-<div class="overlay" id="overlay"></div>
 
-<header class="top">
-  <button class="iconbtn" id="openSide">☰</button>
-  <div class="brand"><b>AURA PRO STUDIO</b><small>V5.0 MOBILE • PREMIUM AUDIO</small></div>
-  <button class="iconbtn" id="searchBtn">⌕</button>
-</header>
+<!-- MAIN -->
+<main class="main">
 
-<main>
-<section class="page active" id="page-home">
-  <div class="title"><h1>Olá, AURA.</h1><p>Seu estúdio musical premium.</p></div>
-  <div class="search" id="homeSearch" style="display:none"><span>⌕</span><input id="search" placeholder="Pesquisar músicas..."></div>
-  <div class="card">
-    <div class="coverwrap"><img class="cover" id="cover" style="display:none"><div class="placeholder" id="placeholder">♫</div></div>
-    <div class="info"><h2 id="title">Nenhuma música</h2><p id="artist">Selecione uma música para começar</p><button class="heart" id="heart">♡</button></div>
-    <div class="progress"><input id="seek" type="range" min="0" max="100" value="0"><div class="times"><span id="cur">0:00</span><span id="dur">0:00</span></div></div>
-    <div class="controls"><button class="control" id="shuffle">🔀</button><button class="control" id="prev">⏮</button><button class="control play" id="play">▶</button><button class="control" id="next">⏭</button><button class="control" id="repeat">🔁</button></div>
-    <div class="volume">🔈<input id="vol" type="range" min="0" max="1" step=".01" value=".85">🔊</div>
-    <div class="visual"><canvas id="canvas"></canvas><div class="stats">BASS <b id="svb">0</b> • MID <b id="svm">0</b> • HIGH <b id="svh">0</b> • ENERGY <b id="sve">0</b></div></div>
-  </div>
-  <div class="quick">
-    <button data-page="library"><b>♫</b>Biblioteca</button><button id="quickFav"><b>♥</b>Favoritar</button><button data-page="equalizer"><b>≋</b>EQ 20</button><button data-page="effects"><b>✦</b>Efeitos</button>
-  </div>
-  <div class="section"><div class="secthead"><h3>Adicionadas recentemente</h3><button data-page="library">Ver tudo</button></div><div class="list" id="recent"></div></div>
-</section>
+    <div class="topbar">
 
-<section class="page" id="page-library">
-  <div class="title"><h1>Biblioteca</h1><p>Músicas disponíveis offline neste navegador.</p></div>
-  <div class="grid">
-    <div class="tile"><b id="nSongs">0</b><span>Músicas</span></div><div class="tile"><b id="nFav">0</b><span>Favoritos</span></div><div class="tile"><b id="nPlay">0</b><span>Playlists</span></div><div class="tile"><b id="nHist">0</b><span>Histórico</span></div>
-  </div>
-  <div class="section"><div class="upload"><strong>＋</strong><p>Adicione MP3, WAV, OGG, M4A e outros formatos compatíveis.</p><label class="btn primary">Selecionar músicas<input id="files" type="file" accept="audio/*" multiple hidden></label></div></div>
-  <div class="section"><div class="search">⌕<input id="libSearch" placeholder="Pesquisar na biblioteca..."></div><div class="list" id="library"></div></div>
-</section>
+        <div class="search">
+            <span class="searchIcon">⌕</span>
+            <input id="searchInput" placeholder="Pesquisar jogos...">
+        </div>
 
-<section class="page" id="page-favorites"><div class="title"><h1>Favoritos</h1><p>Suas músicas marcadas.</p></div><div class="list" id="favorites"></div></section>
+        <div class="topActions">
+            <button class="iconBtn" id="importTop">＋</button>
+            <button class="iconBtn" id="fullscreenBtn">⛶</button>
 
-<section class="page" id="page-playlists">
-  <div class="title"><h1>Playlists</h1><p>Crie e organize coleções.</p></div>
-  <div class="upload"><strong>☷</strong><p>Crie uma playlist e depois adicione músicas pela biblioteca.</p><button class="btn primary" id="newPlaylist">Nova playlist</button></div>
-  <div class="section" id="playlistBox"></div>
-</section>
+            <div class="profile">
+                <div class="avatar">G</div>
+            </div>
+        </div>
 
-<section class="page" id="page-history"><div class="title"><h1>Histórico</h1><p>Últimas músicas reproduzidas.</p></div><div class="list" id="history"></div><div class="section"><button class="btn" id="clearHist">Limpar histórico</button></div></section>
+    </div>
 
-<section class="page" id="page-equalizer">
-  <div class="title"><h1>Equalizador</h1><p>20 bandas • ajuste fino do som.</p></div>
-  <div class="eq"><div class="eqtop"><select id="preset"></select><button id="flat">Flat</button><button id="reset">Reset</button></div><div class="bands" id="bands"></div></div>
-  <div class="section effect"><div class="effecthead"><b>Preamp</b><span id="preampVal">0 dB</span></div><input id="preamp" type="range" min="-12" max="12" step=".1" value="0"></div>
-</section>
+    <!-- HOME -->
+    <div id="homePage">
 
-<section class="page" id="page-effects">
-  <div class="title"><h1>Audio Lab</h1><p>Controles de assinatura sonora.</p></div>
-  <div class="effects">
-    <div class="effect"><div class="effecthead"><b>Bass Boost</b><button class="switch" data-fx="bass"><i></i></button></div><input id="bass" type="range" min="0" max="12" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Loudness</b><button class="switch" data-fx="loud"><i></i></button></div><input id="loud" type="range" min="0" max="12" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Clarity</b><button class="switch" data-fx="clarity"><i></i></button></div><input id="clarity" type="range" min="0" max="12" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Spatial</b><button class="switch" data-fx="spatial"><i></i></button></div><input id="spatial" type="range" min="0" max="100" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Virtualizer</b><button class="switch" data-fx="virtual"><i></i></button></div><input id="virtual" type="range" min="0" max="100" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Dynamic Bass</b><button class="switch" data-fx="dynamic"><i></i></button></div><input id="dynamic" type="range" min="0" max="12" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Reverb</b><button class="switch" data-fx="reverb"><i></i></button></div><input id="reverb" type="range" min="0" max="100" value="0"></div>
-    <div class="effect"><div class="effecthead"><b>Stereo Width</b><button class="switch" data-fx="stereo"><i></i></button></div><input id="stereo" type="range" min="0" max="200" value="100"></div>
-  </div>
-  <div class="section"><div class="secthead"><h3>Modos rápidos</h3></div><div class="presets"><button class="preset mode" data-mode="Normal"><b>Normal</b><span>Equilibrado</span></button><button class="preset mode" data-mode="Rap"><b>Rap</b><span>Impacto</span></button><button class="preset mode" data-mode="Bass"><b>Bass</b><span>Graves profundos</span></button><button class="preset mode" data-mode="Clear Sound"><b>Clarity</b><span>Definição</span></button></div></div>
-</section>
+        <section class="hero">
+            <div class="heroContent">
+                <div class="badge">GAME HUB V1</div>
 
-<section class="page" id="page-visualizer"><div class="title"><h1>Visualizador</h1><p>Visualização sincronizada com a música.</p></div><div class="visual" style="height:300px"><canvas id="bigCanvas"></canvas></div><div class="section"><div class="presets"><button class="preset vmode active" data-v="spectrum"><b>Spectrum</b><span>Espectro</span></button><button class="preset vmode" data-v="wave"><b>Wave</b><span>Onda</span></button><button class="preset vmode" data-v="bars"><b>Bands</b><span>Barras</span></button><button class="preset vmode" data-v="circle"><b>Circle</b><span>Círculo</span></button><button class="preset vmode" data-v="mirror"><b>Mirror</b><span>Espelho</span></button><button class="preset vmode" data-v="beat"><b>Beat</b><span>Pulsação</span></button></div></div></section>
+                <h1>Seu universo de jogos.</h1>
 
-<section class="page" id="page-lyrics"><div class="title"><h1>Letras</h1><p>Suporte a letras sincronizadas e texto local.</p></div><div class="lyrics" id="lyrics"><div class="lyric active">AURA PRO STUDIO</div><div class="lyric">Selecione uma música</div><div class="lyric">para visualizar a letra.</div></div><div class="section"><button class="btn" id="editLyrics">Adicionar letra desta música</button></div></section>
+                <p>
+                    Organize sua coleção, encontre seus jogos favoritos
+                    e tenha tudo em um único lugar.
+                </p>
 
-<section class="page" id="page-settings">
-  <div class="title"><h1>Configurações</h1><p>Personalize sua experiência.</p></div>
-  <div class="setting"><div class="si">📊</div><div><b>Visualizador</b><span>Animações durante a reprodução</span></div><input id="visualEnabled" type="checkbox" checked></div>
-  <div class="setting"><div class="si">💾</div><div><b>Biblioteca offline</b><span>Manter músicas no armazenamento local</span></div><input type="checkbox" checked disabled></div>
-  <div class="setting"><div class="si">🔀</div><div><b>Crossfade</b><span>Transição suave entre faixas</span></div><input id="crossfade" type="checkbox"></div>
-  <div class="setting"><div class="si">🔊</div><div><b>Volume inicial</b><span>Volume ao iniciar o player</span></div><input id="startup" type="range" min="0" max="1" step=".01" value=".85"></div>
-  <div class="section"><button class="btn" id="clearAll">Apagar biblioteca local</button></div>
-</section>
+                <div class="heroActions">
+                    <button class="primary" id="browseBtn">
+                        🎮 Minha Biblioteca
+                    </button>
+
+                    <button class="secondary" id="addHeroBtn">
+                        ＋ Adicionar jogo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- STATS -->
+        <section class="section">
+
+            <div class="stats">
+
+                <div class="stat">
+                    <div class="statTop">Total de jogos</div>
+                    <div class="statValue" id="statGames">0</div>
+                    <div class="statSmall">Sua coleção</div>
+                </div>
+
+                <div class="stat">
+                    <div class="statTop">Favoritos</div>
+                    <div class="statValue" id="statFav">0</div>
+                    <div class="statSmall">Marcados por você</div>
+                </div>
+
+                <div class="stat">
+                    <div class="statTop">Jogados</div>
+                    <div class="statValue" id="statPlayed">0</div>
+                    <div class="statSmall">Histórico</div>
+                </div>
+
+                <div class="stat">
+                    <div class="statTop">Tempo jogado</div>
+                    <div class="statValue" id="statTime">0h</div>
+                    <div class="statSmall">Total estimado</div>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CATEGORIES -->
+        <section class="section">
+
+            <div class="sectionHead">
+                <h2>Categorias</h2>
+            </div>
+
+            <div class="categories">
+
+                <button class="category active" data-category="Todos">
+                    Todos
+                </button>
+
+                <button class="category" data-category="PC">
+                    🖥️ PC
+                </button>
+
+                <button class="category" data-category="Android">
+                    📱 Android
+                </button>
+
+                <button class="category" data-category="Emulador">
+                    🕹️ Emulador
+                </button>
+
+                <button class="category" data-category="Indie">
+                    ✨ Indie
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- GAMES -->
+        <section class="section">
+
+            <div class="sectionHead">
+                <h2 id="sectionTitle">Minha coleção</h2>
+                <button id="viewAll">Ver todos</button>
+            </div>
+
+            <div class="games" id="gamesGrid"></div>
+
+            <div class="empty" id="emptyState">
+                <div class="emptyIcon">🎮</div>
+                <h3>Nenhum jogo encontrado</h3>
+                <p>Adicione um jogo ou altere sua pesquisa.</p>
+            </div>
+
+        </section>
+
+    </div>
+
 </main>
 
-<div class="bottom"><div class="bottomin"><img class="mini" id="mini"><div class="miniinfo"><b id="miniTitle">Nenhuma música</b><span id="miniArtist">AURA PRO STUDIO</span></div><div class="minictl"><button id="miniPrev">⏮</button><button class="mp" id="miniPlay">▶</button><button id="miniNext">⏭</button></div></div></div>
+</div>
+
+<!-- MOBILE NAV -->
+
+<nav class="mobileNav">
+
+    <button class="active" data-mobile="home">⌂</button>
+    <button data-mobile="library">▦</button>
+    <button data-mobile="favorites">♡</button>
+    <button data-mobile="recent">◷</button>
+    <button id="mobileAdd">＋</button>
+
+</nav>
+
+<!-- MODAL ADD GAME -->
+
+<div class="modal" id="addModal">
+
+    <div class="modalBox">
+
+        <div class="modalHead">
+            <h2>Adicionar jogo</h2>
+            <button class="close" id="closeModal">×</button>
+        </div>
+
+        <div class="form">
+
+            <input id="gameName" placeholder="Nome do jogo">
+
+            <input id="gameGenre" placeholder="Gênero">
+
+            <select id="gamePlatform">
+                <option value="PC">PC</option>
+                <option value="Android">Android</option>
+                <option value="Emulador">Emulador</option>
+                <option value="Indie">Indie</option>
+            </select>
+
+            <div class="fileInput">
+                🖼️ Capa do jogo
+                <input type="file" id="coverInput" accept="image/*">
+            </div>
+
+            <div class="fileInput">
+                🎮 Arquivo do jogo
+                <input type="file" id="gameFile">
+            </div>
+
+            <div class="modalButtons">
+                <button class="secondary" id="cancelModal">Cancelar</button>
+                <button class="primary" id="saveGame">Adicionar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TOAST -->
+
 <div class="toast" id="toast"></div>
-<audio id="audio" preload="metadata"></audio>
 
 <script>
-const $=id=>document.getElementById(id);
-const freq=[20,32,50,80,125,200,315,500,800,1250,2000,3150,5000,6300,8000,10000,12500,14000,16000,20000];
-const presets={
-Normal:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-Rap:[4,5,6,5,3,1,0,1,2,3,4,3,2,2,3,2,1,1,2,2],
-Bass:[7,8,9,8,6,4,2,1,0,0,0,0,0,0,1,1,2,2,2,1],
-Rock:[5,5,4,3,1,0,-1,1,3,4,4,3,2,3,4,4,3,2,2,1],
-Pop:[2,3,3,2,1,0,1,2,3,4,4,3,2,2,3,3,2,1,2,3],
-Vocal:[-2,-2,-1,0,1,2,3,4,5,6,7,6,5,4,3,2,1,0,0,-1],
-Dance:[5,6,7,6,4,2,0,1,3,5,5,4,3,3,4,4,3,3,4,4],
-"Deep Bass":[10,10,9,8,7,5,3,2,0,0,0,0,0,0,0,1,1,2,3,3],
-"Clear Sound":[-2,-2,-1,0,1,2,2,1,2,3,4,4,5,5,4,3,3,2,2,2],
-Stadium:[5,5,4,3,2,1,0,1,3,5,6,5,4,4,5,6,6,5,4,3],
-"Night Mode":[-4,-3,-2,-1,0,1,1,1,1,1,1,1,1,0,0,-1,-1,-2,-2,-3],
-"Ultra HD":[2,2,1,1,0,1,2,3,3,4,5,5,5,4,4,3,3,3,3,2]
+/* ==========================================================
+   GAME HUB V1
+   ========================================================== */
+
+const STORAGE_KEY = "gameHubV1Games";
+
+let games = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+
+let currentCategory = "Todos";
+let currentPage = "home";
+let searchTerm = "";
+
+
+/* DEFAULT GAMES */
+
+if(games.length === 0){
+
+    games = [
+        {
+            id: crypto.randomUUID(),
+            name:"Cyber Arena",
+            genre:"Action",
+            platform:"PC",
+            emoji:"⚡",
+            cover:"",
+            favorite:true,
+            played:false,
+            time:0,
+            created:Date.now()
+        },
+        {
+            id: crypto.randomUUID(),
+            name:"Galaxy Quest",
+            genre:"Adventure",
+            platform:"PC",
+            emoji:"🚀",
+            cover:"",
+            favorite:false,
+            played:true,
+            time:4,
+            created:Date.now()-1000
+        },
+        {
+            id: crypto.randomUUID(),
+            name:"Shadow Strike",
+            genre:"Action",
+            platform:"Android",
+            emoji:"🥷",
+            cover:"",
+            favorite:false,
+            played:false,
+            time:0,
+            created:Date.now()-2000
+        },
+        {
+            id: crypto.randomUUID(),
+            name:"Pixel World",
+            genre:"Indie",
+            platform:"Indie",
+            emoji:"👾",
+            cover:"",
+            favorite:true,
+            played:true,
+            time:7,
+            created:Date.now()-3000
+        }
+    ];
+
+    saveGames();
+}
+
+
+/* ELEMENTS */
+
+const grid = document.getElementById("gamesGrid");
+const empty = document.getElementById("emptyState");
+const searchInput = document.getElementById("searchInput");
+
+
+/* SAVE */
+
+function saveGames(){
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(games));
+}
+
+
+/* TOAST */
+
+function toast(message){
+
+    const el = document.getElementById("toast");
+
+    el.textContent = message;
+    el.classList.add("show");
+
+    clearTimeout(window.toastTimer);
+
+    window.toastTimer = setTimeout(()=>{
+        el.classList.remove("show");
+    },2200);
+}
+
+
+/* RENDER */
+
+function render(){
+
+    let result = [...games];
+
+    if(currentPage === "favorites"){
+        result = result.filter(g=>g.favorite);
+    }
+
+    if(currentPage === "recent"){
+        result = result.filter(g=>g.played)
+                       .sort((a,b)=>b.created-a.created);
+    }
+
+    if(currentPage === "library"){
+        result = [...result];
+    }
+
+    if(currentCategory !== "Todos"){
+        result = result.filter(g=>g.platform === currentCategory);
+    }
+
+    if(searchTerm){
+        const q = searchTerm.toLowerCase();
+
+        result = result.filter(g =>
+            g.name.toLowerCase().includes(q) ||
+            g.genre.toLowerCase().includes(q) ||
+            g.platform.toLowerCase().includes(q)
+        );
+    }
+
+    grid.innerHTML = "";
+
+    if(result.length === 0){
+        empty.style.display = "block";
+    }else{
+        empty.style.display = "none";
+    }
+
+    result.forEach(game=>{
+
+        const card = document.createElement("div");
+        card.className = "gameCard";
+
+        card.innerHTML = `
+
+            <div class="cover"
+                style="${game.cover ? `background-image:url('${game.cover}');background-size:cover;background-position:center;` : ""}">
+
+                ${game.cover ? "" : `<span>${game.emoji || "🎮"}</span>`}
+
+                <button class="favorite ${game.favorite ? "active":""}"
+                    data-favorite="${game.id}">
+                    ${game.favorite ? "♥":"♡"}
+                </button>
+
+            </div>
+
+            <div class="gameInfo">
+
+                <div class="gameTitle">${escapeHTML(game.name)}</div>
+
+                <div class="gameMeta">
+                    ${escapeHTML(game.genre || "Jogo")} • ${escapeHTML(game.platform)}
+                </div>
+
+                <div class="gameBottom">
+
+                    <span class="gameMeta">
+                        ${game.played ? "▶ Jogado":"Novo"}
+                    </span>
+
+                    <button class="playBtn" data-play="${game.id}">
+                        JOGAR
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+    });
+
+    updateStats();
+}
+
+
+/* ESCAPE */
+
+function escapeHTML(text){
+
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+/* STATS */
+
+function updateStats(){
+
+    const favoriteCount = games.filter(g=>g.favorite).length;
+    const playedCount = games.filter(g=>g.played).length;
+
+    const totalTime = games.reduce((sum,g)=>sum+(Number(g.time)||0),0);
+
+    document.getElementById("statGames").textContent = games.length;
+    document.getElementById("statFav").textContent = favoriteCount;
+    document.getElementById("statPlayed").textContent = playedCount;
+    document.getElementById("statTime").textContent = totalTime + "h";
+
+    document.getElementById("storageText").textContent =
+        games.length + (games.length === 1 ? " jogo":" jogos");
+
+    document.querySelector(".storageFill").style.width =
+        Math.min(100,Math.max(8,games.length*5))+"%";
+}
+
+
+/* FAVORITE / PLAY */
+
+grid.addEventListener("click",e=>{
+
+    const favoriteButton = e.target.closest("[data-favorite]");
+
+    if(favoriteButton){
+
+        const id = favoriteButton.dataset.favorite;
+
+        const game = games.find(g=>g.id===id);
+
+        if(game){
+            game.favorite = !game.favorite;
+            saveGames();
+            render();
+
+            toast(
+                game.favorite
+                ? "Adicionado aos favoritos ♥"
+                : "Removido dos favoritos"
+            );
+        }
+
+        return;
+    }
+
+
+    const playButton = e.target.closest("[data-play]");
+
+    if(playButton){
+
+        const id = playButton.dataset.play;
+
+        const game = games.find(g=>g.id===id);
+
+        if(game){
+
+            game.played = true;
+            game.created = Date.now();
+            game.time = (Number(game.time)||0) + 1;
+
+            saveGames();
+            render();
+
+            toast("Iniciando " + game.name + " 🎮");
+
+            /*
+             * Aqui futuramente podemos conectar:
+             * - Executável PC
+             * - APK
+             * - Emulador
+             * - Web game
+             * - Cloud gaming
+             */
+        }
+    }
+
+});
+
+
+/* SEARCH */
+
+searchInput.addEventListener("input",()=>{
+
+    searchTerm = searchInput.value.trim();
+
+    render();
+
+});
+
+
+/* CATEGORY */
+
+document.querySelectorAll(".category").forEach(button=>{
+
+    button.addEventListener("click",()=>{
+
+        document.querySelectorAll(".category")
+            .forEach(b=>b.classList.remove("active"));
+
+        button.classList.add("active");
+
+        currentCategory = button.dataset.category;
+
+        render();
+
+    });
+
+});
+
+
+/* MODAL */
+
+const modal = document.getElementById("addModal");
+
+function openModal(){
+    modal.classList.add("show");
+    document.getElementById("gameName").focus();
+}
+
+function closeModal(){
+    modal.classList.remove("show");
+}
+
+document.getElementById("importSidebar").onclick = openModal;
+document.getElementById("importTop").onclick = openModal;
+document.getElementById("addHeroBtn").onclick = openModal;
+document.getElementById("mobileAdd").onclick = openModal;
+
+document.getElementById("closeModal").onclick = closeModal;
+document.getElementById("cancelModal").onclick = closeModal;
+
+modal.addEventListener("click",e=>{
+    if(e.target === modal){
+        closeModal();
+    }
+});
+
+
+/* ADD GAME */
+
+document.getElementById("saveGame").onclick = async ()=>{
+
+    const name = document.getElementById("gameName").value.trim();
+    const genre = document.getElementById("gameGenre").value.trim();
+    const platform = document.getElementById("gamePlatform").value;
+
+    if(!name){
+        toast("Digite o nome do jogo");
+        return;
+    }
+
+    let cover = "";
+
+    const coverFile =
+        document.getElementById("coverInput").files[0];
+
+    if(coverFile){
+
+        cover = await readFileAsDataURL(coverFile);
+    }
+
+    const gameFile =
+        document.getElementById("gameFile").files[0];
+
+    const game = {
+
+        id:crypto.randomUUID(),
+
+        name:name,
+
+        genre:genre || "Jogo",
+
+        platform:platform,
+
+        cover:cover,
+
+        fileName:gameFile ? gameFile.name : "",
+
+        fileSize:gameFile ? gameFile.size : 0,
+
+        emoji:
+            platform === "PC" ? "🖥️" :
+            platform === "Android" ? "📱" :
+            platform === "Emulador" ? "🕹️" :
+            "👾",
+
+        favorite:false,
+
+        played:false,
+
+        time:0,
+
+        created:Date.now()
+    };
+
+    games.unshift(game);
+
+    saveGames();
+
+    document.getElementById("gameName").value = "";
+    document.getElementById("gameGenre").value = "";
+    document.getElementById("coverInput").value = "";
+    document.getElementById("gameFile").value = "";
+
+    closeModal();
+
+    currentPage = "library";
+    currentCategory = "Todos";
+
+    document.querySelectorAll(".category")
+        .forEach(b=>b.classList.remove("active"));
+
+    document.querySelector('[data-category="Todos"]')
+        .classList.add("active");
+
+    render();
+
+    toast("Jogo adicionado à biblioteca 🎮");
 };
-let songs=[],favorites=[],history=[],playlists=[],current=-1,shuffle=false,repeat=false,visualMode="spectrum";
-let db,ctx,source,analyser,master,filters=[],bigCtx;
-const audio=$("audio");
 
-function toast(t){$("toast").textContent=t;$("toast").classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>$("toast").classList.remove("show"),2200)}
-function time(s){if(!isFinite(s))return"0:00";return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0")}
-function esc(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 
-function nav(page){
- document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
- $("page-"+page)?.classList.add("active");
- document.querySelectorAll(".nav").forEach(n=>n.classList.toggle("active",n.dataset.page===page));
- closeMenu();scrollTo({top:0,behavior:"smooth"});
- if(page==="library")renderLibrary(); if(page==="favorites")renderFavorites();if(page==="history")renderHistory();if(page==="playlists")renderPlaylists();
+function readFileAsDataURL(file){
+
+    return new Promise((resolve,reject)=>{
+
+        const reader = new FileReader();
+
+        reader.onload = ()=>resolve(reader.result);
+        reader.onerror = reject;
+
+        reader.readAsDataURL(file);
+    });
 }
-document.addEventListener("click",e=>{const p=e.target.closest("[data-page]");if(p)nav(p.dataset.page)});
-function openMenu(){$("sidebar").classList.add("open");$("overlay").classList.add("show")}
-function closeMenu(){$("sidebar").classList.remove("open");$("overlay").classList.remove("show")}
-$("openSide").onclick=openMenu;$("closeSide").onclick=closeMenu;$("overlay").onclick=closeMenu;
 
-function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open("AuraProStudioV5",1);r.onupgradeneeded=e=>{const d=e.target.result;if(!d.objectStoreNames.contains("songs"))d.createObjectStore("songs",{keyPath:"id"})};r.onsuccess=e=>{db=e.target.result;res()};r.onerror=()=>rej(r.error)})}
-function dbPut(s){if(!db)return;db.transaction("songs","readwrite").objectStore("songs").put(s)}
-function dbDel(id){if(db)db.transaction("songs","readwrite").objectStore("songs").delete(id)}
-function dbAll(){return new Promise(res=>{if(!db)return res([]);const r=db.transaction("songs","readonly").objectStore("songs").getAll();r.onsuccess=()=>res(r.result||[]);r.onerror=()=>res([])})}
-function save(){localStorage.auraV5=JSON.stringify({favorites,history,playlists,volume:$("vol").value,lyrics:window.lyrics||{}})}
-function load(){try{const x=JSON.parse(localStorage.auraV5||"{}");favorites=x.favorites||[];history=x.history||[];playlists=x.playlists||[];if(x.volume)$("vol").value=x.volume;window.lyrics=x.lyrics||{}}catch(e){}}
 
-function initAudio(){
- if(ctx)return;
- ctx=new (window.AudioContext||window.webkitAudioContext)();
- source=ctx.createMediaElementSource(audio);
- analyser=ctx.createAnalyser();analyser.fftSize=2048;analyser.smoothingTimeConstant=.92;
- master=ctx.createGain();master.gain.value=.85;
- filters=freq.map(f=>{const n=ctx.createBiquadFilter();n.type="peaking";n.frequency.value=f;n.Q.value=.8;n.gain.value=0;return n});
- source.connect(filters[0]);for(let i=0;i<filters.length-1;i++)filters[i].connect(filters[i+1]);filters.at(-1).connect(master);master.connect(analyser);analyser.connect(ctx.destination);
+/* NAVIGATION */
+
+function setPage(page){
+
+    currentPage = page;
+
+    document.querySelectorAll(".nav button[data-page]")
+        .forEach(button=>{
+            button.classList.toggle(
+                "active",
+                button.dataset.page === page
+            );
+        });
+
+    document.querySelectorAll(".mobileNav button[data-mobile]")
+        .forEach(button=>{
+            button.classList.toggle(
+                "active",
+                button.dataset.mobile === page
+            );
+        });
+
+    const titles = {
+        home:"Minha coleção",
+        library:"Minha Biblioteca",
+        favorites:"Favoritos",
+        recent:"Jogados recentemente"
+    };
+
+    document.getElementById("sectionTitle").textContent =
+        titles[page] || "Minha coleção";
+
+    render();
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
 }
-function volume(v){if(!master)return;master.gain.setTargetAtTime(Number(v),ctx.currentTime,.04)}
-$("vol").oninput=e=>volume(e.target.value);
 
-function buildEQ(){
- const box=$("bands"),sel=$("preset");Object.keys(presets).forEach(n=>{const o=document.createElement("option");o.value=n;o.textContent=n;sel.appendChild(o)});
- freq.forEach((f,i)=>{const d=document.createElement("div");d.className="band";d.innerHTML=`<b id="ev${i}">0</b><input id="eq${i}" type="range" min="-12" max="12" step=".1" value="0"><small>${f>=1000?f/1000+"k":f}</small>`;box.appendChild(d);$("eq"+i).oninput=e=>{let v=+e.target.value;$("ev"+i).textContent=v.toFixed(1);if(filters[i])filters[i].gain.setTargetAtTime(v,ctx.currentTime,.02)}})
-}
-function applyPreset(n){initAudio();if(ctx.state==="suspended")ctx.resume();presets[n].forEach((v,i)=>{$("eq"+i).value=v;$("ev"+i).textContent=v.toFixed(1);filters[i].gain.setTargetAtTime(v,ctx.currentTime,.02)});$("preset").value=n}
-$("preset").onchange=e=>applyPreset(e.target.value);$("flat").onclick=()=>applyPreset("Normal");$("reset").onclick=()=>applyPreset("Normal");
-$("preamp").oninput=e=>{let v=+e.target.value;$("preampVal").textContent=v.toFixed(1)+" dB";if(master)master.gain.setTargetAtTime(.85*Math.pow(10,v/20),ctx.currentTime,.04)}
 
-function addFile(file){
- const s={id:Date.now()+"-"+Math.random().toString(36).slice(2),name:file.name.replace(/\.[^.]+$/,""),artist:"Artista desconhecido",album:"Biblioteca",blob:file,cover:null};
- songs.push(s);dbPut(s);
-}
-$("files").onchange=e=>{[...e.target.files].forEach(addFile);save();refresh();toast(e.target.files.length+" música(s) adicionada(s)");e.target.value=""}
+document.querySelectorAll(".nav button[data-page]")
+    .forEach(button=>{
 
-function play(i){
- if(!songs[i])return;initAudio();if(ctx.state==="suspended")ctx.resume();
- current=i;audio.src=URL.createObjectURL(songs[i].blob);audio.play().catch(()=>{});history=[songs[i].id,...history.filter(x=>x!==songs[i].id)].slice(0,50);save();updatePlayer();renderHistory()
-}
-function updatePlayer(){
- const s=songs[current];if(!s)return;$("title").textContent=s.name;$("artist").textContent=s.artist;$("miniTitle").textContent=s.name;$("miniArtist").textContent=s.artist;
- if(s.cover){$("cover").src=s.cover;$("cover").style.display="block";$("placeholder").style.display="none";$("mini").src=s.cover}else{$("cover").style.display="none";$("placeholder").style.display="grid";$("mini").removeAttribute("src")}
- const on=favorites.includes(s.id);$("heart").classList.toggle("on",on);$("heart").textContent=on?"♥":"♡"
-}
-function togglePlay(){if(current<0){if(songs.length)play(0);else toast("Adicione músicas primeiro");return}initAudio();if(audio.paused)audio.play();else audio.pause()}
-$("play").onclick=togglePlay;$("miniPlay").onclick=togglePlay;
-audio.onplay=()=>{$("play").textContent="❚❚";$("miniPlay").textContent="❚❚"};audio.onpause=()=>{$("play").textContent="▶";$("miniPlay").textContent="▶"};
-function next(){if(!songs.length)return;let i=shuffle?Math.floor(Math.random()*songs.length):current+1;if(i>=songs.length)i=0;play(i)}
-function prev(){if(!songs.length)return;let i=current-1;if(i<0)i=songs.length-1;play(i)}
-$("next").onclick=next;$("miniNext").onclick=next;$("prev").onclick=prev;$("miniPrev").onclick=prev;
-$("shuffle").onclick=()=>{shuffle=!shuffle;$("shuffle").style.color=shuffle?"var(--accent)":"";toast(shuffle?"Shuffle ativado":"Shuffle desativado")}
-$("repeat").onclick=()=>{repeat=!repeat;$("repeat").style.color=repeat?"var(--accent)":"";toast(repeat?"Repetição ativada":"Repetição desativada")}
-audio.onended=()=>repeat?(audio.currentTime=0,audio.play()):next();
-audio.ontimeupdate=()=>{if(audio.duration){$("seek").value=audio.currentTime/audio.duration*100;$("cur").textContent=time(audio.currentTime)}};audio.onloadedmetadata=()=>{$("dur").textContent=time(audio.duration)}
-$("seek").oninput=e=>{if(audio.duration)audio.currentTime=e.target.value/100*audio.duration}
+        button.addEventListener("click",()=>{
 
-function row(s){
- const i=songs.indexOf(s),on=favorites.includes(s.id);const d=document.createElement("div");d.className="song"+(i===current?" active":"");d.innerHTML=`<img src="${s.cover||""}"><div class="songinfo"><b>${esc(s.name)}</b><span>${esc(s.artist)}</span></div><div class="songactions"><button class="p">▶</button><button class="f">${on?"♥":"♡"}</button><button class="d">×</button></div>`;
- d.querySelector(".p").onclick=()=>play(i);d.querySelector(".f").onclick=()=>fav(s.id);d.querySelector(".d").onclick=()=>del(i);d.ondblclick=()=>play(i);return d
-}
-function renderList(el,list){el.innerHTML="";if(!list.length){el.innerHTML='<div class="empty"><strong>♫</strong><span>Nenhuma música encontrada.</span></div>';return}list.forEach(s=>el.appendChild(row(s)))}
-function renderLibrary(){let q=($("libSearch").value||"").toLowerCase();renderList($("library"),songs.filter(s=>s.name.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q)))}
-function renderRecent(){renderList($("recent"),songs.slice(-6).reverse())}
-function renderFavorites(){renderList($("favorites"),favorites.map(id=>songs.find(s=>s.id===id)).filter(Boolean))}
-function renderHistory(){renderList($("history"),history.map(id=>songs.find(s=>s.id===id)).filter(Boolean))}
-$("libSearch").oninput=renderLibrary;
-function fav(id){const n=favorites.indexOf(id);if(n>=0)favorites.splice(n,1);else favorites.push(id);save();refresh();updatePlayer()}
-$("heart").onclick=()=>{if(current>=0)fav(songs[current].id)};$("quickFav").onclick=()=>{if(current>=0)fav(songs[current].id);else toast("Nenhuma música selecionada")}
-function del(i){if(!confirm("Remover esta música?"))return;dbDel(songs[i].id);favorites=favorites.filter(x=>x!==songs[i].id);history=history.filter(x=>x!==songs[i].id);if(current===i){audio.pause();current=-1;$("title").textContent="Nenhuma música";$("artist").textContent="Selecione uma música"}else if(current>i)current--;songs.splice(i,1);save();refresh();toast("Música removida")}
-function refresh(){renderLibrary();renderRecent();renderFavorites();renderHistory();renderPlaylists();updateCounters()}
-function updateCounters(){$("count").textContent=songs.length;$("nSongs").textContent=songs.length;$("nFav").textContent=favorites.length;$("nPlay").textContent=playlists.length;$("nHist").textContent=history.length}
+            setPage(button.dataset.page);
 
-function renderPlaylists(){const b=$("playlistBox");b.innerHTML="";if(!playlists.length){b.innerHTML='<div class="empty"><strong>☷</strong><span>Nenhuma playlist criada.</span></div>';return}playlists.forEach((p,pi)=>{const d=document.createElement("div");d.className="tile";d.style.marginBottom="8px";d.innerHTML=`<b>♫</b><span>${esc(p.name)}</span><small>${p.songs.length} músicas • toque para adicionar</small>`;d.onclick=()=>{if(!songs.length)return toast("Adicione músicas primeiro");const opts=songs.map((s,i)=>i+". "+s.name).join("\n");const x=prompt("Digite o número da música para adicionar:\n\n"+opts);const i=Number(x);if(Number.isInteger(i)&&songs[i]){if(!p.songs.includes(songs[i].id))p.songs.push(songs[i].id);save();refresh();toast("Música adicionada à playlist")}};b.appendChild(d)})}
-$("newPlaylist").onclick=()=>{const n=prompt("Nome da playlist:");if(n){playlists.push({id:Date.now(),name:n,songs:[]});save();refresh();toast("Playlist criada")}}
-$("clearHist").onclick=()=>{history=[];save();refresh();toast("Histórico limpo")}
-$("clearAll").onclick=()=>{if(!confirm("Apagar toda a biblioteca local?"))return;songs.forEach(s=>dbDel(s.id));songs=[];favorites=[];history=[];playlists=[];current=-1;audio.pause();save();refresh();toast("Biblioteca apagada")}
+        });
 
-$("searchBtn").onclick=()=>{$("homeSearch").style.display=$("homeSearch").style.display==="none"?"flex":"none";$("search").focus()}
-$("search").oninput=e=>{let q=e.target.value.toLowerCase();renderList($("recent"),songs.filter(s=>s.name.toLowerCase().includes(q)||s.artist.toLowerCase().includes(q)))}
+    });
 
-document.querySelectorAll(".switch").forEach(x=>x.onclick=()=>x.classList.toggle("on"));
-document.querySelectorAll(".mode").forEach(x=>x.onclick=()=>{applyPreset(x.dataset.mode);document.querySelectorAll(".mode").forEach(y=>y.classList.remove("active"));x.classList.add("active")});
-$("startup").oninput=e=>{$("vol").value=e.target.value;initAudio();volume(e.target.value)};
 
-function setupCanvas(){
- const c=$("canvas"),bc=$("bigCanvas");bigCtx=bc.getContext("2d");
- function size(x){const r=x.getBoundingClientRect(),d=devicePixelRatio||1;x.width=r.width*d;x.height=r.height*d;return[r.width,r.height,d]}
- function draw(x){const c2=x.getContext("2d"),[w,h,d]=size(x);c2.setTransform(d,0,0,d,0,0);c2.clearRect(0,0,w,h);let a;if(analyser){a=new Uint8Array(analyser.frequencyBinCount);analyser.getByteFrequencyData(a)}else a=new Uint8Array(128);
- if(visualMode==="wave"){c2.beginPath();c2.strokeStyle="#ff7417";for(let xx=0;xx<w;xx+=3){let v=a[Math.floor(xx/w*a.length)]||0,yy=h/2+(v-128)*.5;if(xx)c2.lineTo(xx,yy);else c2.moveTo(xx,yy)}c2.stroke()}
- else if(visualMode==="circle"){let e=a[4]||0,r=Math.min(w,h)*.16+e*.25;c2.beginPath();c2.arc(w/2,h/2,r,0,Math.PI*2);c2.strokeStyle="#ff7417";c2.lineWidth=3;c2.stroke()}
- else {let n=visualMode==="spectrum"?70:35,step=Math.max(1,Math.floor(a.length/n)),bw=w/n;for(let i=0;i<n;i++){let v=a[i*step]||0,bh=v/255*h*.82,xp=i*bw;c2.fillStyle="#ff7417";c2.fillRect(xp,h-bh,Math.max(2,bw-2),bh);if(visualMode==="mirror")c2.fillRect(xp,h/2,bw-2,bh/2)}}
- if(analyser){let b=0,m=0,hi=0;for(let i=0;i<10;i++)b+=a[i]||0;for(let i=10;i<60;i++)m+=a[i]||0;for(let i=60;i<150;i++)hi+=a[i]||0;$("svb").textContent=Math.round(b/10);$("svm").textContent=Math.round(m/50);$("svh").textContent=Math.round(hi/90);$("sve").textContent=Math.round((b/10+m/50+hi/90)/3)}
- requestAnimationFrame(()=>draw(x))}
- draw(c);draw(bc)
-}
-function animate(){requestAnimationFrame(animate);const c=$("canvas"),bc=$("bigCanvas");/* canvas redraw is handled by setupCanvas */} 
-window.onresize=()=>setupCanvas();
-document.querySelectorAll(".vmode").forEach(b=>b.onclick=()=>{visualMode=b.dataset.v;document.querySelectorAll(".vmode").forEach(x=>x.classList.remove("active"));b.classList.add("active")});
+document.querySelectorAll(".mobileNav button[data-mobile]")
+    .forEach(button=>{
 
-$("editLyrics").onclick=()=>{if(current<0)return toast("Selecione uma música");const text=prompt("Cole a letra desta música:");if(text!==null){window.lyrics=window.lyrics||{};window.lyrics[songs[current].id]=text;save();renderLyrics();toast("Letra salva localmente")}}
-function renderLyrics(){const box=$("lyrics");box.innerHTML="";if(current<0){box.innerHTML='<div class="lyric active">Selecione uma música</div>';return}const t=window.lyrics?.[songs[current].id];if(!t){box.innerHTML='<div class="lyric active">Nenhuma letra cadastrada.</div>';return}t.split(/\n/).forEach(x=>{const d=document.createElement("div");d.className="lyric";d.textContent=x;box.appendChild(d)})}
-const oldUpdate=updatePlayer;updatePlayer=function(){oldUpdate();renderLyrics()}
+        button.addEventListener("click",()=>{
 
-document.addEventListener("keydown",e=>{if(e.target.tagName==="INPUT")return;if(e.code==="Space"){e.preventDefault();togglePlay()}if(e.code==="ArrowRight"&&audio.duration)audio.currentTime+=5;if(e.code==="ArrowLeft"&&audio.duration)audio.currentTime-=5});
+            setPage(button.dataset.mobile);
 
-async function init(){
- load();buildEQ();await openDB();songs=await dbAll();updateCounters();renderLibrary();renderRecent();renderFavorites();renderHistory();renderPlaylists();setupCanvas();volume($("vol").value);toast("AURA PRO STUDIO V5.0 pronto")
-}
-init().catch(e=>{console.error(e);toast("Modo local iniciado")});
+        });
+
+    });
+
+
+/* HERO BUTTON */
+
+document.getElementById("browseBtn").onclick = ()=>{
+    setPage("library");
+};
+
+
+/* VIEW ALL */
+
+document.getElementById("viewAll").onclick = ()=>{
+    setPage("library");
+};
+
+
+/* FULLSCREEN */
+
+document.getElementById("fullscreenBtn").onclick = async ()=>{
+
+    try{
+
+        if(!document.fullscreenElement){
+            await document.documentElement.requestFullscreen();
+        }else{
+            await document.exitFullscreen();
+        }
+
+    }catch(e){
+
+        toast("Modo tela cheia indisponível");
+
+    }
+
+};
+
+
+/* SETTINGS */
+
+document.getElementById("settingsBtn").onclick = ()=>{
+
+    toast("Configurações avançadas serão adicionadas na V1.1 ⚙️");
+
+};
+
+
+/* KEYBOARD */
+
+document.addEventListener("keydown",e=>{
+
+    if(e.key === "Escape"){
+        closeModal();
+    }
+
+    if(e.key === "/" && document.activeElement !== searchInput){
+        e.preventDefault();
+        searchInput.focus();
+    }
+
+});
+
+
+/* INIT */
+
+render();
+
 </script>
+
 </body>
 </html>
