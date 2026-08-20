@@ -2,683 +2,806 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-      content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#08090e">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#08090d">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-
-<title>Game Hub V1.1</title>
+<title>GameHub V2</title>
 
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-    -webkit-tap-highlight-color:transparent;
+:root{
+  --bg:#07080c;
+  --panel:#101219;
+  --panel2:#151823;
+  --card:#11141c;
+  --text:#f5f7ff;
+  --muted:#8c93a6;
+  --accent:#7c5cff;
+  --accent2:#00d4ff;
+  --danger:#ff4567;
+  --success:#28e07b;
+  --border:rgba(255,255,255,.08);
+  --shadow:0 20px 60px rgba(0,0,0,.45);
 }
 
-:root{
-    --bg:#08090e;
-    --card:#11131b;
-    --card2:#171a24;
-    --border:rgba(255,255,255,.08);
-    --text:#fff;
-    --muted:#9297a8;
-    --accent:#7657ff;
-    --accent2:#a08aff;
-    --green:#3fe09a;
-    --red:#ff5571;
+*{
+  box-sizing:border-box;
+  -webkit-tap-highlight-color:transparent;
 }
 
 html,body{
-    width:100%;
-    min-height:100%;
-    background:var(--bg);
-    color:var(--text);
-    font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 }
 
-body{
-    overflow-x:hidden;
-    padding-bottom:78px;
+button,input{
+  font:inherit;
 }
 
-/* =========================
-   APP
-========================= */
+button{
+  border:0;
+  cursor:pointer;
+}
 
 .app{
-    width:100%;
-    min-height:100vh;
+  width:100%;
+  height:100%;
+  display:flex;
+  background:
+    radial-gradient(circle at 85% 5%,rgba(124,92,255,.18),transparent 28%),
+    radial-gradient(circle at 10% 80%,rgba(0,212,255,.08),transparent 25%),
+    var(--bg);
 }
 
-.desktopSidebar{
-    display:none;
-}
+/* SIDEBAR */
 
-.main{
-    width:100%;
-    padding:15px;
-}
-
-/* =========================
-   TOP BAR
-========================= */
-
-.topbar{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:16px;
+.sidebar{
+  width:250px;
+  flex-shrink:0;
+  height:100%;
+  padding:22px 16px;
+  border-right:1px solid var(--border);
+  background:rgba(8,9,13,.94);
+  backdrop-filter:blur(20px);
+  display:flex;
+  flex-direction:column;
+  z-index:20;
 }
 
 .logo{
-    min-width:42px;
-    width:42px;
-    height:42px;
-    border-radius:13px;
-    display:grid;
-    place-items:center;
-    background:linear-gradient(135deg,#8064ff,#5035c8);
-    box-shadow:0 8px 25px rgba(118,87,255,.3);
-    font-size:20px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 10px 25px;
 }
 
-.brand{
-    flex:1;
-    font-weight:900;
-    font-size:17px;
+.logoIcon{
+  width:43px;
+  height:43px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  box-shadow:0 8px 30px rgba(124,92,255,.3);
 }
 
-.brand span{
-    color:var(--accent2);
+.logo strong{
+  display:block;
+  font-size:18px;
 }
 
-.topButton{
-    width:42px;
-    height:42px;
-    border-radius:12px;
-    background:var(--card);
-    border:1px solid var(--border);
-    color:white;
-    font-size:18px;
+.logo span{
+  color:var(--muted);
+  font-size:11px;
 }
 
-/* =========================
-   SEARCH
-========================= */
+.nav{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.nav button{
+  width:100%;
+  color:var(--muted);
+  background:transparent;
+  padding:13px 14px;
+  border-radius:13px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  transition:.2s;
+}
+
+.nav button:hover,
+.nav button.active{
+  color:#fff;
+  background:linear-gradient(90deg,rgba(124,92,255,.2),rgba(124,92,255,.05));
+}
+
+.navIcon{
+  width:23px;
+  text-align:center;
+  font-size:18px;
+}
+
+.sidebarBottom{
+  margin-top:auto;
+  color:var(--muted);
+  font-size:11px;
+  padding:12px;
+}
+
+/* MAIN */
+
+.main{
+  min-width:0;
+  flex:1;
+  height:100%;
+  overflow:hidden;
+  position:relative;
+}
+
+.topbar{
+  height:76px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:0 25px;
+  border-bottom:1px solid var(--border);
+  background:rgba(7,8,12,.7);
+  backdrop-filter:blur(18px);
+}
+
+.menuBtn{
+  display:none;
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  color:white;
+  background:var(--panel);
+}
 
 .search{
-    position:relative;
-    width:100%;
-    margin-bottom:18px;
-}
-
-.searchIcon{
-    position:absolute;
-    left:15px;
-    top:12px;
-    color:#777c8c;
-    font-size:19px;
+  flex:1;
+  max-width:620px;
+  position:relative;
 }
 
 .search input{
-    width:100%;
-    height:46px;
-    border-radius:14px;
-    border:1px solid var(--border);
-    background:var(--card);
-    color:white;
-    outline:none;
-    padding:0 15px 0 43px;
-    font-size:14px;
+  width:100%;
+  height:44px;
+  border:1px solid var(--border);
+  outline:none;
+  border-radius:13px;
+  background:#10121a;
+  color:white;
+  padding:0 45px 0 43px;
 }
 
-.search input:focus{
-    border-color:rgba(118,87,255,.7);
+.searchIcon{
+  position:absolute;
+  left:15px;
+  top:12px;
+  color:var(--muted);
 }
 
-/* =========================
-   HERO
-========================= */
+.clearSearch{
+  position:absolute;
+  right:10px;
+  top:7px;
+  width:30px;
+  height:30px;
+  border-radius:8px;
+  background:transparent;
+  color:var(--muted);
+}
+
+.topActions{
+  margin-left:auto;
+  display:flex;
+  gap:9px;
+}
+
+.iconBtn{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  background:var(--panel);
+  color:#cbd0df;
+  border:1px solid var(--border);
+}
+
+.profile{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#7c5cff,#00d4ff);
+  font-weight:800;
+}
+
+/* CONTENT */
+
+.content{
+  height:calc(100% - 76px);
+  overflow-y:auto;
+  padding:28px;
+  padding-bottom:110px;
+}
+
+.content::-webkit-scrollbar{
+  width:5px;
+}
+
+.content::-webkit-scrollbar-thumb{
+  background:#292d3a;
+  border-radius:20px;
+}
+
+.view{
+  display:none;
+  animation:fade .25s ease;
+}
+
+.view.active{
+  display:block;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:none}
+}
 
 .hero{
-    position:relative;
-    min-height:250px;
-    border-radius:22px;
-    overflow:hidden;
-    padding:25px;
-    display:flex;
-    align-items:flex-end;
-    background:
-        radial-gradient(
-            circle at 85% 20%,
-            rgba(125,90,255,.5),
-            transparent 30%
-        ),
-        radial-gradient(
-            circle at 75% 80%,
-            rgba(57,222,153,.13),
-            transparent 30%
-        ),
-        linear-gradient(145deg,#181329,#0d0e15 70%);
-    border:1px solid var(--border);
+  min-height:270px;
+  border:1px solid var(--border);
+  border-radius:24px;
+  padding:30px;
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(110deg,rgba(124,92,255,.2),rgba(0,212,255,.05)),
+    #10121a;
+  box-shadow:var(--shadow);
 }
 
-.heroGlow{
-    position:absolute;
-    width:220px;
-    height:220px;
-    right:-80px;
-    top:-80px;
-    border-radius:50%;
-    background:rgba(126,90,255,.35);
-    filter:blur(30px);
+.hero:after{
+  content:"";
+  position:absolute;
+  width:380px;
+  height:380px;
+  right:-100px;
+  top:-180px;
+  border-radius:50%;
+  background:rgba(124,92,255,.18);
+  filter:blur(50px);
 }
 
 .heroContent{
-    position:relative;
-    z-index:2;
+  position:relative;
+  z-index:2;
+  max-width:620px;
 }
 
-.badge{
-    display:inline-block;
-    padding:6px 9px;
-    border-radius:7px;
-    background:rgba(118,87,255,.2);
-    color:#b9adff;
-    font-size:9px;
-    font-weight:900;
-    letter-spacing:1.2px;
-    margin-bottom:10px;
+.eyebrow{
+  color:#a998ff;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
 }
 
 .hero h1{
-    font-size:29px;
-    line-height:1.08;
-    margin-bottom:10px;
+  margin:10px 0;
+  font-size:clamp(30px,5vw,48px);
+  line-height:1;
 }
 
 .hero p{
-    color:#a0a4b2;
-    font-size:13px;
-    line-height:1.5;
-    max-width:350px;
+  color:var(--muted);
+  max-width:560px;
+  line-height:1.6;
+}
+
+.primaryBtn{
+  color:white;
+  background:linear-gradient(135deg,var(--accent),#5c43d8);
+  padding:12px 18px;
+  border-radius:12px;
+  font-weight:700;
+  box-shadow:0 10px 30px rgba(124,92,255,.25);
+}
+
+.secondaryBtn{
+  color:white;
+  background:#1a1d27;
+  border:1px solid var(--border);
+  padding:12px 18px;
+  border-radius:12px;
 }
 
 .heroButtons{
-    display:flex;
-    gap:8px;
-    margin-top:18px;
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+  flex-wrap:wrap;
 }
 
-.primary,
-.secondary{
-    min-height:42px;
-    padding:0 15px;
-    border-radius:11px;
-    font-size:12px;
-    font-weight:800;
+.sectionHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin:30px 0 15px;
 }
 
-.primary{
-    color:white;
-    background:linear-gradient(135deg,#7c5cff,#5739d4);
-    box-shadow:0 8px 20px rgba(118,87,255,.25);
+.sectionHead h2{
+  font-size:20px;
+  margin:0;
 }
 
-.secondary{
-    color:white;
-    background:rgba(255,255,255,.07);
-    border:1px solid var(--border);
+.sectionHead span{
+  color:var(--muted);
+  font-size:13px;
 }
 
-/* =========================
-   STATS
-========================= */
+/* CARDS */
 
-.section{
-    margin-top:22px;
-}
-
-.stats{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
-}
-
-.stat{
-    padding:15px;
-    border-radius:15px;
-    background:var(--card);
-    border:1px solid var(--border);
-}
-
-.statLabel{
-    color:var(--muted);
-    font-size:10px;
-    margin-bottom:6px;
-}
-
-.statValue{
-    font-size:22px;
-    font-weight:900;
-}
-
-.statSub{
-    color:var(--green);
-    font-size:9px;
-    margin-top:4px;
-}
-
-/* =========================
-   SECTION HEADER
-========================= */
-
-.sectionHeader{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:12px;
-}
-
-.sectionHeader h2{
-    font-size:18px;
-}
-
-.sectionHeader button{
-    color:var(--accent2);
-    background:none;
-    font-size:11px;
-    font-weight:700;
-}
-
-/* =========================
-   CATEGORIES
-========================= */
-
-.categories{
-    display:flex;
-    gap:8px;
-    overflow-x:auto;
-    scrollbar-width:none;
-    padding-bottom:2px;
-}
-
-.categories::-webkit-scrollbar{
-    display:none;
-}
-
-.category{
-    flex-shrink:0;
-    min-height:36px;
-    padding:0 13px;
-    border-radius:10px;
-    background:var(--card);
-    border:1px solid var(--border);
-    color:#9095a5;
-    font-size:11px;
-    font-weight:700;
-}
-
-.category.active{
-    color:white;
-    background:rgba(118,87,255,.22);
-    border-color:rgba(118,87,255,.55);
-}
-
-/* =========================
-   GAMES GRID
-========================= */
-
-.games{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:11px;
+.gamesGrid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;
 }
 
 .gameCard{
-    overflow:hidden;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:16px;
-    min-width:0;
+  min-width:0;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:17px;
+  overflow:hidden;
+  transition:.22s;
+  position:relative;
+}
+
+.gameCard:hover{
+  transform:translateY(-4px);
+  border-color:rgba(124,92,255,.45);
+  box-shadow:0 15px 40px rgba(0,0,0,.3);
 }
 
 .cover{
-    height:145px;
-    position:relative;
-    overflow:hidden;
-    display:grid;
-    place-items:center;
-    background:
-        radial-gradient(
-            circle at 30% 20%,
-            rgba(255,255,255,.12),
-            transparent 25%
-        ),
-        linear-gradient(135deg,#25213f,#10121a);
-    background-size:cover;
-    background-position:center;
+  aspect-ratio:16/10;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(0,212,255,.35),transparent 30%),
+    linear-gradient(135deg,#171a25,#08090d);
+  display:grid;
+  place-items:center;
+  font-size:42px;
+  position:relative;
+  overflow:hidden;
 }
 
-.coverEmoji{
-    font-size:42px;
-    filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.coverLabel{
+  position:absolute;
+  left:10px;
+  bottom:10px;
+  padding:5px 8px;
+  border-radius:7px;
+  background:rgba(0,0,0,.65);
+  font-size:10px;
+  backdrop-filter:blur(8px);
 }
 
 .favorite{
-    position:absolute;
-    right:8px;
-    top:8px;
-    width:32px;
-    height:32px;
-    border-radius:9px;
-    background:rgba(0,0,0,.5);
-    color:white;
-    font-size:16px;
+  position:absolute;
+  right:9px;
+  top:9px;
+  width:33px;
+  height:33px;
+  border-radius:50%;
+  background:rgba(0,0,0,.55);
+  color:#fff;
+  z-index:3;
 }
 
 .favorite.active{
-    color:var(--red);
+  color:#ff4d78;
 }
 
-.gameInfo{
-    padding:11px;
+.cardInfo{
+  padding:13px;
 }
 
-.gameTitle{
-    font-size:13px;
-    font-weight:800;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.cardInfo h3{
+  margin:0;
+  font-size:15px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.gameMeta{
-    margin-top:4px;
-    color:var(--muted);
-    font-size:9px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+.cardInfo p{
+  margin:5px 0 12px;
+  color:var(--muted);
+  font-size:12px;
 }
 
-.gameBottom{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:5px;
-    margin-top:10px;
+.cardActions{
+  display:flex;
+  gap:7px;
 }
 
-.status{
-    color:#777d8d;
-    font-size:9px;
+.playSmall{
+  flex:1;
+  padding:9px;
+  border-radius:9px;
+  background:#1c1f2a;
+  color:white;
+  font-size:12px;
 }
 
-.play{
-    min-height:31px;
-    padding:0 10px;
-    border-radius:8px;
-    background:var(--accent);
-    color:white;
-    font-size:9px;
-    font-weight:900;
+.deleteSmall{
+  width:36px;
+  border-radius:9px;
+  background:#1b1117;
+  color:#ff6685;
 }
 
-/* =========================
-   EMPTY
-========================= */
+/* EMPTY */
 
 .empty{
-    display:none;
-    text-align:center;
-    padding:50px 20px;
-    border:1px dashed var(--border);
-    border-radius:16px;
-    background:var(--card);
+  text-align:center;
+  padding:70px 20px;
+  color:var(--muted);
+  border:1px dashed var(--border);
+  border-radius:20px;
 }
 
 .emptyIcon{
-    font-size:40px;
-    margin-bottom:10px;
+  font-size:46px;
+  margin-bottom:10px;
 }
 
-.empty h3{
-    font-size:15px;
+/* LIBRARY TOOLBAR */
+
+.toolbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
 }
 
-.empty p{
-    color:var(--muted);
-    font-size:11px;
-    margin-top:5px;
+.toolbar button,
+.select{
+  background:#151822;
+  color:#dce0ec;
+  border:1px solid var(--border);
+  border-radius:11px;
+  padding:10px 14px;
 }
 
-/* =========================
-   BOTTOM NAV
-========================= */
-
-.bottomNav{
-    position:fixed;
-    left:8px;
-    right:8px;
-    bottom:8px;
-    height:64px;
-    z-index:50;
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
-    border-radius:20px;
-    background:rgba(17,19,27,.94);
-    border:1px solid var(--border);
-    backdrop-filter:blur(22px);
-    box-shadow:0 15px 50px rgba(0,0,0,.45);
+.fileInput{
+  display:none;
 }
 
-.navItem{
-    width:54px;
-    height:52px;
-    border:0;
-    background:none;
-    color:#717687;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:3px;
-    font-size:17px;
+/* GAME PLAYER */
+
+.playerOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:#030408;
 }
 
-.navItem span{
-    font-size:8px;
-    font-weight:700;
+.playerOverlay.open{
+  display:flex;
+  flex-direction:column;
 }
 
-.navItem.active{
-    color:#a491ff;
+.gameTop{
+  height:60px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 12px;
+  background:#0b0d12;
+  border-bottom:1px solid var(--border);
 }
 
-.addButton{
-    width:45px;
-    height:45px;
-    border-radius:14px;
-    background:linear-gradient(135deg,#8064ff,#5439d0);
-    color:white;
-    font-size:22px;
-    box-shadow:0 7px 20px rgba(118,87,255,.3);
+.gameTitle{
+  flex:1;
+  font-weight:700;
 }
 
-/* =========================
-   MODAL
-========================= */
-
-.modal{
-    position:fixed;
-    inset:0;
-    z-index:100;
-    display:none;
-    align-items:flex-end;
-    justify-content:center;
-    background:rgba(0,0,0,.7);
-    backdrop-filter:blur(8px);
+.gameStatus{
+  color:var(--muted);
+  font-size:11px;
 }
 
-.modal.show{
-    display:flex;
+.gameFrame{
+  flex:1;
+  width:100%;
+  border:0;
+  background:#000;
 }
 
-.modalBox{
-    width:100%;
-    max-height:92vh;
-    overflow-y:auto;
-    padding:20px;
-    border-radius:24px 24px 0 0;
-    background:#12141d;
-    border:1px solid var(--border);
-    box-shadow:0 -20px 70px rgba(0,0,0,.5);
+.gameBottom{
+  height:55px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  background:#0b0d12;
+  border-top:1px solid var(--border);
 }
 
-.modalHeader{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:18px;
+.gameBottom button{
+  background:#171a22;
+  color:#fff;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:8px 12px;
 }
 
-.modalHeader h2{
-    font-size:19px;
+/* GAMEPAD */
+
+.gamepad{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:110;
+  display:none;
 }
 
-.close{
-    width:36px;
-    height:36px;
-    border-radius:10px;
-    color:white;
-    background:rgba(255,255,255,.06);
+.gamepad.active{
+  display:block;
 }
 
-.form{
-    display:grid;
-    gap:11px;
+.pad{
+  position:absolute;
+  left:25px;
+  bottom:85px;
+  width:180px;
+  height:180px;
+  pointer-events:auto;
 }
 
-.form input,
-.form select{
-    width:100%;
-    height:46px;
-    border-radius:11px;
-    border:1px solid var(--border);
-    outline:none;
-    background:#0b0d13;
-    color:white;
-    padding:0 13px;
-    font-size:13px;
+.dpad{
+  position:absolute;
+  left:45px;
+  top:45px;
+  width:90px;
+  height:90px;
 }
 
-.fileBox{
-    padding:16px;
-    text-align:center;
-    border-radius:13px;
-    border:1px dashed rgba(118,87,255,.5);
-    color:#969aaa;
-    font-size:11px;
+.dpad button{
+  position:absolute;
+  width:36px;
+  height:36px;
+  border-radius:9px;
+  background:rgba(20,23,32,.85);
+  color:white;
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(8px);
 }
 
-.fileBox input{
-    width:100%;
-    margin-top:10px;
+.up{left:27px;top:0}
+.down{left:27px;bottom:0}
+.left{left:0;top:27px}
+.right{right:0;top:27px}
+
+.actions{
+  position:absolute;
+  right:25px;
+  bottom:75px;
+  width:180px;
+  height:160px;
+  pointer-events:auto;
 }
 
-.formActions{
-    display:flex;
-    gap:8px;
-    margin-top:3px;
+.actionBtn{
+  position:absolute;
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  background:rgba(20,23,32,.88);
+  color:white;
+  border:1px solid rgba(255,255,255,.14);
+  font-weight:800;
+  backdrop-filter:blur(8px);
 }
 
-.formActions button{
-    flex:1;
+.btnA{right:5px;top:60px}
+.btnB{left:45px;top:95px}
+.btnX{left:45px;top:25px}
+.btnY{right:5px;top:0}
+
+/* SETTINGS */
+
+.settings{
+  max-width:800px;
 }
 
-/* =========================
-   TOAST
-========================= */
+.setting{
+  padding:18px;
+  background:#11141c;
+  border:1px solid var(--border);
+  border-radius:15px;
+  margin-bottom:10px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.settingText{
+  flex:1;
+}
+
+.settingText strong{
+  display:block;
+}
+
+.settingText span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.switch{
+  width:48px;
+  height:27px;
+  border-radius:20px;
+  background:#292d38;
+  padding:3px;
+}
+
+.switch i{
+  display:block;
+  width:21px;
+  height:21px;
+  border-radius:50%;
+  background:#aaa;
+  transition:.2s;
+}
+
+.switch.on{
+  background:var(--accent);
+}
+
+.switch.on i{
+  transform:translateX(21px);
+  background:#fff;
+}
+
+/* TOAST */
 
 .toast{
-    position:fixed;
-    left:50%;
-    bottom:84px;
-    transform:translate(-50%,25px);
-    opacity:0;
-    z-index:200;
-    max-width:90%;
-    padding:11px 16px;
-    border-radius:12px;
-    background:#222631;
-    border:1px solid var(--border);
-    color:white;
-    font-size:11px;
-    transition:.25s;
-    pointer-events:none;
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  transform:translate(-50%,20px);
+  background:#181b25;
+  border:1px solid var(--border);
+  padding:12px 17px;
+  border-radius:12px;
+  opacity:0;
+  pointer-events:none;
+  transition:.25s;
+  z-index:500;
+  box-shadow:var(--shadow);
+  font-size:13px;
 }
 
 .toast.show{
-    opacity:1;
-    transform:translate(-50%,0);
+  opacity:1;
+  transform:translate(-50%,0);
 }
 
-/* =========================
-   LARGER SCREENS
-========================= */
+/* MOBILE */
 
-@media(min-width:700px){
+@media(max-width:800px){
 
-    .main{
-        max-width:900px;
-        margin:auto;
-        padding:25px;
-    }
+  .sidebar{
+    position:fixed;
+    left:-270px;
+    top:0;
+    bottom:0;
+    transition:.25s;
+    box-shadow:20px 0 60px rgba(0,0,0,.5);
+  }
 
-    .games{
-        grid-template-columns:repeat(3,1fr);
-    }
+  .sidebar.open{
+    left:0;
+  }
 
-    .cover{
-        height:175px;
-    }
+  .menuBtn{
+    display:block;
+  }
 
-    .modal{
-        align-items:center;
-    }
+  .topbar{
+    padding:0 12px;
+    gap:8px;
+  }
 
-    .modalBox{
-        width:min(520px,92%);
-        border-radius:22px;
-    }
+  .topActions .iconBtn{
+    display:none;
+  }
 
-    .bottomNav{
-        left:50%;
-        transform:translateX(-50%);
-        width:500px;
-    }
+  .profile{
+    display:none;
+  }
+
+  .content{
+    padding:16px;
+    padding-bottom:100px;
+  }
+
+  .hero{
+    padding:23px;
+    min-height:250px;
+  }
+
+  .hero h1{
+    font-size:34px;
+  }
+
+  .gamesGrid{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:10px;
+  }
+
+  .cardInfo{
+    padding:10px;
+  }
+
+  .cardInfo h3{
+    font-size:13px;
+  }
+
+  .cardInfo p{
+    font-size:11px;
+  }
+
+  .playSmall{
+    padding:8px 5px;
+  }
 }
 
-@media(min-width:1000px){
+@media(max-width:430px){
 
-    .main{
-        max-width:1150px;
-    }
+  .search input{
+    height:40px;
+  }
 
-    .games{
-        grid-template-columns:repeat(4,1fr);
-    }
+  .topbar{
+    height:65px;
+  }
+
+  .content{
+    height:calc(100% - 65px);
+  }
+
+  .heroButtons button{
+    flex:1;
+  }
+
+  .gamesGrid{
+    grid-template-columns:repeat(2,1fr);
+  }
 }
 </style>
 </head>
@@ -687,1350 +810,1204 @@ body{
 
 <div class="app">
 
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+
+  <div class="logo">
+    <div class="logoIcon">🎮</div>
+    <div>
+      <strong>GameHub</strong>
+      <span>V2 • GAMING CENTER</span>
+    </div>
+  </div>
+
+  <nav class="nav">
+
+    <button class="active" data-view="home">
+      <span class="navIcon">🏠</span> Início
+    </button>
+
+    <button data-view="library">
+      <span class="navIcon">🎮</span> Biblioteca
+    </button>
+
+    <button data-view="favorites">
+      <span class="navIcon">❤️</span> Favoritos
+    </button>
+
+    <button data-view="recent">
+      <span class="navIcon">🕘</span> Recentes
+    </button>
+
+    <button data-view="gamepad">
+      <span class="navIcon">🕹️</span> Gamepad
+    </button>
+
+    <button data-view="settings">
+      <span class="navIcon">⚙️</span> Configurações
+    </button>
+
+  </nav>
+
+  <div class="sidebarBottom">
+    GameHub V2<br>
+    Seu centro de jogos
+  </div>
+
+</aside>
+
+<!-- MAIN -->
 <main class="main">
 
-    <!-- TOP -->
-    <header class="topbar">
+<header class="topbar">
 
-        <div class="logo">🎮</div>
+  <button class="menuBtn" id="menuBtn">☰</button>
 
-        <div class="brand">
-            GAME <span>HUB</span>
-        </div>
+  <div class="search">
+    <span class="searchIcon">🔎</span>
+    <input id="searchInput" placeholder="Pesquisar jogos...">
+    <button class="clearSearch" id="clearSearch">×</button>
+  </div>
 
-        <button class="topButton" id="fullscreen">
-            ⛶
+  <div class="topActions">
+    <button class="iconBtn" id="importTop">＋</button>
+    <button class="iconBtn" id="fullscreenTop">⛶</button>
+    <div class="profile">G</div>
+  </div>
+
+</header>
+
+<section class="content">
+
+<!-- HOME -->
+
+<div class="view active" id="home">
+
+  <section class="hero">
+
+    <div class="heroContent">
+
+      <div class="eyebrow">GAMEHUB V2</div>
+
+      <h1>Seu universo gamer.</h1>
+
+      <p>
+        Organize seus jogos, execute seus títulos HTML diretamente no navegador,
+        use controles virtuais e transforme seu celular em uma central gamer.
+      </p>
+
+      <div class="heroButtons">
+        <button class="primaryBtn" id="startGaming">
+          ▶ Começar a jogar
         </button>
 
-        <button class="topButton" id="topAdd">
-            ＋
+        <button class="secondaryBtn" id="importHero">
+          ＋ Adicionar jogo
         </button>
-
-    </header>
-
-
-    <!-- SEARCH -->
-    <div class="search">
-
-        <div class="searchIcon">⌕</div>
-
-        <input
-            id="search"
-            type="search"
-            autocomplete="off"
-            placeholder="Pesquisar jogos..."
-        >
+      </div>
 
     </div>
 
+  </section>
 
-    <!-- HERO -->
-    <section class="hero">
+  <div class="sectionHead">
+    <h2>🎮 Jogos recentes</h2>
+    <span id="recentCount">0 jogos</span>
+  </div>
 
-        <div class="heroGlow"></div>
+  <div class="gamesGrid" id="homeGames"></div>
 
-        <div class="heroContent">
-
-            <div class="badge">
-                GAME HUB V1.1 • ANDROID
-            </div>
-
-            <h1>
-                Seu universo<br>
-                de jogos.
-            </h1>
-
-            <p>
-                Organize sua coleção e tenha seus jogos
-                favoritos sempre à mão.
-            </p>
-
-            <div class="heroButtons">
-
-                <button class="primary" id="libraryHero">
-                    🎮 Biblioteca
-                </button>
-
-                <button class="secondary" id="heroAdd">
-                    ＋ Adicionar
-                </button>
-
-            </div>
-
-        </div>
-
-    </section>
+</div>
 
 
-    <!-- STATS -->
-    <section class="section">
+<!-- LIBRARY -->
 
-        <div class="stats">
+<div class="view" id="library">
 
-            <div class="stat">
-                <div class="statLabel">JOGOS</div>
-                <div class="statValue" id="totalGames">0</div>
-                <div class="statSub">Biblioteca</div>
-            </div>
+  <div class="sectionHead">
+    <div>
+      <h2>Minha Biblioteca</h2>
+      <span id="libraryCount">0 jogos</span>
+    </div>
+  </div>
 
-            <div class="stat">
-                <div class="statLabel">FAVORITOS</div>
-                <div class="statValue" id="totalFavorites">0</div>
-                <div class="statSub">Marcados</div>
-            </div>
+  <div class="toolbar">
 
-            <div class="stat">
-                <div class="statLabel">JOGADOS</div>
-                <div class="statValue" id="totalPlayed">0</div>
-                <div class="statSub">Histórico</div>
-            </div>
+    <button id="importLibrary">
+      ＋ Adicionar jogo
+    </button>
 
-            <div class="stat">
-                <div class="statLabel">TEMPO</div>
-                <div class="statValue" id="totalTime">0h</div>
-                <div class="statSub">Estimado</div>
-            </div>
+    <button id="sortName">
+      A–Z
+    </button>
 
-        </div>
+    <button id="sortRecent">
+      Mais recentes
+    </button>
 
-    </section>
+  </div>
+
+  <div class="gamesGrid" id="libraryGames"></div>
+
+</div>
 
 
-    <!-- CATEGORIES -->
-    <section class="section">
+<!-- FAVORITES -->
 
-        <div class="sectionHeader">
-            <h2>Categorias</h2>
-        </div>
+<div class="view" id="favorites">
 
-        <div class="categories">
+  <div class="sectionHead">
+    <div>
+      <h2>❤️ Favoritos</h2>
+      <span>Seus jogos favoritos</span>
+    </div>
+  </div>
 
-            <button class="category active" data-category="Todos">
-                Todos
-            </button>
+  <div class="gamesGrid" id="favoriteGames"></div>
 
-            <button class="category" data-category="PC">
-                🖥️ PC
-            </button>
-
-            <button class="category" data-category="Android">
-                📱 Android
-            </button>
-
-            <button class="category" data-category="Emulador">
-                🕹️ Emulador
-            </button>
-
-            <button class="category" data-category="Indie">
-                ✨ Indie
-            </button>
-
-        </div>
-
-    </section>
+</div>
 
 
-    <!-- GAMES -->
-    <section class="section">
+<!-- RECENT -->
 
-        <div class="sectionHeader">
+<div class="view" id="recent">
 
-            <h2 id="listTitle">
-                Minha coleção
-            </h2>
+  <div class="sectionHead">
+    <div>
+      <h2>🕘 Jogados recentemente</h2>
+      <span>Continue de onde parou</span>
+    </div>
+  </div>
 
-            <button id="clearFilter">
-                Ver todos
-            </button>
+  <div class="gamesGrid" id="recentGames"></div>
 
-        </div>
+</div>
 
-        <div class="games" id="games"></div>
 
-        <div class="empty" id="empty">
+<!-- GAMEPAD -->
 
-            <div class="emptyIcon">🎮</div>
+<div class="view" id="gamepad">
 
-            <h3>Nenhum jogo encontrado</h3>
+  <div class="sectionHead">
+    <div>
+      <h2>🕹️ Gamepad</h2>
+      <span>Controle virtual para jogos compatíveis</span>
+    </div>
+  </div>
 
-            <p>
-                Adicione um jogo ou altere sua pesquisa.
-            </p>
+  <div class="hero">
 
-        </div>
+    <div class="heroContent">
 
-    </section>
+      <div class="eyebrow">CONTROLE MOBILE</div>
 
+      <h1>Gamepad Virtual</h1>
+
+      <p>
+        Ative o controle durante uma partida para usar botões
+        virtuais na tela do celular.
+      </p>
+
+      <button class="primaryBtn" id="activateGamepad">
+        🕹️ Ativar Gamepad
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- SETTINGS -->
+
+<div class="view" id="settings">
+
+  <div class="settings">
+
+    <div class="sectionHead">
+      <div>
+        <h2>⚙️ Configurações</h2>
+        <span>Personalize seu GameHub</span>
+      </div>
+    </div>
+
+    <div class="setting">
+
+      <div class="settingText">
+        <strong>Gamepad automático</strong>
+        <span>Mostrar controles ao iniciar jogos</span>
+      </div>
+
+      <button class="switch" data-setting="autoGamepad">
+        <i></i>
+      </button>
+
+    </div>
+
+    <div class="setting">
+
+      <div class="settingText">
+        <strong>Tela cheia</strong>
+        <span>Entrar em tela cheia ao abrir um jogo</span>
+      </div>
+
+      <button class="switch" data-setting="autoFullscreen">
+        <i></i>
+      </button>
+
+    </div>
+
+    <div class="setting">
+
+      <div class="settingText">
+        <strong>Animações</strong>
+        <span>Ativar efeitos visuais da interface</span>
+      </div>
+
+      <button class="switch on" data-setting="animations">
+        <i></i>
+      </button>
+
+    </div>
+
+    <div class="setting">
+
+      <div class="settingText">
+        <strong>Limpar biblioteca</strong>
+        <span>Remove todos os jogos armazenados neste navegador</span>
+      </div>
+
+      <button class="secondaryBtn" id="clearLibrary">
+        Limpar
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+</section>
 </main>
+</div>
+
+
+<!-- FILE INPUT -->
+
+<input
+  type="file"
+  id="gameInput"
+  class="fileInput"
+  accept=".html,.htm,.zip"
+  multiple
+>
+
+
+<!-- PLAYER -->
+
+<div class="playerOverlay" id="playerOverlay">
+
+  <div class="gameTop">
+
+    <button class="iconBtn" id="closeGame">←</button>
+
+    <div class="gameTitle" id="playingTitle">
+      GameHub
+    </div>
+
+    <div class="gameStatus" id="gameStatus">
+      ONLINE
+    </div>
+
+    <button class="iconBtn" id="gameFullscreen">⛶</button>
+
+    <button class="iconBtn" id="togglePad">🕹️</button>
+
+  </div>
+
+  <iframe
+    class="gameFrame"
+    id="gameFrame"
+    sandbox="allow-scripts allow-forms allow-pointer-lock allow-same-origin"
+  ></iframe>
+
+  <div class="gameBottom">
+
+    <button id="reloadGame">↻ Recarregar</button>
+
+    <button id="gameMute">🔊</button>
+
+    <button id="gameHome">⌂</button>
+
+  </div>
 
 </div>
 
 
-<!-- BOTTOM NAV -->
+<!-- VIRTUAL GAMEPAD -->
 
-<nav class="bottomNav">
+<div class="gamepad" id="virtualGamepad">
 
-    <button class="navItem active" data-page="home">
-        ⌂
-        <span>Início</span>
-    </button>
+  <div class="pad">
 
-    <button class="navItem" data-page="library">
-        ▦
-        <span>Jogos</span>
-    </button>
+    <div class="dpad">
 
-    <button class="addButton" id="bottomAdd">
-        ＋
-    </button>
-
-    <button class="navItem" data-page="favorites">
-        ♡
-        <span>Favoritos</span>
-    </button>
-
-    <button class="navItem" data-page="recent">
-        ◷
-        <span>Recentes</span>
-    </button>
-
-</nav>
-
-
-<!-- ADD MODAL -->
-
-<div class="modal" id="modal">
-
-    <div class="modalBox">
-
-        <div class="modalHeader">
-
-            <h2>Adicionar jogo</h2>
-
-            <button class="close" id="close">
-                ×
-            </button>
-
-        </div>
-
-        <div class="form">
-
-            <input
-                id="gameName"
-                placeholder="Nome do jogo"
-                maxlength="80"
-            >
-
-            <input
-                id="gameGenre"
-                placeholder="Gênero"
-                maxlength="40"
-            >
-
-            <select id="platform">
-
-                <option value="Android">
-                    📱 Android
-                </option>
-
-                <option value="PC">
-                    🖥️ PC
-                </option>
-
-                <option value="Emulador">
-                    🕹️ Emulador
-                </option>
-
-                <option value="Indie">
-                    ✨ Indie
-                </option>
-
-            </select>
-
-            <div class="fileBox">
-
-                🖼️ Selecionar capa
-
-                <input
-                    id="cover"
-                    type="file"
-                    accept="image/*"
-                >
-
-            </div>
-
-            <div class="fileBox">
-
-                🎮 Arquivo do jogo
-
-                <input
-                    id="gameFile"
-                    type="file"
-                >
-
-            </div>
-
-            <div class="formActions">
-
-                <button class="secondary" id="cancel">
-                    Cancelar
-                </button>
-
-                <button class="primary" id="save">
-                    Adicionar jogo
-                </button>
-
-            </div>
-
-        </div>
+      <button class="up" data-key="ArrowUp">▲</button>
+      <button class="down" data-key="ArrowDown">▼</button>
+      <button class="left" data-key="ArrowLeft">◀</button>
+      <button class="right" data-key="ArrowRight">▶</button>
 
     </div>
 
+  </div>
+
+  <div class="actions">
+
+    <button class="actionBtn btnA" data-key="z">A</button>
+    <button class="actionBtn btnB" data-key="x">B</button>
+    <button class="actionBtn btnX" data-key="a">X</button>
+    <button class="actionBtn btnY" data-key="s">Y</button>
+
+  </div>
+
 </div>
 
-
-<!-- TOAST -->
 
 <div class="toast" id="toast"></div>
 
 
 <script>
-"use strict";
 
-/* =====================================================
-   GAME HUB V1.1 ANDROID
-===================================================== */
+/* =========================================================
+   GAMEHUB V2 ENGINE
+========================================================= */
 
-const DB_NAME = "GameHubV11";
-const DB_VERSION = 1;
-const STORE = "games";
+const $ = selector => document.querySelector(selector);
 
-let db = null;
+const $$ = selector => document.querySelectorAll(selector);
 
-let currentPage = "home";
-let currentCategory = "Todos";
-let searchText = "";
+const STORAGE_KEY = "GAMEHUB_V2_LIBRARY";
+const SETTINGS_KEY = "GAMEHUB_V2_SETTINGS";
+
+let games = [];
+let settings = {
+  autoGamepad:false,
+  autoFullscreen:false,
+  animations:true
+};
+
+let currentGame = null;
 
 
-/* =====================================================
-   INDEXED DB
-===================================================== */
+/* =========================================================
+   STORAGE
+========================================================= */
 
-function openDB(){
-
-    return new Promise((resolve,reject)=>{
-
-        const request =
-            indexedDB.open(DB_NAME,DB_VERSION);
-
-        request.onupgradeneeded = e => {
-
-            const database = e.target.result;
-
-            if(!database.objectStoreNames.contains(STORE)){
-
-                const store =
-                    database.createObjectStore(
-                        STORE,
-                        {keyPath:"id"}
-                    );
-
-                store.createIndex(
-                    "name",
-                    "name",
-                    {unique:false}
-                );
-
-            }
-        };
-
-        request.onsuccess = e => {
-
-            db = e.target.result;
-
-            resolve(db);
-
-        };
-
-        request.onerror = () => {
-
-            reject(request.error);
-
-        };
-
-    });
+function saveGames(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(games));
+  }catch(e){
+    toast("Não foi possível salvar a biblioteca.");
+  }
 }
 
+function loadGames(){
 
-/* =====================================================
-   DB HELPERS
-===================================================== */
+  try{
 
-function getAllGames(){
+    const data = localStorage.getItem(STORAGE_KEY);
 
-    return new Promise((resolve,reject)=>{
-
-        const transaction =
-            db.transaction(STORE,"readonly");
-
-        const store =
-            transaction.objectStore(STORE);
-
-        const request =
-            store.getAll();
-
-        request.onsuccess = () =>
-            resolve(request.result || []);
-
-        request.onerror = () =>
-            reject(request.error);
-
-    });
-}
-
-
-function putGame(game){
-
-    return new Promise((resolve,reject)=>{
-
-        const transaction =
-            db.transaction(STORE,"readwrite");
-
-        transaction.objectStore(STORE).put(game);
-
-        transaction.oncomplete =
-            ()=>resolve();
-
-        transaction.onerror =
-            ()=>reject(transaction.error);
-
-    });
-}
-
-
-function deleteGame(id){
-
-    return new Promise((resolve,reject)=>{
-
-        const transaction =
-            db.transaction(STORE,"readwrite");
-
-        transaction.objectStore(STORE).delete(id);
-
-        transaction.oncomplete =
-            ()=>resolve();
-
-        transaction.onerror =
-            ()=>reject(transaction.error);
-
-    });
-}
-
-
-/* =====================================================
-   DEFAULT GAMES
-===================================================== */
-
-async function createDefaults(){
-
-    const existing = await getAllGames();
-
-    if(existing.length) return;
-
-    const defaults = [
-
-        {
-            id:crypto.randomUUID(),
-            name:"Cyber Arena",
-            genre:"Action",
-            platform:"Android",
-            emoji:"⚡",
-            favorite:true,
-            played:false,
-            time:0,
-            created:Date.now()
-        },
-
-        {
-            id:crypto.randomUUID(),
-            name:"Galaxy Quest",
-            genre:"Adventure",
-            platform:"PC",
-            emoji:"🚀",
-            favorite:false,
-            played:true,
-            time:4,
-            created:Date.now()-1000
-        },
-
-        {
-            id:crypto.randomUUID(),
-            name:"Shadow Strike",
-            genre:"Action",
-            platform:"Emulador",
-            emoji:"🥷",
-            favorite:false,
-            played:false,
-            time:0,
-            created:Date.now()-2000
-        },
-
-        {
-            id:crypto.randomUUID(),
-            name:"Pixel World",
-            genre:"Indie",
-            platform:"Indie",
-            emoji:"👾",
-            favorite:true,
-            played:true,
-            time:7,
-            created:Date.now()-3000
-        }
-
-    ];
-
-    for(const game of defaults){
-        await putGame(game);
+    if(data){
+      games = JSON.parse(data);
     }
+
+    const savedSettings = localStorage.getItem(SETTINGS_KEY);
+
+    if(savedSettings){
+      settings = {
+        ...settings,
+        ...JSON.parse(savedSettings)
+      };
+    }
+
+  }catch(e){
+
+    games = [];
+
+  }
+
+}
+
+function saveSettings(){
+  localStorage.setItem(
+    SETTINGS_KEY,
+    JSON.stringify(settings)
+  );
 }
 
 
-/* =====================================================
+/* =========================================================
    TOAST
-===================================================== */
+========================================================= */
 
-function showToast(message){
+let toastTimer;
 
-    const toast =
-        document.getElementById("toast");
+function toast(message){
 
-    toast.textContent = message;
+  const el = $("#toast");
 
-    toast.classList.add("show");
+  el.textContent = message;
 
-    clearTimeout(showToast.timer);
+  el.classList.add("show");
 
-    showToast.timer =
-        setTimeout(()=>{
-            toast.classList.remove("show");
-        },2200);
+  clearTimeout(toastTimer);
+
+  toastTimer = setTimeout(()=>{
+    el.classList.remove("show");
+  },2300);
+
 }
 
 
-/* =====================================================
-   ESCAPE
-===================================================== */
+/* =========================================================
+   NAVIGATION
+========================================================= */
 
-function escapeHTML(value){
+$$(".nav button").forEach(button=>{
 
-    return String(value ?? "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
-}
+  button.addEventListener("click",()=>{
 
+    const view = button.dataset.view;
 
-/* =====================================================
-   READ IMAGE
-===================================================== */
-
-function readImage(file){
-
-    return new Promise((resolve,reject)=>{
-
-        if(!file){
-            resolve("");
-            return;
-        }
-
-        const reader =
-            new FileReader();
-
-        reader.onload =
-            ()=>resolve(reader.result);
-
-        reader.onerror =
-            ()=>reject(reader.error);
-
-        reader.readAsDataURL(file);
-
-    });
-}
-
-
-/* =====================================================
-   RENDER
-===================================================== */
-
-async function render(){
-
-    let games =
-        await getAllGames();
-
-    let result =
-        [...games];
-
-
-    /* PAGE */
-
-    if(currentPage === "favorites"){
-
-        result =
-            result.filter(game=>game.favorite);
-
-        document.getElementById("listTitle")
-            .textContent = "Favoritos";
-
-    }
-    else if(currentPage === "recent"){
-
-        result =
-            result
-            .filter(game=>game.played)
-            .sort((a,b)=>b.created-a.created);
-
-        document.getElementById("listTitle")
-            .textContent = "Recentes";
-
-    }
-    else if(currentPage === "library"){
-
-        document.getElementById("listTitle")
-            .textContent = "Minha biblioteca";
-
-    }
-    else{
-
-        document.getElementById("listTitle")
-            .textContent = "Minha coleção";
-
-    }
-
-
-    /* CATEGORY */
-
-    if(currentCategory !== "Todos"){
-
-        result =
-            result.filter(
-                game =>
-                    game.platform === currentCategory
-            );
-
-    }
-
-
-    /* SEARCH */
-
-    if(searchText){
-
-        const query =
-            searchText.toLowerCase();
-
-        result =
-            result.filter(game=>{
-
-                return (
-                    String(game.name)
-                        .toLowerCase()
-                        .includes(query)
-
-                    ||
-
-                    String(game.genre)
-                        .toLowerCase()
-                        .includes(query)
-
-                    ||
-
-                    String(game.platform)
-                        .toLowerCase()
-                        .includes(query)
-                );
-
-            });
-
-    }
-
-
-    const grid =
-        document.getElementById("games");
-
-    const empty =
-        document.getElementById("empty");
-
-    grid.innerHTML = "";
-
-
-    if(!result.length){
-
-        empty.style.display = "block";
-
-    }else{
-
-        empty.style.display = "none";
-
-    }
-
-
-    result.forEach(game=>{
-
-        const card =
-            document.createElement("article");
-
-        card.className = "gameCard";
-
-
-        const coverStyle =
-            game.cover
-                ? `background-image:url("${game.cover}")`
-                : "";
-
-
-        card.innerHTML = `
-
-            <div class="cover"
-                 style="${coverStyle}">
-
-                ${
-                    game.cover
-                    ? ""
-                    : `<div class="coverEmoji">
-                            ${game.emoji || "🎮"}
-                       </div>`
-                }
-
-                <button
-                    class="favorite ${game.favorite ? "active":""}"
-                    data-favorite="${game.id}"
-                    aria-label="Favorito">
-
-                    ${game.favorite ? "♥" : "♡"}
-
-                </button>
-
-            </div>
-
-            <div class="gameInfo">
-
-                <div class="gameTitle">
-                    ${escapeHTML(game.name)}
-                </div>
-
-                <div class="gameMeta">
-                    ${escapeHTML(game.genre || "Jogo")}
-                    •
-                    ${escapeHTML(game.platform)}
-                </div>
-
-                <div class="gameBottom">
-
-                    <div class="status">
-                        ${
-                            game.played
-                            ? "▶ Jogado"
-                            : "Novo"
-                        }
-                    </div>
-
-                    <button
-                        class="play"
-                        data-play="${game.id}">
-
-                        JOGAR
-
-                    </button>
-
-                </div>
-
-            </div>
-        `;
-
-
-        grid.appendChild(card);
-
+    $$(".nav button").forEach(b=>{
+      b.classList.remove("active");
     });
 
+    button.classList.add("active");
 
-    /* STATS */
+    $$(".view").forEach(v=>{
+      v.classList.remove("active");
+    });
 
-    const total =
-        games.length;
+    $("#" + view).classList.add("active");
 
-    const favorites =
-        games.filter(g=>g.favorite).length;
+    $("#sidebar").classList.remove("open");
 
-    const played =
-        games.filter(g=>g.played).length;
+    render();
 
-    const time =
-        games.reduce(
-            (sum,g)=>sum + Number(g.time || 0),
-            0
-        );
-
-
-    document.getElementById("totalGames")
-        .textContent = total;
-
-    document.getElementById("totalFavorites")
-        .textContent = favorites;
-
-    document.getElementById("totalPlayed")
-        .textContent = played;
-
-    document.getElementById("totalTime")
-        .textContent = time + "h";
-
-}
-
-
-/* =====================================================
-   GAME CLICK
-===================================================== */
-
-document
-.getElementById("games")
-.addEventListener("click",async event=>{
-
-    const favorite =
-        event.target.closest("[data-favorite]");
-
-    if(favorite){
-
-        const id =
-            favorite.dataset.favorite;
-
-        const games =
-            await getAllGames();
-
-        const game =
-            games.find(g=>g.id===id);
-
-        if(!game) return;
-
-        game.favorite =
-            !game.favorite;
-
-        await putGame(game);
-
-        showToast(
-            game.favorite
-            ? "Adicionado aos favoritos ♥"
-            : "Removido dos favoritos"
-        );
-
-        render();
-
-        return;
-    }
-
-
-    const play =
-        event.target.closest("[data-play]");
-
-    if(play){
-
-        const id =
-            play.dataset.play;
-
-        const games =
-            await getAllGames();
-
-        const game =
-            games.find(g=>g.id===id);
-
-        if(!game) return;
-
-        game.played = true;
-
-        game.time =
-            Number(game.time || 0) + 1;
-
-        game.created =
-            Date.now();
-
-        await putGame(game);
-
-        showToast(
-            "Abrindo " + game.name + " 🎮"
-        );
-
-        /*
-          Se existir um arquivo local compatível,
-          a integração nativa Android poderá ser
-          adicionada posteriormente.
-
-          HTML/WebView sozinho não executa .EXE.
-        */
-
-        if(game.fileName){
-
-            showToast(
-                game.fileName +
-                " selecionado anteriormente"
-            );
-
-        }
-
-        render();
-
-    }
+  });
 
 });
 
 
-/* =====================================================
-   ADD MODAL
-===================================================== */
+$("#menuBtn").onclick = ()=>{
 
-const modal =
-    document.getElementById("modal");
+  $("#sidebar").classList.toggle("open");
+
+};
 
 
-function openModal(){
+/* =========================================================
+   SEARCH
+========================================================= */
 
-    modal.classList.add("show");
+$("#searchInput").addEventListener("input",render);
 
-    setTimeout(()=>{
-        document
-            .getElementById("gameName")
-            .focus();
-    },100);
+$("#clearSearch").onclick = ()=>{
 
+  $("#searchInput").value = "";
+
+  render();
+
+};
+
+
+/* =========================================================
+   IMPORT
+========================================================= */
+
+function openImporter(){
+  $("#gameInput").click();
 }
 
-
-function closeModal(){
-
-    modal.classList.remove("show");
-
-}
+$("#importTop").onclick = openImporter;
+$("#importHero").onclick = openImporter;
+$("#importLibrary").onclick = openImporter;
 
 
-document
-.getElementById("topAdd")
-.onclick = openModal;
+$("#gameInput").addEventListener("change",async event=>{
 
-document
-.getElementById("bottomAdd")
-.onclick = openModal;
+  const files = [...event.target.files];
 
-document
-.getElementById("heroAdd")
-.onclick = openModal;
+  if(!files.length) return;
 
-document
-.getElementById("close")
-.onclick = closeModal;
+  for(const file of files){
 
-document
-.getElementById("cancel")
-.onclick = closeModal;
-
-
-modal.addEventListener("click",event=>{
-
-    if(event.target === modal){
-
-        closeModal();
-
-    }
-
-});
-
-
-/* =====================================================
-   SAVE GAME
-===================================================== */
-
-document
-.getElementById("save")
-.addEventListener("click",async()=>{
-
-    const name =
-        document
-        .getElementById("gameName")
-        .value
-        .trim();
-
-    const genre =
-        document
-        .getElementById("gameGenre")
-        .value
-        .trim();
-
-    const platform =
-        document
-        .getElementById("platform")
-        .value;
-
-    const coverFile =
-        document
-        .getElementById("cover")
-        .files[0];
-
-    const gameFile =
-        document
-        .getElementById("gameFile")
-        .files[0];
-
-
-    if(!name){
-
-        showToast(
-            "Digite o nome do jogo"
-        );
-
-        return;
-
-    }
-
-
-    let cover = "";
-
-    try{
-
-        cover =
-            await readImage(coverFile);
-
-    }catch(error){
-
-        showToast(
-            "Não foi possível carregar a capa"
-        );
-
-        return;
-
-    }
-
-
-    const emoji =
-        platform === "Android"
-        ? "📱"
-        :
-        platform === "PC"
-        ? "🖥️"
-        :
-        platform === "Emulador"
-        ? "🕹️"
-        :
-        "👾";
-
+    const name = file.name
+      .replace(/\.(html|htm|zip)$/i,"");
 
     const game = {
 
-        id:crypto.randomUUID(),
+      id:Date.now()+"_"+Math.random().toString(36).slice(2),
 
-        name,
+      name:name || "Novo jogo",
 
-        genre:
-            genre || "Jogo",
+      type:file.name.toLowerCase().endsWith(".zip")
+        ? "ZIP"
+        : "HTML",
 
-        platform,
+      size:file.size,
 
-        emoji,
+      addedAt:Date.now(),
 
-        cover,
+      lastPlayed:0,
 
-        fileName:
-            gameFile
-            ? gameFile.name
-            : "",
+      favorite:false,
 
-        fileSize:
-            gameFile
-            ? gameFile.size
-            : 0,
-
-        favorite:false,
-
-        played:false,
-
-        time:0,
-
-        created:Date.now()
+      html:null
 
     };
 
+    /*
+      HTML pode ser armazenado diretamente.
+      ZIP é mantido como referência nesta versão.
+    */
 
-    await putGame(game);
+    if(game.type==="HTML"){
 
+      try{
+        game.html = await file.text();
+      }catch(e){}
 
-    /* RESET */
+    }
 
-    document
-        .getElementById("gameName")
-        .value = "";
+    games.unshift(game);
 
-    document
-        .getElementById("gameGenre")
-        .value = "";
+  }
 
-    document
-        .getElementById("cover")
-        .value = "";
+  saveGames();
 
-    document
-        .getElementById("gameFile")
-        .value = "";
+  event.target.value="";
 
+  render();
 
-    closeModal();
-
-    currentPage = "library";
-
-    currentCategory = "Todos";
-
-    document
-        .querySelectorAll(".category")
-        .forEach(button=>{
-            button.classList.remove("active");
-        });
-
-    document
-        .querySelector(
-            '[data-category="Todos"]'
-        )
-        .classList.add("active");
-
-
-    updateNavigation();
-
-    await render();
-
-    showToast(
-        "Jogo adicionado com sucesso 🎮"
-    );
+  toast(
+    files.length === 1
+      ? "Jogo adicionado à biblioteca!"
+      : `${files.length} jogos adicionados!`
+  );
 
 });
 
 
-/* =====================================================
-   CATEGORY
-===================================================== */
+/* =========================================================
+   RENDER
+========================================================= */
 
-document
-.querySelectorAll(".category")
-.forEach(button=>{
+function filteredGames(){
 
-    button.addEventListener("click",()=>{
+  const term = $("#searchInput").value
+    .trim()
+    .toLowerCase();
 
-        document
-            .querySelectorAll(".category")
-            .forEach(item=>{
-                item.classList.remove("active");
-            });
+  if(!term) return games;
 
-        button.classList.add("active");
-
-        currentCategory =
-            button.dataset.category;
-
-        render();
-
-    });
-
-});
-
-
-/* =====================================================
-   SEARCH
-===================================================== */
-
-document
-.getElementById("search")
-.addEventListener("input",event=>{
-
-    searchText =
-        event.target.value.trim();
-
-    render();
-
-});
-
-
-/* =====================================================
-   NAVIGATION
-===================================================== */
-
-function updateNavigation(){
-
-    document
-    .querySelectorAll(".navItem")
-    .forEach(button=>{
-
-        button.classList.toggle(
-            "active",
-            button.dataset.page === currentPage
-        );
-
-    });
+  return games.filter(game=>
+    game.name.toLowerCase().includes(term)
+  );
 
 }
 
 
-document
-.querySelectorAll(".navItem")
-.forEach(button=>{
+function render(){
 
-    button.addEventListener("click",()=>{
+  const list = filteredGames();
 
-        currentPage =
-            button.dataset.page;
+  renderGrid($("#homeGames"),games.slice(0,6));
 
-        updateNavigation();
+  renderGrid($("#libraryGames"),list);
 
-        render();
+  renderGrid(
+    $("#favoriteGames"),
+    games.filter(g=>g.favorite)
+  );
 
-        window.scrollTo({
-            top:0,
-            behavior:"smooth"
-        });
+  renderGrid(
+    $("#recentGames"),
+    [...games]
+      .filter(g=>g.lastPlayed)
+      .sort((a,b)=>b.lastPlayed-a.lastPlayed)
+  );
 
-    });
+  $("#libraryCount").textContent =
+    `${games.length} ${games.length===1?"jogo":"jogos"}`;
+
+  const recent = games.filter(g=>g.lastPlayed);
+
+  $("#recentCount").textContent =
+    `${recent.length} ${recent.length===1?"jogo":"jogos"}`;
+
+  updateSettingsUI();
+
+}
+
+
+function renderGrid(container,list){
+
+  if(!container) return;
+
+  if(!list.length){
+
+    container.innerHTML = `
+      <div class="empty" style="grid-column:1/-1">
+        <div class="emptyIcon">🎮</div>
+        <strong>Nenhum jogo encontrado</strong>
+        <p>Adicione um jogo HTML para começar.</p>
+      </div>
+    `;
+
+    return;
+  }
+
+  container.innerHTML = list.map(game=>gameCard(game)).join("");
+
+}
+
+
+function gameCard(game){
+
+  const initial = escapeHTML(
+    game.name.substring(0,1).toUpperCase()
+  );
+
+  return `
+
+    <article class="gameCard">
+
+      <div class="cover">
+
+        <div>${initial}</div>
+
+        <span class="coverLabel">
+          ${game.type}
+        </span>
+
+        <button
+          class="favorite ${game.favorite?"active":""}"
+          onclick="toggleFavorite('${game.id}')"
+          title="Favorito"
+        >
+          ${game.favorite?"♥":"♡"}
+        </button>
+
+      </div>
+
+      <div class="cardInfo">
+
+        <h3 title="${escapeHTML(game.name)}">
+          ${escapeHTML(game.name)}
+        </h3>
+
+        <p>
+          ${game.type} • ${formatSize(game.size)}
+        </p>
+
+        <div class="cardActions">
+
+          <button
+            class="playSmall"
+            onclick="playGame('${game.id}')"
+          >
+            ▶ Jogar
+          </button>
+
+          <button
+            class="deleteSmall"
+            onclick="deleteGame('${game.id}')"
+          >
+            🗑
+          </button>
+
+        </div>
+
+      </div>
+
+    </article>
+  `;
+}
+
+
+function escapeHTML(text){
+
+  return String(text)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function formatSize(bytes){
+
+  if(!bytes) return "0 KB";
+
+  if(bytes < 1024*1024){
+    return Math.max(1,Math.round(bytes/1024))+" KB";
+  }
+
+  return (bytes/(1024*1024)).toFixed(1)+" MB";
+
+}
+
+
+/* =========================================================
+   FAVORITE
+========================================================= */
+
+function toggleFavorite(id){
+
+  const game = games.find(g=>g.id===id);
+
+  if(!game) return;
+
+  game.favorite = !game.favorite;
+
+  saveGames();
+  render();
+
+  toast(
+    game.favorite
+      ? "Adicionado aos favoritos ❤️"
+      : "Removido dos favoritos"
+  );
+
+}
+
+
+/* =========================================================
+   DELETE
+========================================================= */
+
+function deleteGame(id){
+
+  const game = games.find(g=>g.id===id);
+
+  if(!game) return;
+
+  if(!confirm(
+    `Excluir "${game.name}" da biblioteca?`
+  )) return;
+
+  games = games.filter(g=>g.id!==id);
+
+  saveGames();
+
+  render();
+
+  toast("Jogo removido.");
+
+}
+
+
+/* =========================================================
+   PLAY GAME
+========================================================= */
+
+function playGame(id){
+
+  const game = games.find(g=>g.id===id);
+
+  if(!game) return;
+
+  if(game.type==="ZIP"){
+
+    toast(
+      "ZIP detectado. Nesta V2, importe o index.html do jogo."
+    );
+
+    return;
+
+  }
+
+  if(!game.html){
+
+    toast("Não foi possível carregar este jogo.");
+
+    return;
+
+  }
+
+  currentGame = game;
+
+  game.lastPlayed = Date.now();
+
+  saveGames();
+
+  $("#playingTitle").textContent = game.name;
+
+  $("#gameStatus").textContent = "JOGANDO";
+
+  $("#playerOverlay").classList.add("open");
+
+  /*
+    srcdoc permite executar jogos HTML
+    diretamente dentro do GameHub.
+  */
+
+  $("#gameFrame").srcdoc = game.html;
+
+  if(settings.autoGamepad){
+    $("#virtualGamepad").classList.add("active");
+  }
+
+  if(settings.autoFullscreen){
+    setTimeout(()=>{
+      enterFullscreen($("#playerOverlay"));
+    },400);
+  }
+
+  render();
+
+}
+
+
+/* =========================================================
+   CLOSE GAME
+========================================================= */
+
+$("#closeGame").onclick = closeGame;
+
+function closeGame(){
+
+  $("#playerOverlay").classList.remove("open");
+
+  $("#virtualGamepad").classList.remove("active");
+
+  $("#gameFrame").srcdoc = "";
+
+  currentGame = null;
+
+}
+
+
+/* =========================================================
+   RELOAD
+========================================================= */
+
+$("#reloadGame").onclick = ()=>{
+
+  const frame = $("#gameFrame");
+
+  frame.srcdoc = frame.srcdoc;
+
+  toast("Jogo recarregado.");
+
+};
+
+
+/* =========================================================
+   GAME HOME
+========================================================= */
+
+$("#gameHome").onclick = ()=>{
+
+  closeGame();
+
+};
+
+
+/* =========================================================
+   GAMEPAD
+========================================================= */
+
+$("#activateGamepad").onclick = ()=>{
+
+  const pad = $("#virtualGamepad");
+
+  pad.classList.toggle("active");
+
+  toast(
+    pad.classList.contains("active")
+      ? "Gamepad ativado 🕹️"
+      : "Gamepad desativado"
+  );
+
+};
+
+$("#togglePad").onclick = ()=>{
+
+  $("#virtualGamepad").classList.toggle("active");
+
+};
+
+
+$$(".gamepad button").forEach(button=>{
+
+  const key = button.dataset.key;
+
+  function send(type){
+
+    if(!currentGame) return;
+
+    const frame = $("#gameFrame");
+
+    try{
+
+      frame.contentWindow.dispatchEvent(
+        new KeyboardEvent(type,{
+          key:key,
+          code:key,
+          bubbles:true
+        })
+      );
+
+      frame.contentWindow.document.dispatchEvent(
+        new KeyboardEvent(type,{
+          key:key,
+          code:key,
+          bubbles:true
+        })
+      );
+
+    }catch(e){}
+
+  }
+
+  button.addEventListener(
+    "pointerdown",
+    e=>{
+      e.preventDefault();
+      send("keydown");
+    }
+  );
+
+  button.addEventListener(
+    "pointerup",
+    e=>{
+      e.preventDefault();
+      send("keyup");
+    }
+  );
+
+  button.addEventListener(
+    "pointercancel",
+    ()=>{
+      send("keyup");
+    }
+  );
 
 });
 
 
-/* =====================================================
-   HERO LIBRARY
-===================================================== */
+/* =========================================================
+   FULLSCREEN
+========================================================= */
 
-document
-.getElementById("libraryHero")
-.onclick = ()=>{
+async function enterFullscreen(element){
 
-    currentPage = "library";
+  try{
 
-    updateNavigation();
-
-    render();
-
-    window.scrollTo({
-        top:0,
-        behavior:"smooth"
-    });
-
-};
-
-
-/* =====================================================
-   CLEAR FILTER
-===================================================== */
-
-document
-.getElementById("clearFilter")
-.onclick = ()=>{
-
-    currentPage = "library";
-
-    currentCategory = "Todos";
-
-    searchText = "";
-
-    document
-        .getElementById("search")
-        .value = "";
-
-    document
-        .querySelectorAll(".category")
-        .forEach(button=>{
-            button.classList.remove("active");
-        });
-
-    document
-        .querySelector(
-            '[data-category="Todos"]'
-        )
-        .classList.add("active");
-
-    updateNavigation();
-
-    render();
-
-};
-
-
-/* =====================================================
-   FULLSCREEN ANDROID
-===================================================== */
-
-document
-.getElementById("fullscreen")
-.onclick = async()=>{
-
-    try{
-
-        if(!document.fullscreenElement){
-
-            await document
-                .documentElement
-                .requestFullscreen();
-
-            showToast(
-                "Modo tela cheia ativado"
-            );
-
-        }else{
-
-            await document.exitFullscreen();
-
-        }
-
-    }catch(error){
-
-        showToast(
-            "Tela cheia não disponível neste navegador"
-        );
-
+    if(element.requestFullscreen){
+      await element.requestFullscreen();
     }
 
+  }catch(e){}
+
+}
+
+$("#fullscreenTop").onclick = ()=>{
+
+  enterFullscreen(document.documentElement);
+
+};
+
+$("#gameFullscreen").onclick = ()=>{
+
+  enterFullscreen($("#playerOverlay"));
+
 };
 
 
-/* =====================================================
-   BACK BUTTON / ESC
-===================================================== */
+/* =========================================================
+   SORT
+========================================================= */
+
+$("#sortName").onclick = ()=>{
+
+  games.sort((a,b)=>
+    a.name.localeCompare(b.name,"pt-BR")
+  );
+
+  saveGames();
+  render();
+
+};
+
+
+$("#sortRecent").onclick = ()=>{
+
+  games.sort((a,b)=>
+    b.addedAt-a.addedAt
+  );
+
+  saveGames();
+  render();
+
+};
+
+
+/* =========================================================
+   START GAMING
+========================================================= */
+
+$("#startGaming").onclick = ()=>{
+
+  $$(".nav button").forEach(b=>b.classList.remove("active"));
+
+  document
+    .querySelector('[data-view="library"]')
+    .classList.add("active");
+
+  $$(".view").forEach(v=>v.classList.remove("active"));
+
+  $("#library").classList.add("active");
+
+  render();
+
+};
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+$$(".switch").forEach(sw=>{
+
+  sw.onclick = ()=>{
+
+    const key = sw.dataset.setting;
+
+    settings[key] = !settings[key];
+
+    saveSettings();
+
+    updateSettingsUI();
+
+    toast(
+      settings[key]
+        ? "Configuração ativada"
+        : "Configuração desativada"
+    );
+
+  };
+
+});
+
+
+function updateSettingsUI(){
+
+  $$(".switch").forEach(sw=>{
+
+    const key = sw.dataset.setting;
+
+    sw.classList.toggle(
+      "on",
+      !!settings[key]
+    );
+
+  });
+
+}
+
+
+/* =========================================================
+   CLEAR LIBRARY
+========================================================= */
+
+$("#clearLibrary").onclick = ()=>{
+
+  if(!games.length){
+
+    toast("A biblioteca já está vazia.");
+
+    return;
+
+  }
+
+  if(!confirm(
+    "Tem certeza que deseja apagar todos os jogos?"
+  )) return;
+
+  games = [];
+
+  saveGames();
+
+  render();
+
+  toast("Biblioteca limpa.");
+
+};
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
 
 document.addEventListener("keydown",event=>{
 
-    if(event.key === "Escape"){
+  if(event.key==="Escape"){
 
-        closeModal();
-
+    if($("#playerOverlay").classList.contains("open")){
+      closeGame();
     }
+
+  }
 
 });
 
 
-/* =====================================================
+/* =========================================================
+   MUTE
+========================================================= */
+
+$("#gameMute").onclick = ()=>{
+
+  const frame = $("#gameFrame");
+
+  try{
+
+    const doc = frame.contentDocument;
+
+    const media = doc.querySelectorAll(
+      "audio,video"
+    );
+
+    media.forEach(el=>{
+      el.muted = !el.muted;
+    });
+
+    toast("Áudio alternado.");
+
+  }catch(e){
+
+    toast("Não foi possível controlar o áudio.");
+
+  }
+
+};
+
+
+/* =========================================================
    INITIALIZE
-===================================================== */
+========================================================= */
 
-(async function(){
+loadGames();
 
-    try{
+render();
 
-        await openDB();
-
-        await createDefaults();
-
-        await render();
-
-    }catch(error){
-
-        console.error(error);
-
-        showToast(
-            "Erro ao inicializar biblioteca"
-        );
-
-    }
-
-})();
 </script>
 
 </body>
